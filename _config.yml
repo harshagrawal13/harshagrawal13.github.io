@@ -1,6 +1,6 @@
 # main text of home
 name: Harsh Agrawal
-bio: If history repeats itself, I'm surely getting a dinosour!
+bio: If history repeats itself, I'm surely getting a dinosaur!
 
 # twitter summary info
 description: A blog about me and my projects
@@ -34,39 +34,33 @@ disqus:
   categories: [blog, project] # only show disqus for posts that have these categories
 
 # if you don't have any of social below, comment the line
-facebook: myfacebook
-twitter: mytwitter
+facebook: harsh.agrawal.522
+twitter: TheKidReader
 # google: mygoogle
-# instagram: myinstagram
-# pinterest: mypinterest
-# linkedin: mylinkedin
-# youtube: myyoutube
+instagram: harshagrawal2003
+pinterest: sunfall6
+linkedin: the-kid-reader-b64615155
+youtube: channel/UCd2SPMy3QrnKa1nwx8PJgvQ
 # spotify: myspotify
-github: mygithub
+github: Xavian-Brooker
 # gitlab: mygitlab
 # lastfm: mylastfm
 # stackoverflow: 7044681/mystackoverflow
 # quora: userquora
 # reddit: username
-medium: medium
+# medium: medium
 # vimeo: myvimeo
 # lanyrd: mylanyrd
 email: sunfall@gmail.com
 
 authors:
-    johndoe:
-        name: John Doe
-        bio: A Man who travels the world eating noodles
-        external-image: false
-        picture: assets/images/profile.jpg
-        twitter: johndoe
-    jamesfoster:
-        name: James Foster
-        bio: A Man who develops software with coffee
-        external-image: false
-        picture: assets/images/james.jpg
-        twitter: jamesfoster
-
+    harshagrawal:
+        name: Harsh Agrawal
+        bio: If history repeats itself, I'm surely getting a dinosaur!
+        external-image: true
+        picture: assets/images/cirlce_profile.png
+        instagram: harshagrawal2003
+    
 # do you want a larger site? change the option below
 # options: [normal, large] | default: normal
 # normal = 560px / large = 810px
