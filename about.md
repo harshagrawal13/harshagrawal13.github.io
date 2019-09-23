@@ -4,43 +4,44 @@ layout: page
 ---
 ![Profile Image]({{ site.url }}/{{ site.picture }})
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<p>I am big freinds fan, a potterhead and a GOT'head (whatever that's called)! </p>
+<p><a href="https://github.com/">Link To My Resume</a></li>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
-<h2>Skills</h2>
+<h2>My Achievements</h2>
 
-<ul class="skill-list">
-	<li>HTML - Jade - Haml - Erb</li>
-	<li>Responsive (Mobile First)</li>
-	<li>CSS (Stylus, Sass, Less)</li>
-	<li>Css Frameworks (Bootstrap, Foundation)</li>
-	<li>Javascript (Design Patterns, Testes)</li>
-	<li>NodeJS</li>
-	<li>AngularJS - ReactJS</li>
-	<li>Grunt - Gulp - Yeoman</li>
-	<li>Git</li>
-	<li>PHP</li>
-	<li>Python</li>
-	<li>MySQL - MongoDB</li>
-	<li>Scrum and Kanban</li>
-	<li>TDD e Continuous Integration</li>
+<ul class="hobbies-list">
+	<li>Gold medal at Genius Olympiad 2019, SUNY Oswego, New York, U.S.A</li>
+	<li>regional finalist of Google Science Fair 2018</li>
+	<li>Reading Books by V.E Schwab & Rick Riordan</li>
+	<li>Watching Web-Series! (Friends, Suits, Sherlock, Flash, GOT! etc.)</li>
+	<li>Cinematography & Advanced VFX/CGI</li>
 </ul>
 
-<h2>Projects</h2>
+<h2>My Hobbies</h2>
 
 <ul>
-	<li><a href="https://github.com/">Lorem Lorem</a></li>
-	<li><a href="https://github.com/">Ipsum Dolor</a></li>
-	<li><a href="https://github.com/">Dolor Lorem</a></li>
+	<li>Programming Neural Networks</li>
+	<li>Singing & Playing Guitar</li>
+	<li>Reading Books by V.E Schwab & Rick Riordan</li>
+	<li>Watching Web-Series! (Friends, Suits, Sherlock, Flash, GOT! etc.)</li>
+	<li>Cinematography & Advanced VFX/CGI</li>
+</ul>
+
+<h2>Languages & Softwares</h2>
+<ul>
+	<li>Python (Pandas, Tensorflow, Keras, Numpy etc.)</li>
+	<li>Java & C</li>
+	<li>Adobe After Effects & Premere Pro (I can make you superman!)</li>
+	<li>Solidworks & Blender (3D Modelling)</li>
+	<li>Android Studio (App Development)</li>
+</ul> 
+
+<h2>Possible ways to find me after 10 years</h2>
+
+<ul>
+	<li>Giving commencement speech at Harvard</li>
+	<li>Recieving a nobel prize</li>
+	<li>A library searching for Yuval Noah Harari's new releases</li>
+	<li>Sitting at a Dominos, eating a Cheesburst Pizza (Most Probable!)</li>
 </ul>
