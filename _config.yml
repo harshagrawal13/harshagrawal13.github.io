@@ -14,7 +14,7 @@ picture: assets/circle_profile.png
 # and specify source (external or local).
 resume: true
 resume-external: true
-resume-url: https://google.com/?q=my+resume
+resume-url: https://drive.google.com/open?id=1VRnWfQHCBOChzDLIMupUrAJ-ptSt2Wkn
 
 url: https://harshag.me
 # your url: http://USERNAME.github.io
@@ -22,7 +22,7 @@ url: https://harshag.me
 permalink: /:title/
 
 # To enable google analytics, supply your token below
-# analytics-google: 'UA-MYANALYTICS'
+analytics-google: 'UA-148595034-1'
 
 # To enable piwik tracking, supply your url & site ID below
 # analytics-piwik-url: 'piwik.my-host.com'
@@ -35,11 +35,11 @@ disqus:
 
 # if you don't have any of social below, comment the line
 facebook: harsh.agrawal.522
-twitter: TheKidReader
+# twitter: TheKidReader
 # google: mygoogle
-instagram: harshagrawal2003
-pinterest: sunfall6
-linkedin: the-kid-reader-b64615155
+instagram: harshagrawal.13
+# interest: sunfall6
+linkedin: harsh-agrawal-b64615155
 youtube: channel/UCd2SPMy3QrnKa1nwx8PJgvQ
 # spotify: myspotify
 github: Xavian-Brooker
