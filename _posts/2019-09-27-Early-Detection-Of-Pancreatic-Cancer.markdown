@@ -45,7 +45,7 @@ Hence, Spermine was endorsed as a marker for Pancreatic Cancer.
 
 ### Lateral Flow Assay for Analyzing the concentration of Spermine
 
-[Lateral_Flow_Assay](https://groeptms1316.files.wordpress.com/2013/02/assay-config.jpg)
+![Lateral_Flow_Assay](https://groeptms1316.files.wordpress.com/2013/02/assay-config.jpg)
 
 We have designed a novel strip based assay to analyze the concentration of **Spermine Protein**  through saliva. By the presence of 40nm carboxyl gold, a conjugate, it shows a color change at the _control line_, when target spermine present in the saliva binds with **_Anti-spermine gold-conjugated antibody_** & is detected by the **_Secondary detector probe_**.  
 
