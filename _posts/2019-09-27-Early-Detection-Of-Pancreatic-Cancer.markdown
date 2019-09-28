@@ -18,6 +18,7 @@ category: Project
 author: Harsh
 externalLink: false
 ---
+![Press Release](/assets/img25.jpg)
 
 ## Introduction & Background
 
@@ -58,10 +59,15 @@ After the test has been conducted, the intensity of the color change would be me
 
 ## Awards & Recognitions
 * **Gold Medal** in the category of Science at [Genius Olympiad 2019](https://www.geniusolympiad.org/), an annual interdisciplinary International High School Competition, held at the **State University Of New York (SUNY), OSWEGO, New York from 17th June 2019 to 21st June 2019**.
+
 * **Regional Finalist** (Top 100 Exhibits from all around the world) of [Google Science Fair 2018](https://www.googlesciencefair.com/), World’s One of The Biggest **_Annual Science & Engineering Fair for High School Students_**.
+
 * **Gold Medal** in [CSIR (Council of Scientific & Industrial Research) Innovation Award for School Children 2019](https://www.csir.res.in/careeraward/csir-innovation-award-school-children-ciasc-2019-last-date-extended-upto-30st-april-2019). A cash award of **1 Lakh INR** was awarded by The Science & Technology Minister of India, **Dr. HarshVardhan** in the presence of honourable President of India, **Mr. RamNath Kobind** at **Vigyaan Bhavan, New Delhi** on September 26th, 2019.
+
 * **Gold Medal** in the category of Chemistry at [Indian Science and Engineering Fair 2019](http://www.sciencesociety.in/insef/openconf.php) organised by **_Science Society of India_**, held at K.J Dholakiya School, Rajkot, Gujrat on January 6th, 2019.
+
 * **First Position** at [Tech-Expo](https://techniche.org/competitions#techexpo), conducted by [Techniche 2019](https://techniche.org), **IIT Guwahati from 29th August** from 1st September 2019 held at IIT Guwahati. A cash award of **40,000 INR** was also awarded. 
+
 * **First Position** at [Vision:2030 IDEATE Challenge](https://www.techfest.org/competitions#ideate-section), conducted by Techfest 2018, held at IIT Powai, Mumbai. A cash award of **75,000 INR** was also awarded. 
 
 ## References
