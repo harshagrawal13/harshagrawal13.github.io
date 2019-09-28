@@ -17,7 +17,7 @@ author: Harsh
 externalLink: false
 ---
 
-![Robot.jpg](https://github.com/Xavian-Brooker/Xavian-Brooker.github.io/blob/master/assets/Robot.jpg)
+![Robot.jpg](/assets/Robot.jpg)
 
 ## Introduction & Background
 We have created a faster, safer and a smarter method to train robots using **Deep learning** and **Virtual Simulations**. Nowadays machines & robots are trained using ‘**Reinforcement Learning**’: A subset of Machine Learning which enables a machine to learn and adapt by itself through interacting with the environment. Reinforcement learning is nowadays coherently integrated with **Artificial Neural Networks**- some of the most famous Deep Learning Frameworks. These work on a similar mechanism as our brain does. In the process, the machine tries to reduce the error in every training session and increase its accuracy gradually.
