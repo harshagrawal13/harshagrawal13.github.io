@@ -9,11 +9,11 @@ tag:
 - neuralnetwork
 - research
 
-image: https://drive.google.com/file/d/1r9KUHhWICDtEZ-m1j99UigB7dlWNSMvc/view?usp=sharing
-headerImage: true
+image:
+headerImage: false
 projects: true
-hidden: true # don't count this post in blog pagination
-description: "This is a simple and minimalist template for Jekyll for those who likes to eat noodles."
+hidden: true 
+description: "Early Detection of Pancreatic Cancer through a Cheap, Non-invasive Salivary Test"
 category: project
 author: Harsh Agrawal
 externalLink: false
