@@ -9,13 +9,13 @@ tag:
 - neuralnetwork
 - research
 
-image:
+image: 
 headerImage: false
 projects: true
 hidden: true 
-description: "Early Detection of Pancreatic Cancer through a Cheap, Non-invasive Salivary Test"
-category: project
-author: Harsh Agrawal
+description:
+category: Project
+author: Harsh
 externalLink: false
 ---
 
