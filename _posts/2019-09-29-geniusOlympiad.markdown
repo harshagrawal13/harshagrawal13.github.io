@@ -1,3 +1,4 @@
+---
 title: "Genius Olympiad: A Recollection"
 layout: post
 date: 2019-09-29 11:20
@@ -12,7 +13,7 @@ headerImage: true
 projects: false
 hidden: false
 description: "Genius Olympiad 2019"
-category: projects
+category: blog
 star: true
 author: Harsh
 externalLink: false
