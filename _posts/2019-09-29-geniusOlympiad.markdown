@@ -12,7 +12,7 @@ headerImage: true
 projects: false
 hidden: false
 description: "Genius Olympiad 2019"
-category: blog
+category: projects
 star: true
 author: Harsh
 externalLink: false
