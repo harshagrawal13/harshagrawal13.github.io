@@ -8,7 +8,7 @@ tag:
 - markdown
 - components
 - extra
-category: Blog
+category: # blog Unintentionally Unhid it
 author: jamesfoster
 description: Markdown summary with different options
 ---
