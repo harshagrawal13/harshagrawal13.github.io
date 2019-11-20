@@ -10,14 +10,15 @@ tag:
 - experience
 image: https://drive.google.com/file/d/1V2xmC0oKsVQHphXAgE9vLU1Jm_NyfQ6o/view?usp=sharing
 headerImage: true
-projects: false
-hidden: false
+projects: true
+hidden: true
 description: "Genius Olympiad 2019"
 category: Project
 star: true
 author: Harsh
 externalLink: false
 ---
+
 ![Genius_overall](/assets/blog/Main.jpeg)
 This year I got the opportunity to participate at [Genius Olympiad 2019](https://www.geniusolympiad.org/). Its an annual Fair held at the **United States of America** where nearly **1500 students** participate from nearly **75-80** different countries to showcase their projects in various disciplines including **Science, Robotics, Short-Film, Creative Writing, Business & Art**. 
 
