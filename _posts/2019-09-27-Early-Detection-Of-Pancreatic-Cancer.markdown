@@ -14,7 +14,7 @@ headerImage: false
 projects: true
 hidden: true 
 description:
-category: Project
+category: Blog
 author: Harsh
 externalLink: false
 ---
