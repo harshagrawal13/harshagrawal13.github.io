@@ -10,11 +10,10 @@ tag:
 - experience
 image: https://drive.google.com/file/d/1V2xmC0oKsVQHphXAgE9vLU1Jm_NyfQ6o/view?usp=sharing
 headerImage: true
-projects: true
-hidden: true
+projects: false
+hidden: false
 description: "Genius Olympiad 2019"
-category: Project
-star: true
+category: blog
 author: Harsh
 externalLink: false
 ---
