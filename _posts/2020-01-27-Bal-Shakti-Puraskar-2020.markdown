@@ -20,12 +20,21 @@ author: Harsh
 externalLink: false
 ---
 
+![President Overall](http://nca-wcd.nic.in/resources/homePage/99/540/images/gallery/2020/61.jpg)
+Recently me **(a.k.a Harsh**) and my project partner **Anmol** were awarded the [Pradhan Mantri Bal Shakti Puraskar 2020](http://nca-wcd.nic.in/) in the field of innovation for our project on **_‘Early Detection of Pancreatic Cancer’_**
 
-Recently me and my project partner Anmol Rathi were conferred the Pradhan Mantri Bal Shakti Puraskar 2020 in the field of innovation for our project on ‘Early Detection of Pancreatic Cancer using a low-cost & non-invasive strip-based test along with a Smart Algorithm utilizing Retrospective Data for Risk Assessment’
+This year it was conferred to **49 children** between the age group of 5-18 years under various categories including bravery, social service, sports, art and culture, innovation and scholastic. A cash award of 1 Lakh, a tablet, and a medal was presented to each awardee.  
 
-This year it was conferred to 49 children between the age group of 5-18 years under various categories including bravery, social service, sports, art and culture, innovation and scholastic. A cash award of 1 Lakh, a tablet, and a medal was presented to each awardee.  
+It was a six-day event from **21st January to 26th January 2020**. It was a hell-of-a-blast! And I know I'm nearly 10 days late for writing this blog but its not my fault (actually, it is) - high resolution weren't uploaded yet! (What a lame excuse Harsh...). Anyways, I finally decided to pour out my heart (**_metaphorically!_**). So here it begins!
 
-It was a six-day event from 21st January to 26th January 2020. Each awardee was requested to report to Hotel Ashoka, the place of stay, on 21st for briefing and collecting our tailored blazers.
+## Day One: 'Where it all began' - 21st January 2020 ##
+
+We arrived at the Hotel Ashok, the place of stay, on 21st. The hotel was awesome but more flabbergasting was the vibe as I would be spending a week with 49 amazing people. We checked in, rested for somewhile and then reported for briefing and collecting our tailored blazers (It looked awesome on me... Oh who am I kidding). Anyways I met a few awesome people the first day- 
+
+- The Soccer Dude (a.k.a Arjun Pandey): An awesome dude and founder of **scoutsme**; and yeah he loves to code!
+- The Einstien Visa Girl (a.k.a Harshita Arora): Another super-awesome dude('ess) and the creator of a super-cool cryptocurrency management application; and yeah she's a high school drop-out working in the Silicon Valley!
+- The Haryanvi Dude (a.k.a Paritosh Dahiya): Well we already met at IRIS 2017 & he created a fingerprint analyzer for blocking children to enter adult sites!
+- The Planet Dude (a.k.a Richard Joseph): The most amazing dude! More coming about him soon!
 
 The prestigious award ceremony was conducted on the morning of 22nd January at The Rashtrapati Bhavan. Every awardee was allowed along with 2 escorts to the Darbar Hall where the medal was awarded by the Honorable President of India. In the evening, all the awardees were gathered for the briefing for the dress rehearsal to be scheduled on 23rd January.
 
