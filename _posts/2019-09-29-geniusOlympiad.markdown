@@ -8,7 +8,7 @@ tag:
 - PancreaticCancer
 - geniusOlympiad
 - experience
-image: https://drive.google.com/file/d/1V2xmC0oKsVQHphXAgE9vLU1Jm_NyfQ6o/view?usp=sharing
+image: false
 headerImage: true
 projects: false
 hidden: false
