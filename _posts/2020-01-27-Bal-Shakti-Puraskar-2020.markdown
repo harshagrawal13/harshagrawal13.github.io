@@ -29,14 +29,14 @@ It was a six-day event from **21st January to 26th January 2020**. It was a hell
 
 ## Day One: 'Where it all began' - 21st January 2020 ##
 
-We arrived at the Hotel Ashok, the place of stay, on 21st. The hotel was awesome but more flabbergasting was the vibe as I would be spending a week with 49 amazing people. We checked in, rested for somewhile and then reported for briefing and collecting our tailored blazers (It looked awesome on me... Oh who am I kidding). Anyways I met a few awesome people the first day- 
+We all gathered at the Hotel Ashok, the place of stay, on 21st. The hotel was awesome but more flabbergasting was the vibe as I would be spending a week with 49 amazing people. We checked in, rested for somewhile and then reported for briefing and collecting our tailored blazers (It looked awesome on me😎). Anyways, in the night, I met some awesome people - 
 
-- The Soccer Dude (a.k.a Arjun Pandey): An awesome dude and founder of **scoutsme**; and yeah he loves to code!
-- The Einstien Visa Girl (a.k.a Harshita Arora): Another super-awesome dude('ess) and the creator of a super-cool cryptocurrency management application; and yeah she's a high school drop-out working in the Silicon Valley!
-- The Haryanvi Dude (a.k.a Paritosh Dahiya): Well we already met at IRIS 2017 & he created a fingerprint analyzer for blocking children to enter adult sites!
-- The Planet Dude (a.k.a Richard Joseph): The most amazing dude! More coming about him soon!
+(_p.s - I'm going to nickname them so that I don't forget. JUST BARE WITH ME😅_)
+I met `The Soccer Dude (a.k.a Arjun Pandey)`, `The Einstien Visa Girl (a.k.a Harshita Arora)`: A super-awesome dude('ess) working in the Silicon Valley!, `The Haryanvi Dude (a.k.a Paritosh Dahiya)`: We had already met at IRIS 2017, `The Planet Dude (a.k.a Richard Joseph)` A super-awesome guy (More stuff coming about him soon!) & `Arunima Sen (No Nicknames required for her)`: Funny story though - I 
 
-The prestigious award ceremony was conducted on the morning of 22nd January at The Rashtrapati Bhavan. Every awardee was allowed along with 2 escorts to the Darbar Hall where the medal was awarded by the Honorable President of India. In the evening, all the awardees were gathered for the briefing for the dress rehearsal to be scheduled on 23rd January.
+## Day Two: 'The Day has finally Arrived - 22nd January 2020'
+
+It was Day 2 and this was the day when we would be getting the **'AWARD'** from the President of India at The Rashtrapati Bhavan. Me, My Mom & Dad and everyone got ready early in the morning becuase of the excitement. We were first given a tour of the Rashtrapati Bhavan and then we were introduced to everyone else and with the Awardees of last year. Every awardee was allowed along with 2 escorts to the Darbar Hall where the medal was awarded by the Honorable President of India. In the evening, all the awardees were gathered for the briefing for the dress rehearsal to be scheduled on 23rd January.
 
 On 23rd, we were taken to the Rajpath for the Republic Day parade rehearsals. In the afternoon and the extended evening, We were called up to meet and interact with the Minister of Women & Child Development – Smiti Irani – followed by a press conference where all the awardees were asked to share our success stories and the difficulties We faced in our journey.
 
