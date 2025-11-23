@@ -1,18 +1,165 @@
----
-layout: default
----
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="The personal website of Harsh Agrawal"
+    />
 
-<div class="home">
-  
-  <ul class="posts">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
-        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        <br>
-        {{ post.excerpt }}
-      </li>
-    {% endfor %}
-  </ul>
+    <title>Harsh Agrawal</title>
 
-</div>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div id="preamble">
+      <h1 class="title">Harsh Agrawal</h1>
+      <p class="tagline">&lt;designing proteins&gt;</p>
+      <p class="contact">
+        <a href="mailto:harshagrawal.1312@gmail.com">harshagrawal.1312@gmail.com</a> ·
+        <a href="https://github.com/harshagrawal13">github.com/harshagrawal13</a> ·
+        <a href="https://x.com/harshag1312">@harshag1312</a>
+      </p>
+    </div>
+
+    <section id="summary">
+      <p>
+        ML engineer and computational biologist focused on end-to-end protein design—
+        from building large-scale generative models to deploying experimental pipelines
+        that bridge structural data, diffusion models, and high-throughput validation.
+      </p>
+    </section>
+
+    <section id="skills">
+      <h2>Skills</h2>
+      <p>ML Engineering · Protein Design · Computational Biology</p>
+    </section>
+
+    <hr>
+
+    <div id="content">
+      <section id="experience">
+        <h2>Experience</h2>
+        <div class="entry">
+          <div class="entry-header">
+            <span class="entry-title">Research Scientist · Laboratory of Medical Sciences, MRC Imperial College London</span>
+            <span class="entry-meta">May 2024 – Jan 2025</span>
+          </div>
+          <ul>
+            <li>Engineered nanomolar-affinity binders for <i>C. elegans</i> transmembrane receptors by re-purposing large protein toxins and designing new target-specific interfaces (with Dr. Karen Sarkisyan & Andre Brown).</li>
+            <li>Built an end-to-end computational pipeline: curated PPI-informed targets, generated backbones with diffusion models (e.g., RFdiffusion), performed Rosetta relaxation, and ran large-scale AlphaFold2 screening.</li>
+            <li>Designed distributed MLOps infrastructure across 40+ GPUs, boosting in-silico throughput by 50× (from ~10 to &gt;500 designs/day) and selected 10 candidates for experimental validation.</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <div class="entry-header">
+            <span class="entry-title">Lead Data Scientist · Velora (formerly ParaSwap.io)</span>
+            <span class="entry-meta">May 2021 – Jun 2022</span>
+          </div>
+          <ul>
+            <li>Built the public analytics pipeline and <a href="https://dashboard.velora.xyz/public/dashboard/bb8b5007-ecc3-44e9-bdbe-b4b7a5273eb4">dashboard</a> indexing 33M+ transactions and $140B+ in volume across 5 chains.</li>
+            <li>Migrated the data platform from Heroku to AWS, deploying Redshift + MongoDB for low-latency querying, resilient ingestion, and long-term storage.</li>
+            <li>Developed Tenderly-powered internal dashboards to simulate MEV behavior and route optimizations for the DEX aggregator.</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <div class="entry-header">
+            <span class="entry-title">Hackathon · MineNow — The Gawler Challenge</span>
+            <span class="entry-meta">Apr 2020 – Jul 2020</span>
+          </div>
+          <ul>
+            <li>Created three ML models to predict mineralized sites in South Australia's Gawler region, yielding ~300k new candidate locations with predicted ore types.</li>
+            <li>Code: <a href="https://github.com/harshagrawal13/Gawler-Unearthed">github.com/harshagrawal13/Gawler-Unearthed</a></li>
+          </ul>
+        </div>
+        <hr class="section-divider" />
+      </section>
+
+      <section id="education">
+        <h2>Education</h2>
+        <div class="entry">
+          <div class="entry-header">
+            <span class="entry-title">MEng, Molecular Bioengineering · Imperial College London</span>
+            <span class="entry-meta">Oct 2022 – Present</span>
+          </div>
+          <ul>
+            <li>RISE scholar; recipient of the department scholarship (£1000/yr).</li>
+            <li>Modules include Advanced Synthetic Biology, Biomaterials, Tissue Engineering, RL, Thermodynamics.</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <div class="entry-header">
+            <span class="entry-title">High School Diploma · Bharatiya Vidya Bhavans, Raipur</span>
+            <span class="entry-meta">Apr 2018 – May 2021</span>
+          </div>
+          <ul>
+            <li>12th Grade: 96% · Class Rank: 2 / 20.</li>
+          </ul>
+        </div>
+        <hr class="section-divider" />
+      </section>
+
+      <section id="projects">
+        <h2>Personal Projects</h2>
+        <div class="entry">
+          <div class="entry-header">
+            <span class="entry-title">JESPR — Energy-Based Modelling for Proteins</span>
+            <span class="entry-meta">May 2023 – Dec 2023</span>
+          </div>
+          <ul>
+            <li>Contrastive pre-training pipeline aligning protein sequence and structural representations for bi-directional mapping.</li>
+            <li>Implemented sharding, activation checkpointing, and other memory optimizations for 500M+ parameter models across multi-GPU clusters.</li>
+            <li>Evaluating zero-shot performance on solubility, stability, and other function benchmarks; code at <a href="https://github.com/atom-51/jespr">github.com/atom-51/jespr</a>.</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <div class="entry-header">
+            <span class="entry-title">Cancer-eX — Detecting Pancreatic Cancer Early</span>
+            <span class="entry-meta">Aug 2018 – Aug 2021</span>
+          </div>
+          <ul>
+            <li>Studied salivary biomarkers and devised a lateral-flow assay for early gastrointestinal cancer detection; designed a competitive ELISA protocol from scratch.</li>
+            <li>Built a risk-assessment tool combining etiological risk factors via published relative-risk values.</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <div class="entry-header">
+            <span class="entry-title">MineNow — The Gawler Challenge</span>
+            <span class="entry-meta">Apr 2020 – Jul 2020</span>
+          </div>
+          <ul>
+            <li>Predicted ~300k new mineralized points using geo-physical and geo-chemical datasets; see <a href="https://github.com/harshagrawal13/Gawler-Unearthed">code</a>.</li>
+          </ul>
+        </div>
+        <hr class="section-divider" />
+      </section>
+
+      <section id="achievements">
+        <h2>Achievements</h2>
+        <ul>
+          <li><strong>Rise Global Winner 2021</strong> — Rhodes Trust & Schmidt Futures (Jul 2022).</li>
+          <li><strong>Bal Shakti Puraskar 2020</strong> — Highest civil honor for Indians under 18, awarded by the President for Cancer-eX.</li>
+          <li><strong>Global Teen Leader 2020</strong> — Three Dot Dash; part of the youth delegation to the World Economic Forum 2024.</li>
+          <li><strong>Gold Medal, Genius Olympiad</strong> — Sciences track among 1600 exhibits from 80 countries (Jun 2020).</li>
+          <li><strong>Regional Finalist, Google Science Fair</strong> — Top 100 exhibits globally (May 2019).</li>
+        </ul>
+      </section>
+    </div>
+
+    <hr>
+
+    <div id="footer">
+        <!-- <p class = "footer"><i>This website was modified from -->
+        <!--     <a href="https://github.com/gakonst/gakonst.github.io"/>gakonst's personal website</a> -->
+        <!--     </i></p> -->
+        <p class="footer">
+            website inspired by:
+            <a href="https://github.com/shresthagrawal/shresthagrawal.github.io"
+                >https://github.com/shresthagrawal/shresthagrawal.github.io</a
+            >
+        </p>
+      <br />
+  </body>
+</html>
