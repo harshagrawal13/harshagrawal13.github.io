@@ -49,13 +49,24 @@ body {
 }
 
 .contact {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 1.75em;
   font-size: 0.95em;
+  margin-top: 0.15em;
   margin-bottom: 2em;
 }
 
 .contact a {
   color: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.contact-icon {
+  vertical-align: middle;
+  flex-shrink: 0;
 }
 
 #summary {
@@ -84,8 +95,11 @@ h1 {
 }
 
 h2 {
-  font-style: italic;
-  font-size: 18px;
+  font-style: normal;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
 }
 
 a:link,
@@ -124,7 +138,7 @@ code,
 .entry-meta {
   font-size: 0.9em;
   font-style: italic;
-  color: #444;
+  color: #777;
 }
 
 @media (min-width: 640px) {
