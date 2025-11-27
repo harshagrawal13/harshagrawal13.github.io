@@ -16,25 +16,31 @@
   <body>
     <div id="preamble">
       <h1 class="title">Harsh Agrawal</h1>
-      <p class="tagline">&lt;designing proteins&gt;</p>
       <p class="contact">
-        <a href="mailto:harshagrawal.1312@gmail.com">harshagrawal.1312@gmail.com</a> ·
-        <a href="https://github.com/harshagrawal13">github.com/harshagrawal13</a> ·
-        <a href="https://x.com/harshag1312">@harshag1312</a>
+        <a href="mailto:harshagrawal.1312@gmail.com" aria-label="Email Harsh">
+          <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
+            <path d="M3 7l9 6l9 -6" />
+          </svg>
+        </a>
+        <a href="https://github.com/harshagrawal13" aria-label="Harsh on GitHub">
+          <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+          </svg>
+        </a>
+        <a href="https://x.com/harshagrawal13" aria-label="Harsh on X">
+          <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+            <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+          </svg>
+        </a>
       </p>
     </div>
 
     <section id="summary">
       <p>
-        ML engineer and computational biologist focused on end-to-end protein design—
-        from building large-scale generative models to deploying experimental pipelines
-        that bridge structural data, diffusion models, and high-throughput validation.
+        I’m interested in applying ML to solve interesting problems in biology and medicine. I’m currently part of SoftNanoLab, where I work on protein language models (PLMs). I am also pursuing an MEng in Molecular Bioengineering at Imperial College London.
       </p>
-    </section>
-
-    <section id="skills">
-      <h2>Skills</h2>
-      <p>ML Engineering · Protein Design · Computational Biology</p>
     </section>
 
     <hr>
@@ -44,58 +50,33 @@
         <h2>Experience</h2>
         <div class="entry">
           <div class="entry-header">
-            <span class="entry-title">Research Scientist · Laboratory of Medical Sciences, MRC Imperial College London</span>
-            <span class="entry-meta">May 2024 – Jan 2025</span>
+            <span class="entry-title">Research Scientist · Softnanolab, Imperial College London · In-Person (London, UK)</span>
+            <span class="entry-meta">February 2025 - Present</span>
           </div>
           <ul>
-            <li>Engineered nanomolar-affinity binders for <i>C. elegans</i> transmembrane receptors by re-purposing large protein toxins and designing new target-specific interfaces (with Dr. Karen Sarkisyan & Andre Brown).</li>
-            <li>Built an end-to-end computational pipeline: curated PPI-informed targets, generated backbones with diffusion models (e.g., RFdiffusion), performed Rosetta relaxation, and ran large-scale AlphaFold2 screening.</li>
-            <li>Designed distributed MLOps infrastructure across 40+ GPUs, boosting in-silico throughput by 50× (from ~10 to &gt;500 designs/day) and selected 10 candidates for experimental validation.</li>
+            <li>Designing a Protein Language Model (PLM) specialized for protein complexes with Dr. <a href="https://profiles.imperial.ac.uk/s.angioletti-uberti" target="_blank" rel="noopener">Stefano Angioletti-Uberti</a> at the Nanolab.</li>
           </ul>
         </div>
         <div class="entry">
           <div class="entry-header">
-            <span class="entry-title">Lead Data Scientist · Velora (formerly ParaSwap.io)</span>
-            <span class="entry-meta">May 2021 – Jun 2022</span>
+            <span class="entry-title">Research Scientist · <a href="https://www.designing.bio/" target="_blank" rel="noopener">Designing.bio</a> · In-Person (London, UK)</span>
+            <span class="entry-meta">May 2024 - January 2025</span>
+          </div>
+          <ul>
+            <li>Worked with Dr. <a href="https://www.designing.bio/team" target="_blank" rel="noopener">Karen Sarkisyan</a> &amp; <a href="https://profiles.imperial.ac.uk/andre.brown" target="_blank" rel="noopener">Andre Brown</a> to design binders for <i>C. elegans</i> transmembrane receptors by repurposing protein toxins.</li>
+            <li>Implemented an end-to-end design pipeline by inpainting backbones with RFdiffusion, performing Rosetta relaxation, and running AlphaFold2 screening.</li>
+            <li>Designed a distributed inference stack across 40+ GPUs, scaling in silico throughput from ≈10 to &gt;500 designs/day and yielding 10 candidates for experimental validation (out of 10K generated designs).</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <div class="entry-header">
+            <span class="entry-title">Lead Data Scientist · <a href="https://www.velora.xyz/" target="_blank" rel="noopener">Velora</a> · Remote </span>
+            <span class="entry-meta">May 2021 - June 2022</span>
           </div>
           <ul>
             <li>Built the public analytics pipeline and <a href="https://dashboard.velora.xyz/public/dashboard/bb8b5007-ecc3-44e9-bdbe-b4b7a5273eb4">dashboard</a> indexing 33M+ transactions and $140B+ in volume across 5 chains.</li>
             <li>Migrated the data platform from Heroku to AWS, deploying Redshift + MongoDB for low-latency querying, resilient ingestion, and long-term storage.</li>
-            <li>Developed Tenderly-powered internal dashboards to simulate MEV behavior and route optimizations for the DEX aggregator.</li>
-          </ul>
-        </div>
-        <div class="entry">
-          <div class="entry-header">
-            <span class="entry-title">Hackathon · MineNow — The Gawler Challenge</span>
-            <span class="entry-meta">Apr 2020 – Jul 2020</span>
-          </div>
-          <ul>
-            <li>Created three ML models to predict mineralized sites in South Australia's Gawler region, yielding ~300k new candidate locations with predicted ore types.</li>
-            <li>Code: <a href="https://github.com/harshagrawal13/Gawler-Unearthed">github.com/harshagrawal13/Gawler-Unearthed</a></li>
-          </ul>
-        </div>
-        <hr class="section-divider" />
-      </section>
-
-      <section id="education">
-        <h2>Education</h2>
-        <div class="entry">
-          <div class="entry-header">
-            <span class="entry-title">MEng, Molecular Bioengineering · Imperial College London</span>
-            <span class="entry-meta">Oct 2022 – Present</span>
-          </div>
-          <ul>
-            <li>RISE scholar; recipient of the department scholarship (£1000/yr).</li>
-            <li>Modules include Advanced Synthetic Biology, Biomaterials, Tissue Engineering, RL, Thermodynamics.</li>
-          </ul>
-        </div>
-        <div class="entry">
-          <div class="entry-header">
-            <span class="entry-title">High School Diploma · Bharatiya Vidya Bhavans, Raipur</span>
-            <span class="entry-meta">Apr 2018 – May 2021</span>
-          </div>
-          <ul>
-            <li>12th Grade: 96% · Class Rank: 2 / 20.</li>
+            <li>Developed internal pipelines to simulate blockchain contract calls for route optimizations and the public <a href="https://github.com/VeloraDEX/paraswap-subgraph" target="_blank" rel="noopener">DEX subgraph</a> to index past trades.</li>
           </ul>
         </div>
         <hr class="section-divider" />
@@ -103,47 +84,26 @@
 
       <section id="projects">
         <h2>Personal Projects</h2>
-        <div class="entry">
-          <div class="entry-header">
-            <span class="entry-title">JESPR — Energy-Based Modelling for Proteins</span>
-            <span class="entry-meta">May 2023 – Dec 2023</span>
-          </div>
-          <ul>
-            <li>Contrastive pre-training pipeline aligning protein sequence and structural representations for bi-directional mapping.</li>
-            <li>Implemented sharding, activation checkpointing, and other memory optimizations for 500M+ parameter models across multi-GPU clusters.</li>
-            <li>Evaluating zero-shot performance on solubility, stability, and other function benchmarks; code at <a href="https://github.com/atom-51/jespr">github.com/atom-51/jespr</a>.</li>
-          </ul>
-        </div>
-        <div class="entry">
-          <div class="entry-header">
-            <span class="entry-title">Cancer-eX — Detecting Pancreatic Cancer Early</span>
-            <span class="entry-meta">Aug 2018 – Aug 2021</span>
-          </div>
-          <ul>
-            <li>Studied salivary biomarkers and devised a lateral-flow assay for early gastrointestinal cancer detection; designed a competitive ELISA protocol from scratch.</li>
-            <li>Built a risk-assessment tool combining etiological risk factors via published relative-risk values.</li>
-          </ul>
-        </div>
-        <div class="entry">
-          <div class="entry-header">
-            <span class="entry-title">MineNow — The Gawler Challenge</span>
-            <span class="entry-meta">Apr 2020 – Jul 2020</span>
-          </div>
-          <ul>
-            <li>Predicted ~300k new mineralized points using geo-physical and geo-chemical datasets; see <a href="https://github.com/harshagrawal13/Gawler-Unearthed">code</a>.</li>
-          </ul>
-        </div>
-        <hr class="section-divider" />
-      </section>
-
-      <section id="achievements">
-        <h2>Achievements</h2>
         <ul>
-          <li><strong>Rise Global Winner 2021</strong> — Rhodes Trust & Schmidt Futures (Jul 2022).</li>
-          <li><strong>Bal Shakti Puraskar 2020</strong> — Highest civil honor for Indians under 18, awarded by the President for Cancer-eX.</li>
-          <li><strong>Global Teen Leader 2020</strong> — Three Dot Dash; part of the youth delegation to the World Economic Forum 2024.</li>
-          <li><strong>Gold Medal, Genius Olympiad</strong> — Sciences track among 1600 exhibits from 80 countries (Jun 2020).</li>
-          <li><strong>Regional Finalist, Google Science Fair</strong> — Top 100 exhibits globally (May 2019).</li>
+          <li><strong><a href="https://github.com/atom-51/jespr" target="_blank" rel="noopener">JESPR</a></strong> — Developed a contrastive-learning based method to learn joint embeddings of protein sequences and structures (inspired from <a href="https://ai.meta.com/blog/yann-lecun-ai-model-i-jepa/">iJEPA</a>).</li>
+          <li><strong><a href="https://abstracts.societyforscience.org/Home/FullAbstract?ISEFYears=2020%2C&Category=Any%20Category&AllAbstracts=True&FairCountry=Any%20Country&FairState=Any%20State&ProjectId=18977" target="_blank" rel="noopener">Cancer-eX</a></strong> — Studied salivary biomarkers for gastrointestinal cancers. Developed an ELISA assay and a <a href="https://github.com/harshagrawal13/archive-projects/blob/master/pan_can_risk_prediction_webapp/README.md" target="_blank" rel="noopener">risk-assessment tool</a> for early screening.</li>
+          <li><strong><a href="https://github.com/harshagrawal13/Gawler-Unearthed">MineNow (Gawler Challenge)</a></strong> — Predicted new mineralized locations across Australia using geospatial data as part of the Gawler Unearthed hackathon.</li>
+        <li>
+          <strong><a href="https://github.com/harshagrawal13/archive-projects/tree/master" target="_blank" rel="noopener">Other Miscellaneous Projects</a></strong> — Includes random projects I worked on.
+        </li>
+        </ul>
+      </section>
+      <hr class="section-divider" />
+      <section id="achievements">
+        <h2>Talks &amp; Achievements</h2>
+        <ul>
+          <li><strong><a href="https://static1.squarespace.com/static/581e5b6a8419c273288db3e9/t/67d9ca2ddadddb24a80d47b6/1757519864135/Latest+Update+-+WAFF+Youth+Delegation+Attending+Davos+During+WEF+2024+One-Pagers.pdf">Youth Delegate, World Economic Forum 2024</a></strong> — Part of the We Are Family Foundation Youth Delegation to Davos, Switzerland.</li>
+          <li><strong><a href="http://risefortheworld.org">Rise Global Winner 2022</a></strong> — Part of first cohort of 100 global winners. The scholarship covers my tuition and living expenses at Imperial College London.</li>
+          <li><strong><a href="https://www.youtube.com/watch?v=StCNlSj80LA">TEDx Talk (2022)</a></strong> — Spoke on how meaningful change requires not just radical technological innovation, but scalable and standardized meta-systems.</li>
+          <li><strong><a href="https://x.com/narendramodi/status/1220697456515723267">Bal Shakti Puraskar (2020)</a></strong> — India's highest civilian honour for children (under 18) bestowed by the President of India.</li>
+          <li><strong><a href="https://www.wearefamilyfoundation.org/three-dot-dash-program">Global Teen Leader 2020</a></strong> — One of the 30 Global Teen Leaders.</li>
+          <li><strong><a href="https://geniusolympiad.org">Gold Medal, Genius Olympiad 2020</a></strong> — Won in the category of Sciences.</li>
+          <li><strong><a href="https://indiaeducationdiary.in/google-announces-top-100-regional-finalists-google-science-fair-2018-2019/" target="_blank" rel="noopener">Regional Finalist, Google Science Fair 2019</a></strong> — Top 100 exhibits globally. </li>
         </ul>
       </section>
     </div>
@@ -151,15 +111,11 @@
     <hr>
 
     <div id="footer">
-        <!-- <p class = "footer"><i>This website was modified from -->
-        <!--     <a href="https://github.com/gakonst/gakonst.github.io"/>gakonst's personal website</a> -->
-        <!--     </i></p> -->
-        <p class="footer">
-            website inspired by:
-            <a href="https://github.com/shresthagrawal/shresthagrawal.github.io"
-                >https://github.com/shresthagrawal/shresthagrawal.github.io</a
-            >
+        <p class="footer" style="color: gray;">
+            <em>inspired from:
+            <a href="salabs.me" style="color: gray;">salabs.me</a></em>
         </p>
       <br />
+    </div>
   </body>
 </html>
