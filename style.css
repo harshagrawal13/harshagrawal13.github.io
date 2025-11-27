@@ -41,6 +41,21 @@ body {
   max-width: 700px;
 }
 
+#preamble {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.headshot {
+  display: block;
+  margin: 0 auto 0.75em;
+  border-radius: 50%;
+  width: 208px;
+  height: 208px;
+  object-fit: cover;
+}
+
 .tagline {
   text-align: center;
   font-style: italic;
