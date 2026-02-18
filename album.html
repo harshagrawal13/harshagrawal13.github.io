@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Album Detail - Bollywood Music Rankings" />
+    <title>Album - Harsh Agrawal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <div>
+        <h1 class="site-title">Harsh Agrawal</h1>
+        <nav>
+          <a href="index.html">About</a>
+          <a href="index.html#experience">Experience</a>
+          <a href="bookshelf.html">Bookshelf</a>
+          <a href="music.html">Music</a>
+        </nav>
+      </div>
+      <div class="asterisk">*</div>
+    </header>
+
+    <section class="album-detail" id="album-detail">
+    </section>
+
+    <footer>
+      <p>inspired by <a href="https://drewcoffman.com">drewcoffman.com</a></p>
+    </footer>
+
+    <script src="assets/music-data.js"></script>
+    <script>
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      function crownSvg() {
+        return '<svg class="crown-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20l-2-14-5 5-3-7-3 7-5-5z"/><path d="M2 20h20"/></svg>';
+      }
+
+      function tierBadge(tier) {
+        return '<span class="tier-badge tier-' + tier + '">' + tier.toUpperCase() + '</span>';
+      }
+
+      const slug = new URLSearchParams(window.location.search).get('slug');
+      const album = window.MUSIC_DATA.albums.find(a => a.slug === slug);
+      const container = document.getElementById('album-detail');
+
+      if (!album) {
+        container.innerHTML = '<a class="back-link" href="music.html">&larr; Back to Rankings</a>'
+          + '<div class="album-not-found">'
+          + '<h2>Album not found</h2>'
+          + '<p>The album you are looking for does not exist.</p>'
+          + '</div>';
+      } else {
+        document.title = album.movie + ' - Harsh Agrawal';
+
+        const isOverall1 = album.rankings && album.rankings.overall === 1;
+
+        // Build rankings chips
+        let rankChips = '';
+        if (album.rankings) {
+          if (album.rankings.overall) {
+            rankChips += '<span class="rank-chip' + (album.rankings.overall === 1 ? ' rank-chip-gold' : '') + '">'
+              + '#' + album.rankings.overall + ' Overall'
+              + (album.rankings.overall === 1 ? ' ' + crownSvg() : '')
+              + '</span>';
+          }
+          if (album.rankings.album) {
+            rankChips += '<span class="rank-chip">#' + album.rankings.album + ' Album</span>';
+          }
+          if (album.rankings.artist) {
+            rankChips += '<span class="rank-chip">#' + album.rankings.artist + ' ' + escapeHtml(album.composers[0] || '') + '</span>';
+          }
+        }
+
+        // Build songs
+        const songRows = album.songs.map((song, i) => {
+          const s = typeof song === 'string' ? { name: song, singers: [], duration: '', tier: 'great' } : song;
+          const tier = s.tier || 'great';
+          const singersStr = s.singers && s.singers.length
+            ? '<span class="song-singers">' + s.singers.map(escapeHtml).join(', ') + '</span>'
+            : '';
+          const durationStr = s.duration
+            ? '<span class="song-duration">' + escapeHtml(s.duration) + '</span>'
+            : '';
+
+          return '<div class="song-row tier-' + tier + '">'
+            + '<span class="song-num">' + (i + 1) + '.</span>'
+            + '<div class="song-body">'
+            + '<span class="song-name">' + escapeHtml(s.name) + '</span>'
+            + singersStr
+            + '</div>'
+            + durationStr
+            + tierBadge(tier)
+            + '</div>';
+        }).join('');
+
+        // Build thoughts
+        const thoughtsHtml = album.thoughts
+          ? '<div class="album-thoughts"><h3 class="detail-section-title">Thoughts</h3><p>' + escapeHtml(album.thoughts) + '</p></div>'
+          : '';
+
+        // Great songs badge
+        const isPerfect = album.greatSongs === album.totalSongs;
+
+        container.innerHTML = '<a class="back-link" href="music.html">&larr; Back to Rankings</a>'
+
+          // Hero
+          + '<div class="album-hero">'
+          + '<div class="album-hero-rank">#' + album.rank + (isOverall1 ? ' ' + crownSvg() : '') + '</div>'
+          + '<div class="album-hero-body">'
+          + '<img class="album-hero-art" src="' + album.albumArt + '" alt="' + escapeHtml(album.movie) + ' album art" />'
+          + '<div class="album-hero-info">'
+          + '<h2 class="album-hero-title">' + escapeHtml(album.movie) + '</h2>'
+          + '<div class="album-hero-meta">' + album.year + ' &middot; ' + escapeHtml(album.director) + '</div>'
+          + '<div class="album-hero-credits">'
+          + '<span>Composed by ' + album.composers.map(escapeHtml).join(', ') + '</span>'
+          + '<span>Lyrics by ' + album.lyricists.map(escapeHtml).join(', ') + '</span>'
+          + '</div>'
+          + '<div class="actor-chips">'
+          + album.actors.map(a => '<span class="actor-chip">' + escapeHtml(a) + '</span>').join('')
+          + '</div>'
+          + (album.spotifyUrl ? '<a class="spotify-link" href="' + album.spotifyUrl + '" target="_blank" rel="noopener">Listen on Spotify &rarr;</a>' : '')
+          + '</div>'
+          + '</div>'
+          + '</div>'
+
+          // Rankings
+          + (rankChips ? '<div class="album-rankings"><h3 class="detail-section-title">Rankings</h3><div class="rank-chips">' + rankChips + '</div></div>' : '')
+
+          // Songs
+          + '<div class="album-songs">'
+          + '<h3 class="detail-section-title">Songs <span class="great-badge' + (isPerfect ? ' perfect' : '') + '">' + album.greatSongs + '/' + album.totalSongs + ' great</span></h3>'
+          + songRows
+          + '</div>'
+
+          // Thoughts
+          + thoughtsHtml;
+      }
+    </script>
+  </body>
+</html>

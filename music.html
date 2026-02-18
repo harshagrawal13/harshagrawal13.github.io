@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Bollywood Music Rankings - Harsh Agrawal"
+    />
+
+    <title>Music - Harsh Agrawal</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <div>
+        <h1 class="site-title">Harsh Agrawal</h1>
+        <nav>
+          <a href="index.html">About</a>
+          <a href="index.html#experience">Experience</a>
+          <a href="bookshelf.html">Bookshelf</a>
+          <a href="music.html">Music</a>
+        </nav>
+      </div>
+      <div class="asterisk">*</div>
+    </header>
+
+    <section class="music-page">
+      <h2>Bollywood Music Rankings</h2>
+
+      <div class="music-controls">
+        <div class="filter-buttons">
+          <span class="filter-label">View:</span>
+          <button class="filter-btn tab-btn active" data-tab="albums">Albums</button>
+          <button class="filter-btn tab-btn" data-tab="singers">Singers</button>
+          <button class="filter-btn tab-btn" data-tab="songs">Songs by Singer</button>
+        </div>
+        <span class="music-count" id="music-count-label"></span>
+      </div>
+
+      <div class="album-filters" id="album-filters">
+        <div class="filter-buttons" id="composer-filters"></div>
+      </div>
+
+      <div class="tab-content active" id="tab-albums"></div>
+      <div class="tab-content" id="tab-singers"></div>
+      <div class="tab-content" id="tab-songs"></div>
+    </section>
+
+    <footer>
+      <p>inspired by <a href="https://drewcoffman.com">drewcoffman.com</a></p>
+    </footer>
+
+    <script src="assets/music-data.js"></script>
+    <script>
+      const data = window.MUSIC_DATA;
+
+      // ── Utilities ──
+
+      function slugify(str) {
+        return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      }
+
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      function crownSvg() {
+        return '<svg class="crown-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20l-2-14-5 5-3-7-3 7-5-5z"/><path d="M2 20h20"/></svg>';
+      }
+
+      // ── Tab Switching ──
+
+      function setupTabs() {
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const filtersEl = document.getElementById('album-filters');
+
+        tabBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(tc => tc.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+            filtersEl.style.display = btn.dataset.tab === 'albums' ? '' : 'none';
+            updateCount(btn.dataset.tab);
+          });
+        });
+      }
+
+      function updateCount(tab) {
+        const label = document.getElementById('music-count-label');
+        if (tab === 'albums') {
+          const visible = document.querySelectorAll('.album-card:not([style*="display: none"])').length;
+          label.textContent = visible + ' ALBUM' + (visible !== 1 ? 'S' : '');
+        } else if (tab === 'singers') {
+          const count = document.querySelectorAll('.singer-entry').length;
+          label.textContent = count + ' SINGER' + (count !== 1 ? 'S' : '');
+        } else {
+          const count = document.querySelectorAll('.singer-group').length;
+          label.textContent = count + ' SINGER' + (count !== 1 ? 'S' : '');
+        }
+      }
+
+      // ── Composer Filters ──
+
+      function buildComposerFilters(albums) {
+        const composers = [...new Set(albums.flatMap(a => a.composers))].sort();
+        const container = document.getElementById('composer-filters');
+
+        let html = '<span class="filter-label">Filter:</span>';
+        html += '<button class="filter-btn album-filter active" data-filter="all">All</button>';
+        composers.forEach(c => {
+          html += '<button class="filter-btn album-filter" data-filter="' + slugify(c) + '">' + escapeHtml(c) + '</button>';
+        });
+        container.innerHTML = html;
+
+        container.querySelectorAll('.album-filter').forEach(btn => {
+          btn.addEventListener('click', () => {
+            container.querySelectorAll('.album-filter').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const filter = btn.dataset.filter;
+
+            document.querySelectorAll('.album-card').forEach(card => {
+              if (filter === 'all') {
+                card.style.display = '';
+              } else {
+                card.style.display = card.dataset.composers.includes(filter) ? '' : 'none';
+              }
+            });
+            updateCount('albums');
+          });
+        });
+      }
+
+      // ── Render Albums ──
+
+      function renderSongList(songs, albumRank) {
+        const showInitial = 4;
+        const collapsed = songs.length > showInitial;
+        const visible = collapsed ? songs.slice(0, showInitial) : songs;
+
+        let html = '<ul class="song-list">';
+        visible.forEach((song, i) => {
+          const name = typeof song === 'string' ? song : song.name;
+          html += '<li><span class="song-number">' + (i + 1) + '.</span> ' + escapeHtml(name) + '</li>';
+        });
+        html += '</ul>';
+
+        if (collapsed) {
+          const remaining = songs.slice(showInitial);
+          html += '<ul class="song-list" id="songs-extra-' + albumRank + '" style="display:none">';
+          remaining.forEach((song, i) => {
+            const name = typeof song === 'string' ? song : song.name;
+            html += '<li><span class="song-number">' + (showInitial + i + 1) + '.</span> ' + escapeHtml(name) + '</li>';
+          });
+          html += '</ul>';
+          html += '<button class="songs-toggle" data-album="' + albumRank + '" data-expanded="false">+ ' + remaining.length + ' more</button>';
+        }
+
+        return html;
+      }
+
+      function renderAlbums(albums) {
+        const container = document.getElementById('tab-albums');
+        container.innerHTML = albums.map(album => {
+          const composerSlugs = album.composers.map(c => slugify(c)).join(' ');
+          const isPerfect = album.greatSongs === album.totalSongs;
+          const isOverall1 = album.rankings && album.rankings.overall === 1;
+
+          return '<div class="album-card" data-slug="' + (album.slug || slugify(album.movie)) + '" data-composers="' + composerSlugs + '">'
+            + '<div class="album-rank">#' + album.rank + (isOverall1 ? ' ' + crownSvg() : '') + '</div>'
+            + '<div class="album-body">'
+            + '<img class="album-art" src="' + album.albumArt + '" alt="' + escapeHtml(album.movie) + ' album art" loading="lazy" />'
+            + '<div class="album-info">'
+            + '<h3 class="album-title"><a href="album.html?slug=' + (album.slug || slugify(album.movie)) + '">' + escapeHtml(album.movie) + '</a></h3>'
+            + '<div class="album-meta">' + album.year + ' &middot; ' + escapeHtml(album.director) + '</div>'
+            + '<div class="album-credits">'
+            + '<span>Composed by ' + album.composers.map(escapeHtml).join(', ') + '</span>'
+            + '<span>Lyrics by ' + album.lyricists.map(escapeHtml).join(', ') + '</span>'
+            + '</div>'
+            + '<div class="actor-chips">'
+            + album.actors.map(a => '<span class="actor-chip">' + escapeHtml(a) + '</span>').join('')
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '<div class="songs-section">'
+            + '<div class="songs-header">Songs <span class="great-badge' + (isPerfect ? ' perfect' : '') + '">' + album.greatSongs + '/' + album.totalSongs + ' great</span></div>'
+            + renderSongList(album.songs, album.rank)
+            + '</div>'
+            + '<div class="album-footer">'
+            + '<a class="spotify-link" href="' + album.spotifyUrl + '" target="_blank" rel="noopener">Spotify &rarr;</a>'
+            + '</div>'
+            + '</div>';
+        }).join('');
+      }
+
+      // ── Album Card Click → Detail Page ──
+
+      function setupAlbumCardClicks() {
+        document.addEventListener('click', function(e) {
+          const card = e.target.closest('.album-card[data-slug]');
+          if (!card) return;
+          if (e.target.closest('a, button')) return;
+          window.location.href = 'album.html?slug=' + card.dataset.slug;
+        });
+      }
+
+      // ── Song Toggle ──
+
+      function setupSongToggles() {
+        document.addEventListener('click', function(e) {
+          if (!e.target.classList.contains('songs-toggle')) return;
+          const btn = e.target;
+          const albumRank = btn.dataset.album;
+          const extra = document.getElementById('songs-extra-' + albumRank);
+          const expanded = btn.dataset.expanded === 'true';
+
+          if (expanded) {
+            extra.style.display = 'none';
+            const count = extra.querySelectorAll('li').length;
+            btn.textContent = '+ ' + count + ' more';
+            btn.dataset.expanded = 'false';
+          } else {
+            extra.style.display = '';
+            btn.textContent = '- Show less';
+            btn.dataset.expanded = 'true';
+          }
+        });
+      }
+
+      // ── Render Singers ──
+
+      function computeSingerRankings(albums) {
+        const singerMap = {};
+        albums.forEach(album => {
+          album.singers.forEach(singer => {
+            if (!singerMap[singer]) {
+              singerMap[singer] = { name: singer, albums: [], songCount: 0 };
+            }
+            singerMap[singer].albums.push({ movie: album.movie, rank: album.rank });
+            singerMap[singer].songCount += album.totalSongs;
+          });
+        });
+        return Object.values(singerMap).sort((a, b) => {
+          if (b.albums.length !== a.albums.length) return b.albums.length - a.albums.length;
+          return Math.min(...a.albums.map(x => x.rank)) - Math.min(...b.albums.map(x => x.rank));
+        });
+      }
+
+      function renderSingers(singers) {
+        const container = document.getElementById('tab-singers');
+        container.innerHTML = singers.map((singer, i) => {
+          const albumList = singer.albums
+            .sort((a, b) => a.rank - b.rank)
+            .map(a => escapeHtml(a.movie) + ' (#' + a.rank + ')')
+            .join(', ');
+          const crown = i === 0 ? ' ' + crownSvg() : '';
+
+          return '<div class="singer-entry">'
+            + '<div class="singer-header">'
+            + '<span class="singer-rank">#' + (i + 1) + crown + '</span>'
+            + '<span class="singer-name">' + escapeHtml(singer.name) + '</span>'
+            + '</div>'
+            + '<div class="singer-stats">' + singer.albums.length + ' album' + (singer.albums.length !== 1 ? 's' : '') + '</div>'
+            + '<div class="singer-albums">' + albumList + '</div>'
+            + '</div>';
+        }).join('');
+      }
+
+      // ── Render Songs by Singer ──
+
+      function renderSongsBySinger(albums) {
+        const singerSongs = {};
+        albums.forEach(album => {
+          album.songs.forEach((song, idx) => {
+            const songName = typeof song === 'string' ? song : song.name;
+            const songSingers = (typeof song === 'object' && song.singers && song.singers.length)
+              ? song.singers
+              : album.singers;
+            songSingers.forEach(singer => {
+              if (!singerSongs[singer]) singerSongs[singer] = [];
+              singerSongs[singer].push({
+                movie: album.movie,
+                rank: album.rank,
+                songName: songName,
+                songIdx: idx
+              });
+            });
+          });
+        });
+
+        const sortedSingers = Object.keys(singerSongs).sort();
+        const container = document.getElementById('tab-songs');
+
+        container.innerHTML = sortedSingers.map(singer => {
+          const entries = singerSongs[singer];
+          const byAlbum = {};
+          entries.forEach(e => {
+            const key = e.movie;
+            if (!byAlbum[key]) byAlbum[key] = { movie: e.movie, rank: e.rank, songs: [] };
+            byAlbum[key].songs.push({ name: e.songName, idx: e.songIdx });
+          });
+          const albumGroups = Object.values(byAlbum)
+            .sort((a, b) => a.rank - b.rank)
+            .map(ag => {
+              ag.songs.sort((a, b) => a.idx - b.idx);
+              const songItems = ag.songs.map((s, i) =>
+                '<li><span class="song-number">' + (i + 1) + '.</span> ' + escapeHtml(s.name) + '</li>'
+              ).join('');
+              return '<div class="singer-album-group">'
+                + '<div class="singer-album-label">From ' + escapeHtml(ag.movie) + ' (#' + ag.rank + ')</div>'
+                + '<ul class="singer-song-list">' + songItems + '</ul>'
+                + '</div>';
+            }).join('');
+
+          return '<div class="singer-group">'
+            + '<h3 class="singer-group-name">' + escapeHtml(singer) + '</h3>'
+            + albumGroups
+            + '</div>';
+        }).join('');
+      }
+
+      // ── Init ──
+
+      function init() {
+        renderAlbums(data.albums);
+        buildComposerFilters(data.albums);
+
+        const singers = computeSingerRankings(data.albums);
+        renderSingers(singers);
+        renderSongsBySinger(data.albums);
+
+        setupTabs();
+        setupSongToggles();
+        setupAlbumCardClicks();
+        updateCount('albums');
+      }
+
+      init();
+    </script>
+  </body>
+</html>
