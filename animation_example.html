@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet" />
+    <title>Rang De Basanti</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: #e6d9f2;
+        overflow: hidden;
+      }
+
+      /* Film grain overlay */
+      body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        pointer-events: none;
+        opacity: 0.18;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+        background-repeat: repeat;
+      }
+
+      /* ==================== 3D CD CASE ==================== */
+
+      .cd-scene {
+        position: relative;
+        perspective: 1500px;
+        padding: 40px;
+      }
+
+      .cd-case-3d {
+        position: relative;
+        width: min(85vw, 560px);
+        transform-style: preserve-3d;
+        cursor: pointer;
+        transition: transform 0.6s ease-in-out;
+      }
+
+      .cd-case-3d.open {
+        transform: translateX(38.07%);
+      }
+
+      /* Tray: the base layer with the CD disc, visible when cover opens */
+      .cd-tray {
+        width: 100%;
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+
+      .cd-case-3d.open .cd-tray {
+        opacity: 1;
+      }
+
+      .cd-tray img {
+        width: 100%;
+        height: auto;
+        display: block;
+        filter: drop-shadow(0 8px 32px rgba(0,0,0,0.25)) drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+      }
+
+      /* Cover: the front piece that swings open like a book */
+      .cd-cover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform-origin: 11.93% center;
+        transform-style: preserve-3d;
+        transition: transform 0.6s ease-in-out;
+      }
+
+      .cd-cover.open {
+        transform: rotateY(-180deg);
+      }
+
+      /* Front and back faces */
+      .cover-front,
+      .cover-back {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+      }
+
+      .cover-back {
+        transform: rotateY(180deg);
+        top: 0.643%;  /* align with tray: cover-inside top=234 vs tray top=243, delta 9/1400 */
+      }
+
+      /* ---- Front face: closed state (album art + case + glass) ---- */
+      .cover-front .album-art {
+        position: absolute;
+        z-index: 1;
+        top: 19%;
+        left: 18.64%;
+        width: 67.29%;
+        height: 63.14%;
+        object-fit: cover;
+        object-position: right bottom;
+      }
+
+      /* Standardized shadow on each face — filter on the face div composites
+         all children (art + frame + glass) so the shadow follows the combined shape */
+      .cover-front,
+      .cover-back {
+        filter: drop-shadow(0 8px 32px rgba(0,0,0,0.25)) drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+      }
+
+      .cover-front .case-overlay {
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 2;
+      }
+
+      .cover-front .glass-finish {
+        position: absolute;
+        z-index: 3;
+        top: 19%;
+        left: 18.64%;
+        width: 67.29%;
+        height: 63.14%;
+        object-fit: cover;
+        pointer-events: none;
+      }
+
+      /* ---- Back face: open state (case inside — image already contains album art) ---- */
+      .cover-back .case-back-overlay {
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* Album info overlay */
+      .album-info {
+        position: absolute;
+        bottom: -60px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-family: "IBM Plex Mono", "SF Mono", monospace;
+        color: #4a3a5a;
+        opacity: 0.8;
+        pointer-events: none;
+      }
+
+      .album-title {
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .album-year {
+        font-size: 12px;
+        margin-top: 4px;
+        opacity: 0.6;
+      }
+
+      .click-hint {
+        position: absolute;
+        bottom: -90px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-family: "IBM Plex Mono", "SF Mono", monospace;
+        font-size: 11px;
+        color: #4a3a5a;
+        opacity: 0.4;
+        pointer-events: none;
+        transition: opacity 0.3s;
+      }
+
+      /* ==================== TRACK LIST ==================== */
+
+      .track-list {
+        position: absolute;
+        top: 22%;
+        left: 20%;
+        width: 60%;
+        height: 60%;
+        z-index: 3;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .cd-cover.open .track-list {
+        opacity: 1;
+      }
+
+      .track-list ol {
+        list-style: none;
+        counter-reset: track;
+        font-family: "Special Elite", "Courier New", monospace;
+        font-size: 14px;
+        color: #4a3a5a;
+        line-height: 2;
+      }
+
+      .track-list li {
+        counter-increment: track;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: opacity 0.35s ease, transform 0.35s ease;
+        transition-delay: 0s;
+      }
+
+      .track-list li::before {
+        content: counter(track, decimal-leading-zero) ". ";
+        opacity: 0.5;
+      }
+
+      .cd-cover.open .track-list li {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .cd-cover.open .track-list li:nth-child(1)  { transition-delay: 0.40s; }
+      .cd-cover.open .track-list li:nth-child(2)  { transition-delay: 0.46s; }
+      .cd-cover.open .track-list li:nth-child(3)  { transition-delay: 0.52s; }
+      .cd-cover.open .track-list li:nth-child(4)  { transition-delay: 0.58s; }
+      .cd-cover.open .track-list li:nth-child(5)  { transition-delay: 0.64s; }
+      .cd-cover.open .track-list li:nth-child(6)  { transition-delay: 0.70s; }
+      .cd-cover.open .track-list li:nth-child(7)  { transition-delay: 0.76s; }
+      .cd-cover.open .track-list li:nth-child(8)  { transition-delay: 0.82s; }
+      .cd-cover.open .track-list li:nth-child(9)  { transition-delay: 0.88s; }
+      .cd-cover.open .track-list li:nth-child(10) { transition-delay: 0.94s; }
+    </style>
+  </head>
+
+  <body>
+    <div class="cd-scene">
+      <div class="cd-case-3d" id="cdCase">
+        <!-- Base: CD tray (behind cover, visible when open) -->
+        <div class="cd-tray">
+          <img src="assets/cd-animation/tray.png" alt="CD Tray" />
+        </div>
+
+        <!-- Front cover: rotates on left hinge -->
+        <div class="cd-cover" id="cdCover">
+          <!-- Front face (closed state) -->
+          <div class="cover-front">
+            <img class="album-art" id="albumArtFront" src="" alt="Album Art" />
+            <img class="case-overlay" src="assets/cd-animation/case-frame.png" alt="CD Case" />
+            <img class="glass-finish" src="assets/cd-animation/glass-finish.png" alt="" />
+          </div>
+
+          <!-- Back face (inside of cover when open) -->
+          <div class="cover-back">
+            <img class="case-back-overlay" src="assets/cd-animation/cover-inside.png" alt="Case Inside" />
+            <div class="track-list">
+              <ol>
+                <li>Ik Onkar</li>
+                <li>Rang De Basanti</li>
+                <li>Masti Ki Paathshala</li>
+                <li>Tu Bin Bataye</li>
+                <li>Khalbali</li>
+                <li>Khoon Chala</li>
+                <li>Paathshala (Be a Rebel)</li>
+                <li>Luka Chuppi</li>
+                <li>Lalkaar</li>
+                <li>Roobaroo</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Album info below the case -->
+      <div class="album-info">
+        <div class="album-title">Rang De Basanti</div>
+        <div class="album-year">2006</div>
+      </div>
+
+      <div class="click-hint" id="clickHint">click to open</div>
+
+    </div>
+
+    <script>
+      const cdCase = document.getElementById('cdCase');
+      const cdCover = document.getElementById('cdCover');
+      const clickHint = document.getElementById('clickHint');
+
+      // Set album art
+      const albumArtUrl = 'https://i.scdn.co/image/ab67616d0000b273a58a09b161c806587fe97b6e';
+      document.getElementById('albumArtFront').src = albumArtUrl;
+
+      // Toggle open/close on click
+      cdCase.addEventListener('click', () => {
+        cdCover.classList.toggle('open');
+        cdCase.classList.toggle('open');
+        clickHint.style.opacity = '0';
+      });
+    </script>
+  </body>
+</html>
