@@ -1,104 +1,215 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="auto">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="The personal website of Harsh Agrawal" />
+    <meta name="author" content="Harsh Agrawal" />
     <title>Harsh Agrawal</title>
-    <base target="_blank">
+    <base target="_blank" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("theme");
+        if (t === "dark" || (!t && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
   </head>
 
-  <body>
+  <body id="top">
+    <header class="header">
+      <nav class="nav">
+        <div class="logo">
+          <a href="/" target="_self" title="harshagrawal.com">harsh agrawal</a>
+          <div class="logo-switches">
+            <button id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+              <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </button>
+          </div>
+        </div>
+        <ul id="menu">
+          <li><a href="#home" target="_self"><span class="active">home</span></a></li>
+          <li><a href="#publications" target="_self"><span>publications</span></a></li>
+          <li><a href="#experience" target="_self"><span>experience</span></a></li>
+          <li><a href="#projects" target="_self"><span>projects</span></a></li>
+          <li><a href="#talks" target="_self"><span>talks</span></a></li>
+          <li><a href="https://github.com/harshagrawal13/harshagrawal13/blob/main/resume.pdf"><span>cv</span></a></li>
+        </ul>
+      </nav>
+    </header>
 
-    <div id="preamble">
-      <h1 class="title">Harsh Agrawal</h1>
-      <p class="subtitle">
-        <a href="mailto:harshagrawal.1312@gmail.com">email</a> &middot;
-        <a href="https://github.com/harshagrawal13">github</a> &middot;
-        <a href="https://x.com/harshagrawal13">x</a> &middot;
-        <a href="https://github.com/harshagrawal13/harshagrawal13/blob/main/resume.pdf">resume</a>
-      </p>
-    </div>
+    <main class="main">
+      <!-- Home / Hero -->
+      <article id="home" class="home-info">
+        <div class="entry-content">
+          <h1>harsh agrawal 🧬</h1>
+          <p>I'm a Master's student in Bioengineering at <a href="https://www.imperial.ac.uk/">Imperial College London</a>, interested in applying machine learning to biological problems. For my thesis, I'm training a multimer-native Protein Language Model at <a href="https://softnanolab.com">Softnanolab</a>.</p>
+          <pre>harshagrawal.1312 [at] gmail [dot] com</pre>
+        </div>
+      </article>
 
-    <div id="intro">
-      <p>
-        Master's student in Bioengineering at <a href="https://www.imperial.ac.uk/">Imperial</a>, interested in applying machine learning to biological problems. For my thesis, I'm training a multimer-native Protein Language Model at <a href="https://softnanolab.com">Softnanolab</a>.
-      </p>
-    </div>
+      <footer class="entry-footer">
+        <div class="social-icons">
+          <a href="https://scholar.google.co.uk/citations?user=m2ncR-UAAAAJ&amp;hl=en" title="Google Scholar">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.242 13.769L0.5 9.5 12 1l11.5 9-5.242 3.769C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>
+          </a>
+          <a href="https://github.com/harshagrawal13" title="GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/harshag1312/" title="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.852 3.37-1.852 3.601 0 4.267 2.37 4.267 5.455v6.288zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://x.com/harshag1312" title="X">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        </div>
+      </footer>
 
-    <hr>
+      <!-- Publications -->
+      <section id="publications" class="section">
+        <header class="page-header">
+          <h2>publications</h2>
+        </header>
+        <div class="publication-list">
+          <div class="publication-item">
+            <div class="publication-content">
+              <div class="publication-title"><a href="https://www.biorxiv.org/content/10.64898/2026.03.04.709378v1.full">An Energy Landscape Approach to Miniaturizing Enzymes using Protein Language Model Embeddings</a></div>
+              <div class="publication-authors">Jakub L&aacute;la, <span class="author-highlight">Harsh Agrawal</span>, Fanfei Dong, Jude Wells, Dr. Stefano Angioletti-Uberti</div>
+              <div class="publication-venue">bioRxiv preprint, March 2026</div>
+              <div class="publication-resources">
+                <a href="https://www.biorxiv.org/content/10.64898/2026.03.04.709378v1.full">paper</a>
+                <a href="https://doi.org/10.64898/2026.03.04.709378">doi</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <div id="bio">
-
-<div id="publications">
-        <h2>Publications</h2>
-        <ul>
-          <li>
-            <a href="https://www.biorxiv.org/content/10.64898/2026.03.04.709378v1.full"><em>An Energy Landscape Approach to Miniaturizing Enzymes using Protein Language Model Embeddings</em></a><br>
-            Jakub Lála, Harsh Agrawal, Fanfei Dong, Jude Wells, Stefano Angioletti-Uberti<br>
-            bioRxiv preprint, March 2026<br>
-            <a href="https://doi.org/10.64898/2026.03.04.709378">[doi:10.64898/2026.03.04.709378]</a>
+      <!-- Experience -->
+      <section id="experience" class="section">
+        <header class="page-header">
+          <h2>experience</h2>
+        </header>
+        <ul class="news-page-items">
+          <li class="news-item">
+            <span class="news-date">2025&mdash;</span>
+            <span class="news-title">Research Scientist at <a href="https://softnanolab.com">Softnanolab</a> &mdash; designing a Protein Language Model specialized for protein complexes with <a href="https://profiles.imperial.ac.uk/s.angioletti-uberti">Dr. Stefano Angioletti-Uberti</a>.</span>
+          </li>
+          <li class="news-item">
+            <span class="news-date">2024&ndash;25</span>
+            <span class="news-title">Interned with Dr. <a href="https://www.designing.bio/team">Karen Sarkisyan</a> and Dr. <a href="https://profiles.imperial.ac.uk/andre.brown">Andre Brown</a> at the <a href="https://lms.mrc.ac.uk/">MRC, LMS</a> to design large protein binders for membrane receptor targets in worms.</span>
+          </li>
+          <li class="news-item">
+            <span class="news-date">2021&ndash;22</span>
+            <span class="news-title">Lead Data Scientist at <a href="https://www.velora.xyz/">Velora</a> &mdash; built the public <a href="https://dashboard.velora.xyz/public/dashboard/bb8b5007-ecc3-44e9-bdbe-b4b7a5273eb4">analytics dashboard</a> indexing 33M+ transactions and &gt;$140B in volume across 5 chains.</span>
           </li>
         </ul>
-      </div>
+      </section>
 
-      <div id="experience">
-        <h2>Past Experience</h2>
-        <ul>
-          <li>Led in-silico binders design initiative to target <em>C. elegans</em> for <a href="https://www.designing.bio/team">Karen Sarkisyan</a> and <a href="https://profiles.imperial.ac.uk/andre.brown">Andre Brown</a> as part of a summer internship.</li>
-          <li>Built <a href="https://www.velora.xyz/">Velora</a>'s public <a href="https://dashboard.velora.xyz/public/dashboard/bb8b5007-ecc3-44e9-bdbe-b4b7a5273eb4">analytics dashboard</a> that indexed &gt;$140B in transaction volume across 5 blockchains.</li>
-        </ul>
-      </div>
+      <!-- Projects -->
+      <section id="projects" class="section">
+        <header class="page-header">
+          <h2>projects</h2>
+        </header>
+        <div class="publication-list">
+          <div class="publication-item">
+            <div class="publication-image">
+              <img src="assets/jespr.png" alt="JESPR architecture diagram" />
+            </div>
+            <div class="publication-content">
+              <div class="publication-title"><a href="https://github.com/atom-51/jespr">JESPR: Joint Embedding Pre-training for Protein Structure-Sequence Representations</a></div>
+              <div class="publication-authors">Aditya Tandon, <span class="author-highlight">Harsh Agrawal</span></div>
+              <div class="publication-summary">Applied a JEPA-style contrastive learning approach to learn joint-embeddings of protein sequences and structures.</div>
+            </div>
+          </div>
+          <div class="publication-item">
+            <div class="publication-image">
+              <img src="assets/dpn-hrv.png" alt="DPN HRV ECG signal" />
+            </div>
+            <div class="publication-content">
+              <div class="publication-title"><a href="https://github.com/ad-aspera/hrv-processing-suite/blob/main/assets/research_report.pdf">Diabetic Peripheral Neuropathy Detection using HRV</a></div>
+              <div class="publication-authors">Adam Lounis, <span class="author-highlight">Harsh Agrawal</span>, Henry Hollingworth, Dr. Martyn Boutelle, Mir Wajih Tawshif, Povilas Sauciuvienas, Dr. Richard Kitney, Rodi Rahman, Sheshpriya Gadiya</div>
+              <div class="publication-summary">Benchmarked nine R-peak detectors on 24-hour ECGs and tested whether HRV alone could separate diabetic peripheral neuropathy from diabetes-only patients &mdash; classifiers tied, but three HRV metrics shifted significantly, hinting at early autonomic involvement. Supervised by <a href="https://profiles.imperial.ac.uk/r.kitney">Prof. Richard Kitney, OBE</a>.</div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <div id="projects">
-        <h2>Projects</h2>
-        <ul>
-          <li>
-            <a href="https://github.com/ad-aspera/hrv-processing-suite/blob/main/assets/research_report.pdf">Diabetic Peripheral Neuropathy Detection using HRV</a>
-            — applied ML to heart rate variability data to predict diabetic peripheral neuropathy, supervised by <a href="https://profiles.imperial.ac.uk/r.kitney">Prof. Richard Kitney, OBE</a>.
+      <!-- Talks & Achievements -->
+      <section id="talks" class="section">
+        <header class="page-header">
+          <h2>talks &amp; achievements</h2>
+        </header>
+        <ul class="news-page-items">
+          <li class="talk-item">
+            <span class="talk-date">2024</span>
+            <span class="talk-title"><a href="https://static1.squarespace.com/static/581e5b6a8419c273288db3e9/t/67d9ca2ddadddb24a80d47b6/1757519864135/Latest+Update+-+WAFF+Youth+Delegation+Attending+Davos+During+WEF+2024+One-Pagers.pdf">Youth Delegate, World Economic Forum</a> &mdash; sponsored by <a href="https://www.wearefamilyfoundation.org">WAFF</a></span>
           </li>
-          <li>
-            <a href="https://github.com/atom-51/jespr">JESPR</a>
-            — Applied a JEPA-style contrastive learning approach to learn joint-embeddings of protein sequences and structures.
+          <li class="talk-item">
+            <span class="talk-date">2022</span>
+            <span class="talk-title"><a href="https://www.youtube.com/watch?v=StCNlSj80LA">TEDx Talk</a> &mdash; spoke on scalable meta-systems for meaningful change</span>
           </li>
-          <li>
-            <a href="https://abstracts.societyforscience.org/Home/FullAbstract?ISEFYears=2020%2C&Category=Any%20Category&AllAbstracts=True&FairCountry=Any%20Country&FairState=Any%20State&ProjectId=18977">Cancer-eX</a>
-            — developed an assay to detect a salivary biomarker for pancreatic cancer.
+          <li class="talk-item">
+            <span class="talk-date">2022</span>
+            <span class="talk-title"><a href="http://risefortheworld.org">Rise Global Winner</a> &mdash; top 100 winners globally</span>
           </li>
-          <li>
-            <a href="https://github.com/harshagrawal13/Gawler-Unearthed">MineNow</a>
-            — applied ML to geophysical, geochemical, and geospatial data to predict new mineralized locations across Australia for a hackathon.
+          <li class="talk-item">
+            <span class="talk-date">2020</span>
+            <span class="talk-title"><a href="https://x.com/narendramodi/status/1220697456515723267">Bal Shakti Puraskar</a> &mdash; awarded by the President of India</span>
+          </li>
+          <li class="talk-item">
+            <span class="talk-date">2020</span>
+            <span class="talk-title"><a href="https://www.wearefamilyfoundation.org/three-dot-dash-program">Global Teen Leader</a> &mdash; one of 30 globally</span>
+          </li>
+          <li class="talk-item">
+            <span class="talk-date">2020</span>
+            <span class="talk-title"><a href="https://geniusolympiad.org">Gold Medal, Genius Olympiad</a> &mdash; Sciences category</span>
+          </li>
+          <li class="talk-item">
+            <span class="talk-date">2019</span>
+            <span class="talk-title"><a href="https://indiaeducationdiary.in/google-announces-top-100-regional-finalists-google-science-fair-2018-2019/">Regional Finalist, Google Science Fair</a> &mdash; top 100 globally</span>
           </li>
         </ul>
-      </div>
+      </section>
 
-      <div id="talks">
-        <h2>Talks &amp; Achievements</h2>
-        <ul>
-          <li><a href="https://static1.squarespace.com/static/581e5b6a8419c273288db3e9/t/67d9ca2ddadddb24a80d47b6/1757519864135/Latest+Update+-+WAFF+Youth+Delegation+Attending+Davos+During+WEF+2024+One-Pagers.pdf">Youth Delegate, World Economic Forum 2024</a> — sponsored by <a href="https://www.wearefamilyfoundation.org">WAFF</a></li>
-          <li><a href="http://risefortheworld.org">Rise Global Winner 2022</a> — top 100 winners globally.</li>
-          <li><a href="https://www.youtube.com/watch?v=StCNlSj80LA">TEDx Talk (2022)</a> — spoke on scalable meta-systems for meaningful change.</li>
-          <li><a href="https://x.com/narendramodi/status/1220697456515723267">Bal Shakti Puraskar (2020)</a> — awarded by the President of India.</li>
-          <li><a href="https://www.wearefamilyfoundation.org/three-dot-dash-program">Global Teen Leader 2020</a> — one of 30 globally.</li>
-          <li><a href="https://geniusolympiad.org">Gold Medal, Genius Olympiad 2020</a> — won in the Sciences category.</li>
-          <li><a href="https://indiaeducationdiary.in/google-announces-top-100-regional-finalists-google-science-fair-2018-2019/">Regional Finalist, Google Science Fair 2019</a> — top 100 globally</li>
-        </ul>
-      </div>
+      <!-- Miscellaneous -->
+      <section id="misc" class="section">
+        <header class="page-header">
+          <h2>miscellaneous</h2>
+        </header>
+        <div class="misc-content">
+          <p><a href="https://agrawalh.notion.site/Every-Show-I-ve-Watched-fbb4fb1357b54796b4e6a6cea92830f9">Ranking all shows I've watched</a>.</p>
+          <p><a href="https://substack.com/home/post/p-192679958">On the beauty of the known and the new</a> (Substack).</p>
+        </div>
+      </section>
+    </main>
 
-    </div>
+    <footer class="footer">
+      <p>&copy; 2026 Harsh Agrawal &middot; website inspired by <a href="https://amyx.lu/">amyx.lu</a></p>
+    </footer>
 
-    <div id="side-quests">
-        <h2>Side Quests</h2>
-        <ul>
-          <li><a href="https://agrawalh.notion.site/Every-Show-I-ve-Watched-fbb4fb1357b54796b4e6a6cea92830f9">Ranking all shows I've watched</a></li>
-          <li><a href="https://substack.com/home/post/p-192679958">Substack: On the beauty of the known and the new</a></li>
-        </ul>
-      </div>
-
-    <hr>
-
-    <footer></footer>
-
+    <script>
+      (function () {
+        var btn = document.getElementById("theme-toggle");
+        if (!btn) return;
+        btn.addEventListener("click", function () {
+          var isDark = document.documentElement.getAttribute("data-theme") === "dark";
+          if (isDark) {
+            document.documentElement.removeAttribute("data-theme");
+            localStorage.setItem("theme", "light");
+          } else {
+            document.documentElement.setAttribute("data-theme", "dark");
+            localStorage.setItem("theme", "dark");
+          }
+        });
+      })();
+    </script>
   </body>
 </html>
