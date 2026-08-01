@@ -1,0 +1,743 @@
+<title>Bollywood Albums, Ranked</title>
+<style>
+  :root {
+    --ink: #1a1620;
+    --paper: #edeaf1;
+    --card: #ffffff;
+    --rule: #d6d1de;
+    --mute: #6f6879;
+    --gold: #b8792a;
+    --gold-soft: rgba(184, 121, 42, 0.14);
+    --spine: #cbc4d4;
+
+    --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e6e1ed;
+      --paper: #14111a;
+      --card: #1d1926;
+      --rule: #322c3e;
+      --mute: #948da3;
+      --gold: #e0a84e;
+      --gold-soft: rgba(224, 168, 78, 0.16);
+      --spine: #2a2434;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #e6e1ed;
+    --paper: #14111a;
+    --card: #1d1926;
+    --rule: #322c3e;
+    --mute: #948da3;
+    --gold: #e0a84e;
+    --gold-soft: rgba(224, 168, 78, 0.16);
+    --spine: #2a2434;
+    color-scheme: dark;
+  }
+  :root[data-theme="light"] {
+    --ink: #1a1620;
+    --paper: #edeaf1;
+    --card: #ffffff;
+    --rule: #d6d1de;
+    --mute: #6f6879;
+    --gold: #b8792a;
+    --gold-soft: rgba(184, 121, 42, 0.14);
+    --spine: #cbc4d4;
+    color-scheme: light;
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 40px 20px 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  /* ── masthead ── */
+  .mast { display: flex; flex-direction: column; gap: 12px; }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mute);
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  h1 em { font-style: italic; color: var(--gold); }
+  .lede { margin: 0; max-width: 60ch; color: var(--mute); }
+
+  .meter { display: flex; flex-direction: column; gap: 7px; }
+  .meter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    color: var(--mute);
+    font-variant-numeric: tabular-nums;
+  }
+  .meter-row b { color: var(--ink); font-weight: 600; }
+  .track { height: 3px; background: var(--rule); position: relative; }
+  .fill { position: absolute; inset: 0 auto 0 0; background: var(--gold); width: 0; transition: width 0.3s ease; }
+
+  /* ── the duel: two J-cards split by a cassette spine ── */
+  .duel {
+    display: grid;
+    grid-template-columns: 1fr 44px 1fr;
+    align-items: stretch;
+  }
+  .jcard {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    padding: 26px 22px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .jcard::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 5px;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .jcard:hover { border-color: var(--gold); }
+  .jcard:hover::before, .jcard.hit::before { opacity: 1; }
+  .jcard.hit { background: var(--gold-soft); }
+  .side {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mute);
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .album {
+    font-family: var(--display);
+    font-size: clamp(1.5rem, 3.4vw, 2.05rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .year { font-family: var(--mono); font-size: 13px; color: var(--mute); font-variant-numeric: tabular-nums; }
+  .note {
+    align-self: flex-start;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 2px 7px;
+  }
+  .jfoot { margin-top: auto; padding-top: 14px; display: flex; gap: 10px; align-items: center; }
+  .ghost {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--mute);
+    background: none;
+    border: 1px solid var(--rule);
+    padding: 4px 9px;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .ghost:hover { color: var(--ink); border-color: var(--mute); }
+  .wiki { font-family: var(--mono); font-size: 11px; color: var(--mute); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .wiki:hover { color: var(--gold); border-color: var(--gold); }
+
+  .spine {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: repeating-linear-gradient(
+      var(--spine) 0 2px, transparent 2px 7px
+    );
+    background-position: center;
+    background-size: 1px 100%;
+    background-repeat: no-repeat;
+  }
+  .spine span {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 15px;
+    color: var(--mute);
+    background: var(--paper);
+    padding: 6px 0;
+  }
+
+  .tabs { display: flex; flex-wrap: wrap; gap: 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .tab {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--mute);
+    background: none;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    padding: 11px 15px;
+    margin-bottom: -1px;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-current="true"] { color: var(--ink); border-bottom-color: var(--gold); }
+  .tab b { font-weight: 400; color: var(--mute); margin-left: 6px; font-variant-numeric: tabular-nums; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .btn {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    background: none;
+    border: 1px solid var(--rule);
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .btn:hover:not([disabled]) { border-color: var(--gold); background: var(--gold-soft); }
+  .btn[disabled] { opacity: 0.38; cursor: default; }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--mute);
+    letter-spacing: 0.04em;
+  }
+  kbd {
+    font-family: var(--mono);
+    font-size: 11px;
+    border: 1px solid var(--rule);
+    border-bottom-width: 2px;
+    padding: 1px 5px;
+    margin-right: 5px;
+    color: var(--ink);
+  }
+  .empty { text-align: center; color: var(--mute); font-style: italic; padding: 40px 0; }
+
+  /* ── leaderboard ── */
+  section > h2 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mute);
+    font-weight: 500;
+    margin: 0 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .board { list-style: none; margin: 0; padding: 0; }
+  .board li {
+    display: grid;
+    grid-template-columns: 2.6em 1fr auto;
+    gap: 4px 14px;
+    align-items: baseline;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .board li.cold { color: var(--mute); }
+  .pos { font-family: var(--mono); font-size: 12px; color: var(--mute); text-align: right; font-variant-numeric: tabular-nums; }
+  .board li.top .pos { color: var(--gold); }
+  .name { font-family: var(--display); font-size: 1.12rem; line-height: 1.25; }
+  .name span { font-family: var(--mono); font-size: 11px; color: var(--mute); margin-left: 8px; }
+  .score { font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; color: var(--mute); white-space: nowrap; }
+  .score b { color: var(--ink); font-weight: 600; }
+  .rail { grid-column: 2 / -1; height: 2px; background: var(--rule); position: relative; }
+  .rail i { position: absolute; inset: 0 auto 0 0; background: var(--gold); }
+
+  .pool { display: flex; flex-wrap: wrap; gap: 8px 20px; font-family: var(--mono); font-size: 12px; color: var(--mute); }
+  .pool label { display: flex; gap: 7px; align-items: center; cursor: pointer; }
+  .pool input { accent-color: var(--gold); }
+  .dropped { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .foot { font-family: var(--mono); font-size: 11px; color: var(--mute); letter-spacing: 0.04em; text-align: center; }
+  #dump {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 150px;
+    margin-top: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.6;
+    background: var(--card);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    padding: 12px;
+    resize: vertical;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+  @media (max-width: 620px) {
+    .duel { grid-template-columns: 1fr; }
+    .spine { background: none; padding: 10px 0; }
+    .board li { grid-template-columns: 2.2em 1fr; }
+    .score { grid-column: 2; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="mast">
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1>Which one do you <em>actually</em> play more?</h1>
+    <p class="lede">
+      Nobody can rank seventy albums in one sitting. So don't &mdash; just answer one duel at a time.
+      Each pick nudges an Elo rating and the table below re-sorts itself. Stop whenever; it saves as you go.
+    </p>
+    <nav class="tabs" id="tabs" aria-label="Composer"></nav>
+    <div class="meter">
+      <div class="meter-row" id="stats"></div>
+      <div class="track"><div class="fill" id="fill"></div></div>
+    </div>
+  </header>
+
+  <section>
+    <div class="duel" id="duel">
+      <div class="jcard" id="cardL" role="button" tabindex="0" aria-label="Side A wins">
+        <div class="side"><span>Side A</span><span id="tagL"></span></div>
+        <div class="album" id="nameL"></div>
+        <div class="year" id="yearL"></div>
+        <div class="jfoot">
+          <button class="ghost" id="killL" type="button">A &nbsp;never heard it</button>
+          <a class="wiki" id="wikiL" href="#">wikipedia</a>
+        </div>
+      </div>
+      <div class="spine"><span>vs</span></div>
+      <div class="jcard" id="cardR" role="button" tabindex="0" aria-label="Side B wins">
+        <div class="side"><span>Side B</span><span id="tagR"></span></div>
+        <div class="album" id="nameR"></div>
+        <div class="year" id="yearR"></div>
+        <div class="jfoot">
+          <button class="ghost" id="killR" type="button">D &nbsp;never heard it</button>
+          <a class="wiki" id="wikiR" href="#">wikipedia</a>
+        </div>
+      </div>
+    </div>
+    <p class="empty" id="empty" hidden>Fewer than two albums left in the pool. Put one back below, or widen the categories.</p>
+
+    <div class="controls" style="margin-top:18px">
+      <button class="btn" id="tie" type="button">&darr; &nbsp;Dead heat</button>
+      <button class="btn" id="undo" type="button">&larr;&#8629; &nbsp;Undo</button>
+      <button class="btn" id="reset" type="button">Start over</button>
+    </div>
+    <p class="legend" style="margin-top:14px">
+      <span><kbd>&larr;</kbd>Side A wins</span>
+      <span><kbd>&rarr;</kbd>Side B wins</span>
+      <span><kbd>&darr;</kbd>dead heat</span>
+      <span><kbd>A</kbd>drop left</span>
+      <span><kbd>D</kbd>drop right</span>
+      <span><kbd>U</kbd>undo</span>
+    </p>
+  </section>
+
+  <section>
+    <h2>Standings</h2>
+    <ol class="board" id="board"></ol>
+  </section>
+
+  <section>
+    <h2>What's in the pool</h2>
+    <div class="pool" id="pool"></div>
+    <div class="dropped" id="dropped"></div>
+  </section>
+
+  <section>
+    <h2>Take it with you</h2>
+    <div class="controls" style="justify-content:flex-start">
+      <button class="btn" id="expMd" type="button">Copy as list</button>
+      <button class="btn" id="expJson" type="button">Copy save data</button>
+      <button class="btn" id="impJson" type="button">Restore save data</button>
+    </div>
+    <textarea id="dump" spellcheck="false" placeholder="Exports land here. Paste save data back in and hit Restore."></textarea>
+  </section>
+
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+/* eslint-disable */
+(function () {
+  "use strict";
+
+  var ARTISTS = {"ar-rahman":{"name":"A. R. Rahman","blurb":"Hindi film soundtracks","src":"A. R. Rahman discography","srcUrl":"https://en.wikipedia.org/wiki/A._R._Rahman_discography","albums":[{"t":"Vishwavidhaata","y":1993,"w":"Vishwavidhaata","k":"remake"},{"t":"Rangeela","y":1995,"w":"Rangeela (1995 film)","k":"original"},{"t":"Fire","y":1996,"w":"Fire (1996 film)","k":"original"},{"t":"Daud","y":1997,"w":"Daud (film)","k":"original"},{"t":"Sapnay","y":1997,"w":"Sapnay","k":"dub"},{"t":"Dil Se..","y":1998,"w":"Dil Se..","k":"original"},{"t":"Doli Saja Ke Rakhna","y":1998,"w":"Doli Saja Ke Rakhna","k":"original"},{"t":"Earth","y":1998,"w":"Earth (1998 film)","k":"original"},{"t":"Kabhi Na Kabhi","y":1998,"w":"Kabhi Na Kabhi","k":"original"},{"t":"Nayak","y":1999,"w":"Nayak: The Real Hero","k":"remake"},{"t":"Taal","y":1999,"w":"Taal (film)","k":"original"},{"t":"Thakshak","y":1999,"w":"Thakshak","k":"original"},{"t":"Fiza","y":2000,"w":"Fiza","k":"partial"},{"t":"Pukar","y":2000,"w":"Pukar (2000 film)","k":"original"},{"t":"Saathiya","y":2000,"w":"Saathiya (film)","k":"remake"},{"t":"Zubeidaa","y":2000,"w":"Zubeidaa","k":"original"},{"t":"Lagaan","y":2001,"w":"Lagaan","k":"original"},{"t":"Love You Hamesha","y":2001,"w":"Love You Hamesha","k":"remake"},{"t":"One 2 Ka 4","y":2001,"w":"One 2 Ka 4","k":"original"},{"t":"The Legend of Bhagat Singh","y":2002,"w":"The Legend of Bhagat Singh","k":"original"},{"t":"Tehzeeb","y":2003,"w":"Tehzeeb (2003 film)","k":"original"},{"t":"Dil Ne Jise Apna Kahaa","y":2004,"w":"Dil Ne Jise Apna Kahaa","k":"partial"},{"t":"Lakeer – Forbidden Lines","y":2004,"w":"Lakeer – Forbidden Lines","k":"original"},{"t":"Meenaxi: A Tale of Three Cities","y":2004,"w":"Meenaxi: A Tale of Three Cities","k":"original"},{"t":"Swades","y":2004,"w":"Swades","k":"original"},{"t":"Yuva","y":2004,"w":"Yuva","k":"original"},{"t":"Kisna: The Warrior Poet","y":2005,"w":"Kisna: The Warrior Poet","k":"original"},{"t":"Mangal Pandey: The Rising","y":2005,"w":"Mangal Pandey: The Rising","k":"original"},{"t":"Netaji Subhas Chandra Bose: The Forgotten Hero","y":2005,"w":"Netaji Subhas Chandra Bose: The Forgotten Hero","k":"original"},{"t":"Rang De Basanti","y":2005,"w":"Rang De Basanti","k":"original"},{"t":"Water","y":2005,"w":"Water (2005 film)","k":"original"},{"t":"Guru","y":2006,"w":"Guru (2007 film)","k":"original"},{"t":"Ada... A Way of Life","y":2008,"w":"Ada... A Way of Life","k":"original"},{"t":"Ghajini","y":2008,"w":"Ghajini (2008 film)","k":"original"},{"t":"Jaane Tu... Ya Jaane Na","y":2008,"w":"Jaane Tu... Ya Jaane Na","k":"original"},{"t":"Jodhaa Akbar","y":2008,"w":"Jodhaa Akbar","k":"original"},{"t":"Yuvvraaj","y":2008,"w":"Yuvvraaj","k":"original"},{"t":"Blue","y":2009,"w":"Blue (2009 film)","k":"original"},{"t":"Delhi-6","y":2009,"w":"Delhi-6","k":"original"},{"t":"Ekk Deewana Tha","y":2010,"w":"Ekk Deewana Tha (soundtrack)","k":"remake"},{"t":"Jhootha Hi Sahi","y":2010,"w":"Jhootha Hi Sahi","k":"original"},{"t":"Raavan","y":2010,"w":"Raavan (soundtrack)","k":"original"},{"t":"Rockstar","y":2011,"w":"Rockstar (2011 film)","k":"original"},{"t":"Jab Tak Hai Jaan","y":2012,"w":"Jab Tak Hai Jaan (soundtrack)","k":"original"},{"t":"Raanjhanaa","y":2013,"w":"Raanjhanaa","k":"original"},{"t":"Highway","y":2014,"w":"Highway (soundtrack)","k":"original"},{"t":"Lekar Hum Deewana Dil","y":2014,"w":"Lekar Hum Deewana Dil (soundtrack)","k":"original"},{"t":"Ok Jaanu","y":2015,"w":"Ok Jaanu","k":"remake"},{"t":"Tamasha","y":2015,"w":"Tamasha (soundtrack)","k":"original"},{"t":"Mohenjo Daro","y":2016,"w":"Mohenjo Daro (film)","k":"original"},{"t":"Mom","y":2017,"w":"Mom (film)","k":"original"},{"t":"Sachin: A Billion Dreams","y":2017,"w":"Sachin: A Billion Dreams","k":"original"},{"t":"Beyond the Clouds","y":2018,"w":"Beyond the Clouds (2017 film)","k":"original"},{"t":"Love Sonia","y":2018,"w":"Love Sonia","k":"original"},{"t":"Sanju","y":2018,"w":"Sanju","k":"original"},{"t":"The Fakir of Venice","y":2019,"w":"The Fakir of Venice","k":"original"},{"t":"Dil Bechara","y":2020,"w":"Dil Bechara","k":"original"},{"t":"99 Songs","y":2021,"w":"99 Songs","k":"original"},{"t":"Atrangi Re","y":2021,"w":"Atrangi Re","k":"original"},{"t":"Mimi","y":2021,"w":"Mimi (2021 Hindi film)","k":"original"},{"t":"Heropanti 2","y":2022,"w":"Heropanti 2","k":"original"},{"t":"Mili","y":2022,"w":"Mili (2022 film)","k":"original"},{"t":"Animal","y":2023,"w":"Animal (2023 Indian film)","k":"original"},{"t":"Gandhi Godse – Ek Yudh","y":2023,"w":"Gandhi Godse – Ek Yudh","k":"original"},{"t":"Pippa","y":2023,"w":"Pippa (film)","k":"original"},{"t":"Amar Singh Chamkila","y":2024,"w":"Amar Singh Chamkila (film)","k":"original"},{"t":"Maidaan","y":2024,"w":"Maidaan","k":"original"},{"t":"Chhaava","y":2025,"w":"Chhaava","k":"original"},{"t":"Tere Ishk Mein","y":2025,"w":"Tere Ishk Mein (soundtrack)","k":"original"},{"t":"Ufff Yeh Siyapaa","y":2025,"w":"Ufff Yeh Siyapaa","k":"original"}]},"shankar-ehsaan-loy":{"name":"Shankar–Ehsaan–Loy","blurb":"Hindi film soundtracks","src":"Shankar–Ehsaan–Loy discography","srcUrl":"https://en.wikipedia.org/wiki/Shankar–Ehsaan–Loy_discography","albums":[{"t":"Dus","y":1997,"k":"original"},{"t":"Bhopal Express","y":1999,"k":"original","w":"Bhopal Express (film)"},{"t":"Dillagi","y":1999,"k":"shared","w":"Dillagi (1999 film)"},{"t":"Shool","y":1999,"k":"original"},{"t":"Mission Kashmir","y":2000,"k":"original"},{"t":"Abhay","y":2001,"k":"original","w":"Abhay (2001 film)"},{"t":"Dil Chahta Hai","y":2001,"k":"original"},{"t":"Yeh Kya Ho Raha Hai?","y":2002,"k":"original"},{"t":"Armaan","y":2003,"k":"original","w":"Armaan (2003 film)"},{"t":"Ek Aur Ek Gyarah","y":2003,"k":"original"},{"t":"Kal Ho Naa Ho","y":2003,"k":"original"},{"t":"Kuch Naa Kaho","y":2003,"k":"original"},{"t":"Nayee Padosan","y":2003,"k":"original"},{"t":"Kyun! Ho Gaya Na...","y":2004,"k":"original"},{"t":"Lakshya","y":2004,"k":"original","w":"Lakshya (2004 film)"},{"t":"Phir Milenge","y":2004,"k":"original","w":"Phir Milenge (2004 film)"},{"t":"Bunty Aur Babli","y":2005,"k":"original"},{"t":"Dil Jo Bhi Kahey...","y":2005,"k":"original"},{"t":"Rudraksh","y":2005,"k":"original","w":"Rudraksh (film)"},{"t":"Don","y":2006,"k":"original","w":"Don (2006 Hindi film)"},{"t":"Kabhi Alvida Naa Kehna","y":2006,"k":"original"},{"t":"Dum Kata","y":2007,"k":"original","w":"Dum Kaata"},{"t":"Heyy Babyy","y":2007,"k":"original"},{"t":"Jhoom Barabar Jhoom","y":2007,"k":"original"},{"t":"Johnny Gaddaar","y":2007,"k":"original"},{"t":"Marigold","y":2007,"k":"original","w":"Marigold (2007 film)"},{"t":"Salaam-e-Ishq","y":2007,"k":"original","w":"Salaam-e-Ishq: A Tribute to Love"},{"t":"Taare Zameen Par","y":2007,"k":"original"},{"t":"Rock On!!","y":2008,"k":"original"},{"t":"Thoda Pyaar Thoda Magic","y":2008,"k":"original"},{"t":"13B","y":2009,"k":"original","w":"Yavarum Nalam"},{"t":"Chandni Chowk to China","y":2009,"k":"original"},{"t":"London Dreams","y":2009,"k":"original"},{"t":"Luck By Chance","y":2009,"k":"original","w":"Luck by Chance"},{"t":"Shortkut","y":2009,"k":"original"},{"t":"Wake Up Sid","y":2009,"k":"original"},{"t":"Housefull","y":2010,"k":"original","w":"Housefull (2010 film)"},{"t":"Hum Tum Aur Ghost","y":2010,"k":"original"},{"t":"Karthik Calling Karthik","y":2010,"k":"original"},{"t":"My Name is Khan","y":2010,"k":"original"},{"t":"Tere Bin Laden","y":2010,"k":"original"},{"t":"We Are Family","y":2010,"k":"original","w":"We Are Family (2010 film)"},{"t":"Aarakshan","y":2011,"k":"original"},{"t":"Don 2","y":2011,"k":"original"},{"t":"Game","y":2011,"k":"original","w":"Game (2011 film)"},{"t":"Patiala House","y":2011,"k":"original","w":"Patiala House (film)"},{"t":"West is West","y":2011,"k":"original","w":"West Is West (2010 film)"},{"t":"Zindagi Na Milegi Dobara","y":2011,"k":"original"},{"t":"Zokkomon","y":2011,"k":"original"},{"t":"Chittagong","y":2012,"k":"original","w":"Chittagong (film)"},{"t":"Dekh Indian Circus","y":2012,"k":"original"},{"t":"Delhi Safari","y":2012,"k":"original"},{"t":"Bhaag Milkha Bhaag","y":2013,"k":"original"},{"t":"D-Day","y":2013,"k":"original","w":"D-Day (2013 film)"},{"t":"Vishwaroopam","y":2013,"k":"original"},{"t":"2 States","y":2014,"k":"original","w":"2 States (2014 film)"},{"t":"Darr @ The Mall","y":2014,"k":"original","w":"Darr @ the Mall"},{"t":"Kill Dil","y":2014,"k":"original"},{"t":"One By Two","y":2014,"k":"original","w":"One by Two (2014 film)"},{"t":"Dil Dhadakne Do","y":2015,"k":"original"},{"t":"Katti Batti","y":2015,"k":"original"},{"t":"Ghayal: Once Again","y":2016,"k":"original"},{"t":"Mirzya","y":2016,"k":"original","w":"Mirzya (film)"},{"t":"Rock On 2","y":2016,"k":"original"},{"t":"Raazi","y":2018,"k":"original"},{"t":"Soorma","y":2018,"k":"original","w":"Soorma (film)"},{"t":"Manikarnika: The Queen of Jhansi","y":2019,"k":"original"},{"t":"Saaho","y":2019,"k":"original"},{"t":"The Zoya Factor","y":2019,"k":"original","w":"The Zoya Factor (film)"},{"t":"Bandish Bandits","y":2020,"k":"series"},{"t":"Chhapaak","y":2020,"k":"original"},{"t":"Panga","y":2020,"k":"original","w":"Panga (film)"},{"t":"Bunty Aur Babli 2","y":2021,"k":"original"},{"t":"Toofaan","y":2021,"k":"original"},{"t":"Dhaakad","y":2022,"k":"original"},{"t":"Samrat Prithviraj","y":2022,"k":"original"},{"t":"Dono","y":2023,"k":"original","w":"Dono (film)"},{"t":"Sam Bahadur","y":2023,"k":"original","w":"Sam Bahadur (film)"},{"t":"The Archies","y":2023,"k":"original","w":"The Archies (film)"},{"t":"Yudhra","y":2024,"k":"original"},{"t":"Housefull 5","y":2025,"k":"partial"},{"t":"Sitaare Zameen Par","y":2025,"k":"original"}]},"pritam":{"name":"Pritam","blurb":"Hindi film soundtracks","src":"Pritam discography","srcUrl":"https://en.wikipedia.org/wiki/Pritam_discography","albums":[{"t":"Tere Liye","y":2001,"k":"shared","w":"Tere Liye (film)"},{"t":"Mere Yaar Ki Shaadi Hai","y":2002,"k":"shared"},{"t":"Fun 2shh: Dudes in the 10th Century","y":2003,"k":"original"},{"t":"Mudda – The Issue","y":2003,"k":"shared"},{"t":"Stumped","y":2003,"k":"shared","w":"Stumped (film)"},{"t":"Agnipankh","y":2004,"k":"original"},{"t":"Dhoom","y":2004,"k":"original"},{"t":"Raghu Romeo","y":2004,"k":"original"},{"t":"Chocolate","y":2005,"k":"original","w":"Chocolate (2005 film)"},{"t":"Ek Khiladi Ek Haseena","y":2005,"k":"original","w":"Ek Khiladi Ek Haseena (film)"},{"t":"Garam Masala","y":2005,"k":"original","w":"Garam Masala (2005 film)"},{"t":"Ankahee","y":2006,"k":"original","w":"Ankahee (2006 film)"},{"t":"Apna Sapna Money Money","y":2006,"k":"original"},{"t":"Bas Ek Pal","y":2006,"k":"original"},{"t":"Bhagam Bhag","y":2006,"k":"original"},{"t":"Dhoom 2","y":2006,"k":"original"},{"t":"Fight Club – Members Only","y":2006,"k":"original"},{"t":"Gangster","y":2006,"k":"original","w":"Gangster (2006 film)"},{"t":"Naksha","y":2006,"k":"original"},{"t":"Pyaar Ke Side Effects","y":2006,"k":"original"},{"t":"Woh Lamhe...","y":2006,"k":"shared"},{"t":"Awarapan","y":2007,"k":"original"},{"t":"Bhool Bhulaiyaa","y":2007,"k":"original"},{"t":"Darling","y":2007,"k":"shared","w":"Darling (2007 Indian film)"},{"t":"Dhan Dhana Dhan Goal","y":2007,"k":"original"},{"t":"Dhol","y":2007,"k":"original","w":"Dhol (film)"},{"t":"Hattrick","y":2007,"k":"shared","w":"Hattrick (film)"},{"t":"Jab We Met","y":2007,"k":"shared"},{"t":"Just Married","y":2007,"k":"original","w":"Just Married (2007 film)"},{"t":"Kaisay Kahein...","y":2007,"k":"shared"},{"t":"Kya Love Story Hai","y":2007,"k":"original"},{"t":"Life in a... Metro","y":2007,"k":"original"},{"t":"Naqaab","y":2007,"k":"original","w":"Naqaab (2007 film)"},{"t":"Nehlle Pe Dehlla","y":2007,"k":"original"},{"t":"Raqeeb","y":2007,"k":"original"},{"t":"Speed","y":2007,"k":"original","w":"Speed (2007 film)"},{"t":"Bhram","y":2008,"k":"partial"},{"t":"Bombay to Bangkok","y":2008,"k":"original"},{"t":"Golmaal Returns","y":2008,"k":"original"},{"t":"Haal-e-Dil","y":2008,"k":"original"},{"t":"Jannat","y":2008,"k":"original","w":"Jannat (2008 film)"},{"t":"Kidnap","y":2008,"k":"shared","w":"Kidnap (2008 film)"},{"t":"Kismat Konnection","y":2008,"k":"original"},{"t":"Mukhbiir","y":2008,"k":"original"},{"t":"My Name is Anthony Gonsalves","y":2008,"k":"shared","w":"My Name Is Anthony Gonsalves (film)"},{"t":"Race","y":2008,"k":"original","w":"Race (2008 film)"},{"t":"Singh Is Kinng","y":2008,"k":"partial"},{"t":"Aa Dekhen Zara","y":2009,"k":"partial"},{"t":"Ajab Prem Ki Ghazab Kahani","y":2009,"k":"original"},{"t":"All the Best: Fun Begins","y":2009,"k":"original"},{"t":"Billu","y":2009,"k":"original"},{"t":"De Dana Dan","y":2009,"k":"partial"},{"t":"Dil Bole Hadippa!","y":2009,"k":"shared"},{"t":"Ek: The Power of One","y":2009,"k":"shared"},{"t":"Life Partner","y":2009,"k":"shared"},{"t":"Love Aaj Kal","y":2009,"k":"original","w":"Love Aaj Kal (2009 film)"},{"t":"Love Khichdi","y":2009,"k":"original"},{"t":"New York","y":2009,"k":"shared","w":"New York (2009 film)"},{"t":"Tum Mile","y":2009,"k":"original"},{"t":"Aakrosh","y":2010,"k":"original","w":"Aakrosh (2010 film)"},{"t":"Aashayein","y":2010,"k":"partial"},{"t":"Action Replayy","y":2010,"k":"original"},{"t":"Atithi Tum Kab Jaoge?","y":2010,"k":"partial"},{"t":"Badmaash Company","y":2010,"k":"original"},{"t":"Chance Pe Dance","y":2010,"k":"original"},{"t":"Crook","y":2010,"k":"original","w":"Crook (film)"},{"t":"Golmaal 3","y":2010,"k":"original"},{"t":"Hello Darling","y":2010,"k":"original"},{"t":"Khatta Meetha","y":2010,"k":"shared","w":"Khatta Meetha (2010 film)"},{"t":"Mallika","y":2010,"k":"partial","w":"Mallika (2010 film)"},{"t":"No Problem","y":2010,"k":"partial","w":"No Problem (2010 film)"},{"t":"Once Upon a Time in Mumbaai","y":2010,"k":"original"},{"t":"Raajneeti","y":2010,"k":"original"},{"t":"Toh Baat Pakki!","y":2010,"k":"original"},{"t":"Always Kabhi Kabhi","y":2011,"k":"partial"},{"t":"Bodyguard","y":2011,"k":"partial","w":"Bodyguard (2011 Hindi film)"},{"t":"Desi Boyz","y":2011,"k":"original"},{"t":"Dil Toh Baccha Hai Ji","y":2011,"k":"original"},{"t":"Dum Maaro Dum","y":2011,"k":"original","w":"Dum Maaro Dum (film)"},{"t":"Kucch Luv Jaisaa","y":2011,"k":"original"},{"t":"Mausam","y":2011,"k":"original","w":"Mausam (2011 film)"},{"t":"Ready","y":2011,"k":"shared","w":"Ready (2011 film)"},{"t":"Tell Me O Kkhuda","y":2011,"k":"partial"},{"t":"Thank You","y":2011,"k":"original","w":"Thank You (2011 film)"},{"t":"United Six","y":2011,"k":"original"},{"t":"Agent Vinod","y":2012,"k":"original","w":"Agent Vinod (2012 film)"},{"t":"Barfi!","y":2012,"k":"original"},{"t":"Cocktail","y":2012,"k":"shared","w":"Cocktail (2012 film)"},{"t":"Ferrari Ki Sawaari","y":2012,"k":"original"},{"t":"Jannat 2","y":2012,"k":"original"},{"t":"Players","y":2012,"k":"original","w":"Players (2012 film)"},{"t":"Rush","y":2012,"k":"shared","w":"Rush (2012 film)"},{"t":"Dhoom 3","y":2013,"k":"shared"},{"t":"Murder 3","y":2013,"k":"shared"},{"t":"Once Upon ay Time in Mumbai Dobaara!","y":2013,"k":"shared"},{"t":"Phata Poster Nikhla Hero","y":2013,"k":"original"},{"t":"R... Rajkumar","y":2013,"k":"original"},{"t":"Race 2","y":2013,"k":"original"},{"t":"Yeh Jawaani Hai Deewani","y":2013,"k":"original"},{"t":"Holiday","y":2014,"k":"original","w":"Holiday: A Soldier Is Never Off Duty"},{"t":"Shaadi Ke Side Effects","y":2014,"k":"shared"},{"t":"Yaariyan","y":2014,"k":"original","w":"Yaariyan (2014 film)"},{"t":"Bajrangi Bhaijaan","y":2015,"k":"original"},{"t":"Dilwale","y":2015,"k":"original","w":"Dilwale (2015 film)"},{"t":"I Love NY","y":2015,"k":"partial","w":"I Love NY (2015 film)"},{"t":"Phantom","y":2015,"k":"original","w":"Phantom (2015 film)"},{"t":"Ae Dil Hai Mushkil","y":2016,"k":"original"},{"t":"Azhar","y":2016,"k":"original","w":"Azhar (film)"},{"t":"Dangal","y":2016,"k":"original","w":"Dangal (2016 film)"},{"t":"Dishoom","y":2016,"k":"original"},{"t":"Jab Harry Met Sejal","y":2017,"k":"original"},{"t":"Jagga Jasoos","y":2017,"k":"original"},{"t":"Raabta","y":2017,"k":"original","w":"Raabta (film)"},{"t":"Tubelight","y":2017,"k":"original","w":"Tubelight (2017 Hindi film)"},{"t":"Chhichhore","y":2019,"k":"original"},{"t":"Kalank","y":2019,"k":"partial"},{"t":"The Sky Is Pink","y":2019,"k":"original"},{"t":"Ludo","y":2020,"k":"original","w":"Ludo (soundtrack)"},{"t":"The Forgotten Army - Azaadi Ke Liye","y":2020,"k":"series"},{"t":"83","y":2021,"k":"original","w":"83 (soundtrack)"},{"t":"Tadap","y":2021,"k":"original","w":"Tadap (2021 film)"},{"t":"Bhool Bhulaiyaa 2","y":2022,"k":"partial"},{"t":"Brahmāstra: Part One – Shiva","y":2022,"k":"original","w":"Brahmāstra: Part One – Shiva (soundtrack)"},{"t":"Freddy","y":2022,"k":"original","w":"Freddy (film)"},{"t":"Laal Singh Chaddha","y":2022,"k":"original","w":"Laal Singh Chaddha (soundtrack)"},{"t":"Animal","y":2023,"k":"original","w":"Animal (2023 Indian film)"},{"t":"Dunki","y":2023,"k":"shared","w":"Dunki (soundtrack)"},{"t":"Rocky Aur Rani Kii Prem Kahaani","y":2023,"k":"original","w":"Rocky Aur Rani Kii Prem Kahaani (soundtrack)"},{"t":"Shehzada","y":2023,"k":"shared","w":"Shehzada (2023 film)"},{"t":"The Great Indian Family","y":2023,"k":"original"},{"t":"Tiger 3","y":2023,"k":"original","w":"Tiger 3 (soundtrack)"},{"t":"Tu Jhoothi Main Makkaar","y":2023,"k":"original","w":"Tu Jhoothi Main Makkaar (soundtrack)"},{"t":"Chandu Champion","y":2024,"k":"original"},{"t":"Merry Christmas","y":2024,"k":"original","w":"Merry Christmas (2024 film)"},{"t":"Metro... In Dino","y":2025,"k":"original","w":"Metro... In Dino (soundtrack)"},{"t":"Sikandar","y":2025,"k":"shared","w":"Sikandar (2025 film)"},{"t":"Sunny Sanskari Ki Tulsi Kumari","y":2025,"k":"shared"},{"t":"War 2","y":2025,"k":"original","w":"War 2 (film)"},{"t":"Bhooth Bangla","y":2026,"k":"upcoming"},{"t":"Cocktail 2","y":2026,"k":"upcoming"}]},"vishal-shekhar":{"name":"Vishal–Shekhar","blurb":"Hindi film soundtracks","src":"Vishal–Shekhar discography","srcUrl":"https://en.wikipedia.org/wiki/Vishal–Shekhar_discography","albums":[{"t":"Pyaar Mein Kabhi Kabhi","y":1999,"k":"original"},{"t":"Champion","y":2000,"k":"original","w":"Champion (2000 film)"},{"t":"Bollywood Calling","y":2001,"k":"original"},{"t":"Mujhe Kucch Kehna Hai","y":2001,"k":"partial"},{"t":"Kaante","y":2002,"k":"original"},{"t":"Vadh","y":2002,"k":"original","w":"Vadh (2002 film)"},{"t":"Jhankaar Beats","y":2003,"k":"original"},{"t":"Supari","y":2003,"k":"original","w":"Supari (film)"},{"t":"Waisa Bhi Hota Hai Part II","y":2003,"k":"original"},{"t":"Kitni Mast Hai Zindagi","y":2004,"k":"series"},{"t":"Krishna Cottage","y":2004,"k":"original"},{"t":"Love in Nepal","y":2004,"k":"original"},{"t":"Musafir","y":2004,"k":"original","w":"Musafir (2004 film)"},{"t":"Plan","y":2004,"k":"original","w":"Plan (film)"},{"t":"Popcorn Khao! Mast Ho Jao","y":2004,"k":"original"},{"t":"Rudraksh","y":2004,"k":"original","w":"Rudraksh (film)"},{"t":"Shaadi Ka Laddoo","y":2004,"k":"original"},{"t":"Shukriya: Till Death Do Us Apart","y":2004,"k":"original"},{"t":"Stop!","y":2004,"k":"original"},{"t":"Bluffmaster","y":2005,"k":"original"},{"t":"Dus","y":2005,"k":"partial"},{"t":"Ek Ajnabee","y":2005,"k":"partial"},{"t":"Home Delivery: Aapko... Ghar Tak","y":2005,"k":"original","w":"Home Delivery"},{"t":"Karam","y":2005,"k":"original","w":"Karam (2005 film)"},{"t":"Salaam Namaste","y":2005,"k":"original"},{"t":"Shabd","y":2005,"k":"original","w":"Shabd (film)"},{"t":"Golmal","y":2006,"k":"original","w":"Golmaal: Fun Unlimited"},{"t":"I See You","y":2006,"k":"original","w":"I See You (2006 film)"},{"t":"Left Right Left","y":2006,"k":"series","w":"Left Right Left (TV series)"},{"t":"Tathastu","y":2006,"k":"original"},{"t":"Taxi No. 9211","y":2006,"k":"original"},{"t":"Zinda","y":2006,"k":"original","w":"Zinda (film)"},{"t":"Cash","y":2007,"k":"original","w":"Cash (2007 film)"},{"t":"Honeymoon Travels Pvt. Ltd.","y":2007,"k":"original"},{"t":"Om Shanti Om","y":2007,"k":"original"},{"t":"Ta Ra Rum Pum","y":2007,"k":"original"},{"t":"Bachna Ae Haseeno","y":2008,"k":"partial"},{"t":"Bhoothnath","y":2008,"k":"original"},{"t":"Chintakayala Ravi","y":2008,"k":"nonhindi"},{"t":"De Taali","y":2008,"k":"original"},{"t":"Dostana","y":2008,"k":"original","w":"Dostana (2008 film)"},{"t":"Tashan","y":2008,"k":"original","w":"Tashan (film)"},{"t":"Aladin","y":2009,"k":"original","w":"Aladin (film)"},{"t":"Anjaana Anjaani","y":2010,"k":"original"},{"t":"Break Ke Baad","y":2010,"k":"original"},{"t":"I Hate Luv Storys","y":2010,"k":"original"},{"t":"Tees Maar Khan","y":2010,"k":"original","w":"Tees Maar Khan (2010 film)"},{"t":"Bbuddah... Hoga Terra Baap","y":2011,"k":"original"},{"t":"Navya..Naye Dhadkan Naye Sawaal","y":2011,"k":"series"},{"t":"Ra.One","y":2011,"k":"original"},{"t":"Rascals","y":2011,"k":"original","w":"Rascals (2011 film)"},{"t":"The Dirty Picture","y":2011,"k":"original"},{"t":"Arjun: The Warrior Prince","y":2012,"k":"original"},{"t":"Kahaani","y":2012,"k":"original"},{"t":"Shanghai","y":2012,"k":"original","w":"Shanghai (2012 film)"},{"t":"Student of the Year","y":2012,"k":"original"},{"t":"Balak-Palak","y":2013,"k":"original"},{"t":"Chennai Express","y":2013,"k":"original"},{"t":"Gippi","y":2013,"k":"original"},{"t":"Gori Tere Pyaar Mein","y":2013,"k":"original"},{"t":"Bang Bang!","y":2014,"k":"original"},{"t":"Happy New Year","y":2014,"k":"original","w":"Happy New Year (2014 film)"},{"t":"Hasee Toh Phasee","y":2014,"k":"original"},{"t":"Akira","y":2016,"k":"original","w":"Akira (2016 Hindi film)"},{"t":"Banjo","y":2016,"k":"original","w":"Banjo (2016 film)"},{"t":"Befikre","y":2016,"k":"original"},{"t":"Fan","y":2016,"k":"original","w":"Fan (2016 film)"},{"t":"Sultan","y":2016,"k":"original","w":"Sultan (2016 film)"},{"t":"Tiger Zinda Hai","y":2017,"k":"original"},{"t":"Naa Peru Surya","y":2018,"k":"nonhindi"},{"t":"Bharat","y":2019,"k":"shared","w":"Bharat (film)"},{"t":"Student of the Year 2","y":2019,"k":"original"},{"t":"War","y":2019,"k":"original","w":"War (2019 film)"},{"t":"Baaghi 3","y":2020,"k":"original"},{"t":"Chhalaang","y":2020,"k":"original"},{"t":"Khaali Peeli","y":2020,"k":"original"},{"t":"Bob Biswas","y":2021,"k":"partial"},{"t":"Chehre","y":2021,"k":"partial"},{"t":"Jayeshbhai Jordaar","y":2022,"k":"partial"},{"t":"Vikram Vedha","y":2022,"k":"partial","w":"Vikram_Vedha_2022"},{"t":"Pathaan","y":2023,"k":"partial","w":"Pathaan (film)"},{"t":"Fighter","y":2024,"k":"partial","w":"Fighter (2024 film)"},{"t":"Tu Meri Main Tera Main Tera Tu Meri","y":2025,"k":"original"}]},"sanjay-leela-bhansali":{"name":"Sanjay Leela Bhansali","blurb":"Soundtracks he composed himself","src":"Sanjay Leela Bhansali","srcUrl":"https://en.wikipedia.org/wiki/Sanjay_Leela_Bhansali","albums":[{"t":"Guzaarish","y":2010,"k":"original","w":"Guzaarish (film)"},{"t":"Goliyon Ki Raasleela Ram-Leela","y":2013,"k":"original"},{"t":"Bajirao Mastani","y":2015,"k":"original"},{"t":"Padmaavat","y":2018,"k":"original"},{"t":"Malaal","y":2019,"k":"original","w":"Malaal (film)"},{"t":"Gangubai Kathiawadi","y":2022,"k":"original"},{"t":"Heeramandi","y":2024,"k":"series","w":"Heeramandi"}]}};
+
+  // Every category a dataset can tag an album with. Only the ones a given
+  // composer actually has appear in the filter panel.
+  var KINDS = [
+    { id: "original", label: "full soundtracks", on: true },
+    { id: "shared", label: "shared with another composer", on: true },
+    { id: "remake", label: "remakes reusing a Tamil score", on: true },
+    { id: "dub", label: "straight Hindi dubs", on: false },
+    { id: "partial", label: "one or two songs only", on: false },
+    { id: "series", label: "TV and web series", on: false },
+    { id: "nonhindi", label: "not a Hindi film", on: false },
+    { id: "upcoming", label: "not out yet", on: false }
+  ];
+  var NOTE = {
+    remake: "reused score", dub: "hindi dub", partial: "a song or two",
+    shared: "shared credit", series: "series", nonhindi: "not hindi", upcoming: "unreleased"
+  };
+  var SLUGS = Object.keys(ARTISTS);
+  var slug = SLUGS[0];
+  var ALBUMS, art;
+  function KEY() { return "bollywood-ranker-v1:" + slug; }
+  var START = 1500;
+  var TARGET = 8; // duels per album before a ranking has settled
+
+  var $ = function (id) { return document.getElementById(id); };
+  var state, duel;
+
+  function blank() {
+    var kinds = {};
+    KINDS.forEach(function (k) { kinds[k.id] = k.on; });
+    return { v: 1, kinds: kinds, removed: {}, s: {}, pairs: {}, hist: [] };
+  }
+
+  function load() {
+    var raw = null;
+    try { raw = JSON.parse(localStorage.getItem(KEY())); } catch (e) {}
+    if (!raw || raw.v !== 1) return blank();
+    var b = blank();
+    ["kinds", "removed", "s", "pairs"].forEach(function (f) {
+      if (raw[f] && typeof raw[f] === "object") b[f] = raw[f];
+    });
+    if (Array.isArray(raw.hist)) b.hist = raw.hist;
+    return b;
+  }
+
+  function save() {
+    try { localStorage.setItem(KEY(), JSON.stringify(state)); } catch (e) {}
+  }
+
+  function rec(t) {
+    if (!state.s[t]) state.s[t] = { r: START, n: 0, w: 0, l: 0, d: 0 };
+    return state.s[t];
+  }
+  function active() {
+    return ALBUMS.filter(function (a) { return state.kinds[a.k] && !state.removed[a.t]; });
+  }
+  function pk(a, b) { return a < b ? a + "|" + b : b + "|" + a; }
+  function kf(n) { return n < 5 ? 32 : n < 12 ? 24 : 16; }
+
+  function apply(a, b, sc) {
+    var ra = rec(a), rb = rec(b), pa = ra.r, pb = rb.r;
+    var e = 1 / (1 + Math.pow(10, (rb.r - ra.r) / 400));
+    ra.r += kf(ra.n) * (sc - e);
+    rb.r += kf(rb.n) * (1 - sc - (1 - e));
+    ra.n++; rb.n++;
+    if (sc === 1) { ra.w++; rb.l++; }
+    else if (sc === 0) { ra.l++; rb.w++; }
+    else { ra.d++; rb.d++; }
+    state.pairs[pk(a, b)] = (state.pairs[pk(a, b)] || 0) + 1;
+    state.hist.push({ k: "c", a: a, b: b, s: sc, ra: pa, rb: pb });
+  }
+
+  function undo() {
+    var h = state.hist.pop();
+    if (!h) return false;
+    if (h.k === "x") { delete state.removed[h.t]; return true; }
+    var ra = rec(h.a), rb = rec(h.b);
+    ra.r = h.ra; rb.r = h.rb; ra.n--; rb.n--;
+    if (h.s === 1) { ra.w--; rb.l--; }
+    else if (h.s === 0) { ra.l--; rb.w--; }
+    else { ra.d--; rb.d--; }
+    var k = pk(h.a, h.b);
+    state.pairs[k] = Math.max(0, (state.pairs[k] || 1) - 1);
+    if (!state.pairs[k]) delete state.pairs[k];
+    return true;
+  }
+
+  /* Pick an under-compared album, then the opponent that teaches us the most:
+     close in rating, rarely paired before, not already over-compared. */
+  function pick() {
+    var pool = active();
+    if (pool.length < 2) return null;
+    var min = Infinity;
+    pool.forEach(function (a) { min = Math.min(min, rec(a.t).n); });
+    var fresh = pool.filter(function (a) { return rec(a.t).n <= min + 1; });
+    var a = fresh[Math.floor(Math.random() * fresh.length)];
+    var ra = rec(a.t);
+    var ranked = pool
+      .filter(function (b) { return b.t !== a.t; })
+      .map(function (b) {
+        var rb = rec(b.t);
+        return {
+          b: b,
+          cost: Math.abs(ra.r - rb.r) + 600 * (state.pairs[pk(a.t, b.t)] || 0) +
+                20 * Math.max(0, rb.n - min) + Math.random() * 40
+        };
+      })
+      .sort(function (x, y) { return x.cost - y.cost; });
+    var b = ranked[Math.floor(Math.random() * Math.min(3, ranked.length))].b;
+    return Math.random() < 0.5 ? [a, b] : [b, a];
+  }
+
+  function wiki(a) {
+    return "https://en.wikipedia.org/wiki/" + encodeURIComponent((a.w || a.t).replace(/ /g, "_"));
+  }
+
+  function paint(side, a) {
+    $("name" + side).textContent = a.t;
+    $("year" + side).textContent = a.y;
+    $("tag" + side).textContent = NOTE[a.k] || "";
+    $("wiki" + side).href = wiki(a);
+  }
+
+  function renderDuel() {
+    duel = pick();
+    $("duel").hidden = !duel;
+    $("empty").hidden = !!duel;
+    $("tie").disabled = !duel;
+    if (!duel) return;
+    paint("L", duel[0]);
+    paint("R", duel[1]);
+  }
+
+  function ranking() {
+    return active()
+      .map(function (a) { return { a: a, s: rec(a.t) }; })
+      .sort(function (x, y) { return y.s.r - x.s.r || x.a.t.localeCompare(y.a.t); });
+  }
+
+  function renderStats() {
+    var pool = active();
+    var done = state.hist.filter(function (h) { return h.k === "c"; }).length;
+    var goal = Math.max(1, pool.length * TARGET);
+    var pct = Math.min(100, Math.round((done / goal) * 100));
+    var out = pool.length + " albums in play";
+    var dropped = Object.keys(state.removed).length;
+    if (dropped) out += " · " + dropped + " dropped";
+    $("stats").innerHTML =
+      "<b>" + done + "</b> duel" + (done === 1 ? "" : "s") +
+      "<span>" + out + "</span><span><b>" + pct + "%</b> to a settled ranking</span>";
+    $("fill").style.width = pct + "%";
+    $("undo").disabled = !state.hist.length;
+  }
+
+  function renderBoard() {
+    var rows = ranking(), el = $("board");
+    el.innerHTML = "";
+    if (!rows.length) {
+      el.innerHTML = '<li class="empty">Nothing in the pool yet.</li>';
+      return;
+    }
+    var seen = rows.filter(function (r) { return r.s.n; });
+    var lo = seen.length ? seen[seen.length - 1].s.r : START;
+    var hi = seen.length ? seen[0].s.r : START;
+    var span = Math.max(1, hi - lo);
+    rows.forEach(function (row, i) {
+      var li = document.createElement("li");
+      var played = row.s.n > 0;
+      li.className = played ? (i < 3 ? "top" : "") : "cold";
+      var w = played ? Math.max(2, Math.round(((row.s.r - lo) / span) * 100)) : 0;
+      li.innerHTML =
+        '<div class="pos">' + (played ? i + 1 : "—") + "</div>" +
+        '<div class="name">' + row.a.t + "<span>" + row.a.y + "</span></div>" +
+        '<div class="score">' + (played
+          ? "<b>" + Math.round(row.s.r) + "</b> · " + row.s.w + "–" + row.s.l + "–" + row.s.d
+          : "unheard from") + "</div>" +
+        (played ? '<div class="rail"><i style="width:' + w + '%"></i></div>' : "");
+      el.appendChild(li);
+    });
+  }
+
+  function renderPool() {
+    var box = $("pool");
+    box.innerHTML = "";
+    KINDS.forEach(function (k) {
+      var n = ALBUMS.filter(function (a) { return a.k === k.id; }).length;
+      if (!n) return;
+      var lab = document.createElement("label");
+      var cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !!state.kinds[k.id];
+      cb.addEventListener("change", function () {
+        state.kinds[k.id] = cb.checked;
+        save(); renderAll();
+      });
+      lab.appendChild(cb);
+      lab.appendChild(document.createTextNode(k.label + " (" + n + ")"));
+      box.appendChild(lab);
+    });
+
+    var gone = Object.keys(state.removed).sort();
+    var d = $("dropped");
+    d.innerHTML = "";
+    if (!gone.length) return;
+    gone.forEach(function (t) {
+      var b = document.createElement("button");
+      b.className = "ghost";
+      b.type = "button";
+      b.textContent = t + "  ↩";
+      b.title = "Put " + t + " back in the pool";
+      b.addEventListener("click", function () {
+        delete state.removed[t];
+        state.hist = state.hist.filter(function (h) { return !(h.k === "x" && h.t === t); });
+        save(); renderAll();
+      });
+      d.appendChild(b);
+    });
+  }
+
+  function renderTabs() {
+    var t = $("tabs");
+    t.innerHTML = "";
+    SLUGS.forEach(function (id) {
+      var b = document.createElement("button");
+      b.className = "tab";
+      b.type = "button";
+      b.setAttribute("aria-current", id === slug ? "true" : "false");
+      b.innerHTML = ARTISTS[id].name + "<b>" + ARTISTS[id].albums.length + "</b>";
+      b.addEventListener("click", function () { switchTo(id); });
+      t.appendChild(b);
+    });
+  }
+
+  function renderChrome() {
+    var yrs = ALBUMS.map(function (a) { return a.y; });
+    $("eyebrow").textContent =
+      art.name + " · " + art.blurb + " · " +
+      Math.min.apply(null, yrs) + "–" + Math.max.apply(null, yrs);
+    $("foot").innerHTML =
+      "Album list taken from " +
+      '<a href="' + art.srcUrl + '">' + art.src + "</a> on Wikipedia. " +
+      "Each composer is ranked separately and saved separately.";
+  }
+
+  function renderAll() { renderTabs(); renderChrome(); renderStats(); renderBoard(); renderPool(); renderDuel(); }
+
+  function switchTo(id) {
+    slug = id;
+    art = ARTISTS[id];
+    ALBUMS = art.albums;
+    state = load();
+    renderAll();
+  }
+
+  function hit(id) {
+    var el = $(id);
+    el.classList.add("hit");
+    setTimeout(function () { el.classList.remove("hit"); }, 130);
+  }
+
+  function vote(sc) {
+    if (!duel) return;
+    if (sc === 1) hit("cardL");
+    else if (sc === 0) hit("cardR");
+    apply(duel[0].t, duel[1].t, sc);
+    save(); renderAll();
+  }
+
+  function drop(i) {
+    if (!duel) return;
+    state.removed[duel[i].t] = 1;
+    state.hist.push({ k: "x", t: duel[i].t });
+    save(); renderAll();
+  }
+
+  function stepBack() { if (undo()) { save(); renderAll(); } }
+
+  function asList() {
+    var rows = ranking().filter(function (r) { return r.s.n; });
+    var out = [art.name + " — " + art.blurb + ", ranked", ""];
+    rows.forEach(function (r, i) {
+      out.push(i + 1 + ". " + r.a.t + " (" + r.a.y + ")");
+    });
+    return out.join("\n");
+  }
+
+  switchTo(slug);
+
+  [["cardL", 1], ["cardR", 0]].forEach(function (p) {
+    var el = $(p[0]);
+    el.addEventListener("click", function () { vote(p[1]); });
+    el.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); vote(p[1]); }
+    });
+  });
+  $("killL").addEventListener("click", function (e) { e.stopPropagation(); drop(0); });
+  $("killR").addEventListener("click", function (e) { e.stopPropagation(); drop(1); });
+  ["wikiL", "wikiR"].forEach(function (id) {
+    $(id).addEventListener("click", function (e) { e.stopPropagation(); });
+  });
+  $("tie").addEventListener("click", function () { vote(0.5); });
+  $("undo").addEventListener("click", stepBack);
+  $("reset").addEventListener("click", function () {
+    if (!confirm("Clear every duel for " + art.name + " and start from scratch?")) return;
+    state = blank(); save(); renderAll();
+  });
+  $("expMd").addEventListener("click", function () { $("dump").value = asList(); });
+  $("expJson").addEventListener("click", function () { $("dump").value = JSON.stringify(state); });
+  $("impJson").addEventListener("click", function () {
+    var p = null;
+    try { p = JSON.parse($("dump").value); } catch (e) {}
+    if (!p || p.v !== 1) { $("dump").value = "That isn't save data from this page. Paste the blob you copied with “Copy save data”."; return; }
+    localStorage.setItem(KEY(), JSON.stringify(p));
+    state = load(); renderAll();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    var t = e.target.tagName;
+    if (t === "TEXTAREA" || t === "INPUT" || e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+    if (k === "ArrowLeft") vote(1);
+    else if (k === "ArrowRight") vote(0);
+    else if (k === "ArrowDown") vote(0.5);
+    else if (k === "a" || k === "A") drop(0);
+    else if (k === "d" || k === "D") drop(1);
+    else if (k === "u" || k === "U") stepBack();
+    else return;
+    e.preventDefault();
+  });
+
+  renderAll();
+})();
+</script>

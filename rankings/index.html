@@ -114,9 +114,11 @@
         </header>
         <p class="rk-sub">
           Ranking soundtracks the only way that actually works: two at a time. Every choice updates an
-          Elo rating, so the leaderboard sharpens as you go and you can stop whenever. Progress is saved
-          in this browser.
+          Elo rating, so the leaderboard sharpens as you go and you can stop whenever. Each composer is
+          ranked separately, and progress is saved in this browser.
         </p>
+
+        <p class="rk-sub" id="rk-source"></p>
 
         <div class="rk-bar">
           <select id="rk-artist" aria-label="Artist"></select>
@@ -191,10 +193,14 @@
     </main>
 
     <footer class="footer">
-      <p>&copy; 2026 Harsh Agrawal &middot; album data from <a href="https://en.wikipedia.org/wiki/A._R._Rahman_discography">Wikipedia</a></p>
+      <p>&copy; 2026 Harsh Agrawal &middot; album data from Wikipedia discographies</p>
     </footer>
 
     <script src="data/ar-rahman.js"></script>
+    <script src="data/shankar-ehsaan-loy.js"></script>
+    <script src="data/pritam.js"></script>
+    <script src="data/vishal-shekhar.js"></script>
+    <script src="data/sanjay-leela-bhansali.js"></script>
     <script>
       (function () {
         var btn = document.getElementById("theme-toggle");
