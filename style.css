@@ -200,6 +200,16 @@ p { margin-bottom: 1rem; }
   margin: 5px 0 0;
   padding: 5px 0 0;
 }
+.home-info .entry-content pre.email {
+  display: inline-block;
+  margin: 0;
+  padding: 0.45rem 0.8rem;
+  background: var(--code-bg);
+  border: 1px solid var(--tertiary);
+  border-radius: 6px;
+  max-width: 100%;
+  overflow-x: auto;
+}
 .home-info .profile-picture {
   flex: none;
   display: flex;
@@ -449,7 +459,7 @@ p { margin-bottom: 1rem; }
   h1 { font-size: 2.4rem; }
 
   .home-info {
-    flex-direction: column-reverse;
+    flex-direction: column;
     align-items: center;
     text-align: center;
     padding: 1rem 0 2rem;
