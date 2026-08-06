@@ -1,0 +1,1660 @@
+<title>Rank My Shows — Pairwise</title>
+
+<style>
+  :root {
+    --bg: #EDF1EF;
+    --surface: #F9FBF9;
+    --surface-2: #FFFFFF;
+    --ink: #0F1719;
+    --muted: #5A6A68;
+    --faint: #859592;
+    --line: #D2DAD6;
+    --line-strong: #B7C2BE;
+    --accent: #0C7F77;
+    --accent-ink: #075C56;
+    --accent-wash: rgba(12,127,119,0.09);
+    --warm: #BB4A3A;
+    --warm-ink: #93382B;
+    --warm-wash: rgba(187,74,58,0.09);
+    --violet: #6A5DA8;
+    --shadow: 0 1px 2px rgba(15,23,25,.05), 0 8px 24px rgba(15,23,25,.06);
+    --shadow-lift: 0 2px 4px rgba(15,23,25,.06), 0 18px 40px rgba(15,23,25,.12);
+
+    --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0A1012;
+      --surface: #111A1C;
+      --surface-2: #162124;
+      --ink: #E4EBE8;
+      --muted: #8DA09C;
+      --faint: #6B7E7A;
+      --line: #223032;
+      --line-strong: #33464A;
+      --accent: #37C6B5;
+      --accent-ink: #6FDDCF;
+      --accent-wash: rgba(55,198,181,0.12);
+      --warm: #E2705F;
+      --warm-ink: #F09384;
+      --warm-wash: rgba(226,112,95,0.12);
+      --violet: #9A8CE0;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+      --shadow-lift: 0 2px 4px rgba(0,0,0,.45), 0 18px 40px rgba(0,0,0,.5);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0A1012;
+    --surface: #111A1C;
+    --surface-2: #162124;
+    --ink: #E4EBE8;
+    --muted: #8DA09C;
+    --faint: #6B7E7A;
+    --line: #223032;
+    --line-strong: #33464A;
+    --accent: #37C6B5;
+    --accent-ink: #6FDDCF;
+    --accent-wash: rgba(55,198,181,0.12);
+    --warm: #E2705F;
+    --warm-ink: #F09384;
+    --warm-wash: rgba(226,112,95,0.12);
+    --violet: #9A8CE0;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    --shadow-lift: 0 2px 4px rgba(0,0,0,.45), 0 18px 40px rgba(0,0,0,.5);
+  }
+
+  :root[data-theme="light"] {
+    --bg: #EDF1EF;
+    --surface: #F9FBF9;
+    --surface-2: #FFFFFF;
+    --ink: #0F1719;
+    --muted: #5A6A68;
+    --faint: #859592;
+    --line: #D2DAD6;
+    --line-strong: #B7C2BE;
+    --accent: #0C7F77;
+    --accent-ink: #075C56;
+    --accent-wash: rgba(12,127,119,0.09);
+    --warm: #BB4A3A;
+    --warm-ink: #93382B;
+    --warm-wash: rgba(187,74,58,0.09);
+    --violet: #6A5DA8;
+    --shadow: 0 1px 2px rgba(15,23,25,.05), 0 8px 24px rgba(15,23,25,.06);
+    --shadow-lift: 0 2px 4px rgba(15,23,25,.06), 0 18px 40px rgba(15,23,25,.12);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 28px 20px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 14px;
+  }
+  .masthead h1 {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+  .masthead h1 em { font-style: italic; color: var(--accent); }
+  .masthead p {
+    color: var(--muted);
+    font-size: 13px;
+    max-width: 44ch;
+  }
+
+  /* ---------- readout strip ---------- */
+  .readout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .cell {
+    background: var(--surface);
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .cell .k {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+  .cell .v {
+    font-family: var(--mono);
+    font-size: 19px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .cell .v small { font-size: 12px; color: var(--muted); }
+  .meter {
+    height: 3px;
+    background: var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+  .meter i {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+    transition: width .35s ease;
+  }
+
+
+  /* ---------- league strip ---------- */
+  .leagues { display: flex; flex-direction: column; gap: 8px; }
+  .lgstrip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .lg {
+    appearance: none;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 7px 12px;
+    cursor: pointer;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    text-align: left;
+    transition: border-color .15s ease, background .15s ease, color .15s ease;
+  }
+  .lg:hover { border-color: var(--line-strong); color: var(--ink); }
+  .lg:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .lg[aria-pressed="true"] {
+    background: var(--accent-wash);
+    border-color: var(--accent);
+    color: var(--ink);
+  }
+  .lgname {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .lgmeta {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--faint);
+    font-variant-numeric: tabular-nums;
+  }
+  .lgblurb { font-size: 12px; color: var(--faint); }
+  .lgtag {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 1px 6px;
+    color: var(--faint);
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .lgtag.anime  { border-color: var(--violet); color: var(--violet); }
+  .lgtag.comedy { border-color: var(--warm); color: var(--warm-ink); }
+  .lgtag.doc    { border-color: var(--accent); color: var(--accent-ink); }
+
+  /* ---------- tabs ---------- */
+  .tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); }
+  .tabs button {
+    appearance: none;
+    background: none;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    padding: 8px 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .tabs button:hover { color: var(--ink); }
+  .tabs button[aria-selected="true"] {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+  }
+  .tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .panel[hidden] { display: none; }
+  .panel { display: flex; flex-direction: column; gap: 18px; }
+
+  /* ---------- the duel ---------- */
+  .prompt {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  .duel {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: stretch;
+    gap: 14px;
+  }
+  @media (max-width: 680px) {
+    .duel { grid-template-columns: 1fr; }
+    .versus { flex-direction: row !important; padding: 4px 0 !important; }
+    .versus .rule { width: 100% !important; height: 1px !important; }
+  }
+
+  .card {
+    position: relative;
+    appearance: none;
+    text-align: left;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    padding: 22px 20px 16px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 190px;
+    color: inherit;
+    transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    border-radius: 4px 0 0 4px;
+    background: var(--side);
+    opacity: .85;
+  }
+  .card.left  { --side: var(--accent); }
+  .card.right { --side: var(--warm); }
+  .card:hover, .card:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--side);
+    outline: none;
+  }
+  .card.left:hover, .card.left:focus-visible  { background: color-mix(in srgb, var(--surface-2) 92%, var(--accent)); }
+  .card.right:hover, .card.right:focus-visible { background: color-mix(in srgb, var(--surface-2) 92%, var(--warm)); }
+  .card.flash { animation: pick .3s ease; }
+  @keyframes pick { 0% { transform: scale(1); } 45% { transform: scale(.975); } 100% { transform: scale(1); } }
+
+  .card .key {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--side);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card .title {
+    font-family: var(--serif);
+    font-size: clamp(24px, 4vw, 34px);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    font-weight: 600;
+  }
+  .card .facts {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .chip {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    padding: 2px 7px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .chip.rank { border-color: var(--line-strong); color: var(--ink); }
+
+  .versus {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 4px;
+  }
+  .versus .rule { width: 1px; height: 100%; background: var(--line); }
+  .versus span {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--faint);
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+  }
+  .btn {
+    appearance: none;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+    border-radius: 3px;
+    padding: 7px 13px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent-ink); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .btn[disabled] { opacity: .4; cursor: not-allowed; }
+  .btn.danger:hover { border-color: var(--warm); color: var(--warm-ink); }
+  .btn kbd {
+    font-family: var(--mono);
+    font-size: 10px;
+    border: 1px solid var(--line);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 0 4px;
+    margin-left: 6px;
+    color: var(--faint);
+  }
+
+  .hint {
+    text-align: center;
+    font-size: 12px;
+    color: var(--faint);
+  }
+  .hint kbd {
+    font-family: var(--mono);
+    border: 1px solid var(--line-strong);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ---------- settings row ---------- */
+  .settings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 22px;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .settings label { display: flex; align-items: center; gap: 7px; cursor: pointer; }
+  .settings select, .settings input[type="range"] { accent-color: var(--accent); }
+  .settings select {
+    font-family: var(--mono);
+    font-size: 11px;
+    background: var(--surface-2);
+    color: var(--ink);
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    padding: 3px 6px;
+  }
+  .settings .fld {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .settings .fld > span {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  /* ---------- table ---------- */
+  .tablewrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--surface);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--faint);
+    font-weight: 400;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--line-strong);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:hover { background: var(--accent-wash); }
+  .num { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+  .name { font-family: var(--serif); font-size: 15px; }
+  .genre { color: var(--faint); font-size: 11px; font-family: var(--mono); }
+  .mv { font-family: var(--mono); font-size: 11px; font-variant-numeric: tabular-nums; }
+  .mv.up { color: var(--accent-ink); }
+  .mv.down { color: var(--warm-ink); }
+  .mv.same { color: var(--faint); }
+  .sebar {
+    width: 74px;
+    height: 4px;
+    background: var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .sebar i { display: block; height: 100%; background: var(--violet); }
+  .thin { color: var(--faint); font-size: 11px; font-family: var(--mono); }
+
+  /* ---------- prose ---------- */
+  .prose { max-width: 68ch; display: flex; flex-direction: column; gap: 14px; }
+  .prose h2 {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-top: 8px;
+  }
+  .prose h3 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin-top: 6px;
+  }
+  .prose p, .prose li { color: var(--muted); font-size: 14px; }
+  .prose strong { color: var(--ink); font-weight: 600; }
+  .prose ul, .prose ol { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+  .prose code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--accent-wash);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--accent-ink);
+  }
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-wash);
+    padding: 12px 14px;
+    border-radius: 0 3px 3px 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .surprises { display: flex; flex-direction: column; gap: 6px; }
+  .surprise {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--warm);
+    background: var(--surface);
+    border-radius: 0 3px 3px 0;
+    padding: 8px 12px;
+  }
+  .surprise .name { font-size: 14px; }
+
+  .sectionhead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .sectionhead h2 {
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 600;
+  }
+  .sectionhead .sub { font-size: 12px; color: var(--faint); }
+
+  /* ---------- session bar ---------- */
+  .sessionbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+    margin-top: 4px;
+  }
+  .sessionnote {
+    font-size: 12px;
+    color: var(--faint);
+    font-variant-numeric: tabular-nums;
+  }
+  .sessionnote b { color: var(--muted); font-weight: 600; }
+  .sessionbtns { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%) translateY(12px);
+    background: var(--ink);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 9px 16px;
+    border-radius: 3px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+    z-index: 50;
+  }
+  .toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div>
+      <h1>Every Show I've Watched — <em>re-ranked by duel</em></h1>
+      <p>You never have to decide what an 8.3 means. You only ever answer: which of these two was better? Pick a league below — small ones finish fast.</p>
+    </div>
+    <button class="btn" id="themeToggle" type="button">Theme</button>
+  </header>
+
+  <div class="readout">
+    <div class="cell">
+      <span class="k">Duels judged</span>
+      <span class="v" id="mComparisons">0</span>
+    </div>
+    <div class="cell">
+      <span class="k">Coverage</span>
+      <span class="v" id="mCoverage">0<small>/60</small></span>
+      <div class="meter"><i id="mCoverageBar" style="width:0%"></i></div>
+    </div>
+    <div class="cell">
+      <span class="k">Confidence</span>
+      <span class="v" id="mConfidence">0<small>%</small></span>
+      <div class="meter"><i id="mConfidenceBar" style="width:0%"></i></div>
+    </div>
+    <div class="cell">
+      <span class="k">Median error</span>
+      <span class="v" id="mSE">—</span>
+    </div>
+    <div class="cell">
+      <span class="k">Upsets found</span>
+      <span class="v" id="mUpsets">0</span>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="tab-play" aria-selected="true" aria-controls="panel-play">Duel</button>
+    <button role="tab" id="tab-rank" aria-selected="false" aria-controls="panel-rank">Ranking</button>
+    <button role="tab" id="tab-method" aria-selected="false" aria-controls="panel-method">Method</button>
+  </nav>
+
+  <!-- ================= DUEL ================= -->
+  <section class="panel" id="panel-play" role="tabpanel" aria-labelledby="tab-play">
+    <div class="leagues">
+      <div class="lgstrip" id="leagueStrip"></div>
+      <p class="lgblurb" id="leagueBlurb"></p>
+    </div>
+
+    <p class="prompt" id="promptLine">Which one was the better show?</p>
+
+    <div class="duel">
+      <button class="card left" id="cardA" type="button">
+        <span class="key">← Left</span>
+        <span class="title" id="titleA">—</span>
+        <span class="facts" id="factsA"></span>
+      </button>
+      <div class="versus">
+        <div class="rule"></div>
+        <span>VS</span>
+        <div class="rule"></div>
+      </div>
+      <button class="card right" id="cardB" type="button">
+        <span class="key">Right →</span>
+        <span class="title" id="titleB">—</span>
+        <span class="facts" id="factsB"></span>
+      </button>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="btnTie" type="button">Too close to call <kbd>↓</kbd></button>
+      <button class="btn" id="btnSkip" type="button">Haven't seen enough <kbd>S</kbd></button>
+      <button class="btn" id="btnUndo" type="button">Undo <kbd>U</kbd></button>
+    </div>
+
+    <p class="hint">
+      <kbd>←</kbd> / <kbd>→</kbd> to pick · <kbd>↓</kbd> for a tie · <kbd>S</kbd> to skip · <kbd>U</kbd> to undo.
+      Every answer is saved in this browser.
+    </p>
+
+    <div class="settings">
+      <label>
+        <input type="checkbox" id="optPrior" checked>
+        Start from my Notion ratings
+      </label>
+      <div class="fld">
+        <span>Prior strength</span>
+        <input type="range" id="optLambda" min="0" max="100" value="35" style="width:130px">
+      </div>
+      <div class="fld">
+        <span>Pairing</span>
+        <select id="optPairing">
+          <option value="info" selected>Adaptive (hard calls)</option>
+          <option value="mixed">Mixed</option>
+          <option value="random">Random</option>
+        </select>
+      </div>
+      <label>
+        <input type="checkbox" id="optBlind">
+        Hide my old ratings while judging
+      </label>
+    </div>
+  </section>
+
+  <!-- ================= RANKING ================= -->
+  <section class="panel" id="panel-rank" role="tabpanel" aria-labelledby="tab-rank" hidden>
+    <div class="sectionhead">
+      <h2 id="rankTitle">Standings</h2>
+      <span class="sub" id="rankSub">Fit from 0 duels — this is still just your old list.</span>
+    </div>
+
+    <div class="settings">
+      <div class="fld">
+        <span>Score shown as</span>
+        <select id="optScore">
+          <option value="quantile" selected>0–10, matched to my old scale</option>
+          <option value="winpct">Win % against my whole library</option>
+          <option value="logit">Raw strength (log-odds)</option>
+        </select>
+      </div>
+      <button class="btn" id="btnCopy" type="button">Copy table</button>
+      <button class="btn" id="btnCSV" type="button">Download CSV</button>
+      <button class="btn danger" id="btnReset" type="button">Reset all duels</button>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="num">#</th>
+            <th>Show</th>
+            <th class="num">Score</th>
+            <th class="num">Pre-duel</th>
+            <th class="num">Move</th>
+            <th>Uncertainty</th>
+            <th class="num">Duels</th>
+          </tr>
+        </thead>
+        <tbody id="rankBody"></tbody>
+      </table>
+    </div>
+
+    <div class="sectionhead">
+      <h2>Where you contradicted yourself</h2>
+      <span class="sub">The calls that fit worst — worth a rewatch or a rethink.</span>
+    </div>
+    <div class="surprises" id="surprises">
+      <p class="thin">Judge some duels and the disagreements will show up here.</p>
+    </div>
+  </section>
+
+  <!-- ================= METHOD ================= -->
+  <section class="panel" id="panel-method" role="tabpanel" aria-labelledby="tab-method" hidden>
+    <div class="prose">
+      <h2>Why your 8.3s all feel arbitrary</h2>
+      <p>
+        Absolute ratings ask you to hold a 60-item scale in your head at once, and the scale drifts:
+        the 8.3 you gave in 2021 was calibrated against a different library than today's. Worse, the
+        number does double duty — it encodes both <em>how good</em> and <em>how sure</em> you are, so
+        you compress everything into 7–9 and the ranking inside that band is noise.
+      </p>
+      <p>
+        A pairwise comparison asks something you actually know: <strong>A or B</strong>. It's local,
+        it needs no scale, and it's stable over time. The job is then to turn a pile of local
+        judgments into one global number.
+      </p>
+
+      <h3>The model</h3>
+      <p>
+        This uses <strong>Bradley–Terry</strong>: every show gets a strength <code>θ</code>, and the
+        chance you prefer <em>i</em> over <em>j</em> is <code>1 / (1 + e^-(θᵢ-θⱼ))</code>. Given your
+        answers, it finds the <code>θ</code> values that make what you actually said most likely
+        (maximum likelihood, fit by gradient ascent, refit after every single answer).
+      </p>
+      <p>
+        It's the same math behind chess Elo — but Elo is an <em>online approximation</em> that updates
+        one rating at a time and depends on the order games were played. Fitting the whole model at
+        once is strictly better when, as here, you have all the data sitting in front of you and only
+        sixty players. Order doesn't matter, and an answer you give on duel 200 correctly propagates
+        back through everything.
+      </p>
+
+      <h3>Where your old ratings go</h3>
+      <p>
+        Throwing away 60 existing ratings would be wasteful — they're noisy, not worthless. They're
+        used as a <strong>prior</strong>: the fit is pulled toward your Notion numbers, and each duel
+        you judge pulls it back toward the evidence. Slide the prior to zero to rank purely from
+        duels; leave it up to converge in far fewer questions. This is the practical difference between
+        needing ~400 comparisons and needing ~120.
+      </p>
+
+      <h3>Which pairs you get asked</h3>
+      <p>
+        Not random. A duel between your #1 and your #58 teaches nothing — you already know the answer.
+        The information in a comparison is <code>p(1-p)</code>, maximal when the model thinks it's a
+        coin flip. Adaptive mode samples candidate pairs and picks the one that is both close in
+        current strength and involves shows it has seen least. That's why it feels hard: every
+        question is meant to be hard. Switch to Mixed if you want easier ones mixed in.
+      </p>
+
+      <h3>Knowing when to stop</h3>
+      <p>
+        Each show gets a standard error from the Fisher information — how sharply the data pins its
+        strength down. The <em>Confidence</em> readout is the share of your library whose error has
+        dropped below the gap between adjacent shows. Practical stopping points:
+      </p>
+      <ul>
+        <li><strong>~60 duels</strong> — every show seen at least twice; the top and bottom tiers are real.</li>
+        <li><strong>~150 duels</strong> — tiers are solid, order within a tier is roughly right.</li>
+        <li><strong>~350 duels</strong> — near-total order. This is the <code>n·log n</code> regime; beyond it you're mostly re-measuring noise.</li>
+      </ul>
+
+      <h3>Turning strength back into a rating out of 10</h3>
+      <p>
+        <code>θ</code> is on a log-odds scale, which is correct but unreadable. Three honest translations,
+        switchable on the Ranking tab:
+      </p>
+      <ol>
+        <li>
+          <strong>Matched to your old scale</strong> — take the exact multiset of numbers you already
+          use (9.7, 9.6, 9.6, … 3.0) and re-deal them in the new order. Your scale's feel is preserved
+          and only the ordering changes. Best for pasting back into Notion.
+        </li>
+        <li>
+          <strong>Win % against the library</strong> — the model's average chance this show beats a
+          random show you've watched. The most interpretable number here, and immune to scale drift:
+          "beats 88% of everything I've seen" means the same thing forever.
+        </li>
+        <li>
+          <strong>Raw log-odds</strong> — the underlying quantity. A gap of 1.0 means ~73/27 odds; a
+          gap of 2.2 means ~90/10. Use it to see where the real cliffs in your taste are.
+        </li>
+      </ol>
+
+      <div class="callout">
+        <strong>Ties are data, not a cop-out.</strong> "Too close to call" is recorded as half a win
+        each way — it says these two belong on the same rung, which is genuine information. "Haven't
+        seen enough" is recorded as nothing at all, and the pair won't be asked again soon.
+      </div>
+
+      <h3>Reading the contradictions</h3>
+      <p>
+        The disagreement list shows answers the fitted model finds most surprising — you said A beat B
+        while everything else you've said implies B is far stronger. Some are mistakes. Some are the
+        interesting cases where a show is genuinely great on one axis and weak on another, and a single
+        total order is the wrong shape for your taste. If a show shows up there repeatedly, that's a
+        signal it deserves its own category rather than a rank.
+      </p>
+
+      <h3>Why genre leagues are the better ladder</h3>
+      <p>
+        Ranking <em>Chernobyl</em> against <em>Brooklyn Nine-Nine</em> forces you to answer a question
+        that doesn't really have an answer — they're not competing at the same thing. Cross-genre duels
+        are where most of your "arbitrary" feeling actually comes from, and they're also where the
+        model picks up the most contradictions.
+      </p>
+      <p>
+        Inside a league the comparison is honest, and there's a second win: a league is small. Anime is
+        6 shows, so <strong>15 duels covers every possible pair</strong> — a complete ranking with no
+        model needed at all. Minis &amp; Docs is 11 shows (55 pairs), Comedy is 15 (105 pairs). Only
+        Drama, at 29, still genuinely needs sampling.
+      </p>
+      <p>
+        The leagues start from the Type tags already on your database, with one deliberate override:
+      </p>
+      <ul>
+        <li><strong>Anime</strong> — tagged Anime or Shounen.</li>
+        <li><strong>Minis &amp; Docs</strong> — tagged Mini-series, Documentary, or Anthology.</li>
+        <li>
+          <strong>Comedy</strong> — everything tagged Sitcom, <em>plus</em> the unserious dramas:
+          <em>Sex Education</em>, <em>The OC</em>, <em>Off Campus</em>, <em>Adarsh Baal Vidyalaya</em>,
+          <em>Pritam and Pedro</em>, <em>Dhindhora</em>. These are tagged as drama but you don't watch
+          them the way you watch <em>Rome</em>, and a league only works if everything in it is
+          competing at the same thing.
+        </li>
+        <li><strong>Drama</strong> — what's left: prestige, crime, fantasy, superhero.</li>
+      </ul>
+      <p>
+        That override is the whole point of leagues, and it's worth being explicit about: the tag says
+        what a show <em>is</em>, the league says what you were <em>in the mood for</em>. When those
+        disagree, the mood is the better predictor of how you'll judge a duel.
+      </p>
+      <p>
+        Each league fits its own model, standardised against its own members, so a 7.0 anime is judged
+        against anime and not against <em>Game of Thrones</em>. And because a within-league duel is
+        still a perfectly valid global duel, <strong>every answer you give inside a league also sharpens
+        the Everything ladder</strong>. Nothing is wasted.
+      </p>
+
+      <h3>If you want to go further</h3>
+      <ul>
+        <li>Rate on <strong>two axes</strong> (how good vs. how much I loved it) and run two ladders. Most "arbitrary" ratings are really two numbers fighting.</li>
+        <li>Model shows with a <strong>rewatch count &gt; 1</strong> separately — rewatchability is a distinct signal your single score is currently blending in.</li>
+        <li>Add a <strong>tier cutoff</strong>: report S/A/B/C tiers from the log-odds cliffs rather than a strict 1–60, since the model itself says most adjacent pairs are coin flips.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="sessionbar">
+    <span class="sessionnote" id="sessionNote">No duels judged yet.</span>
+    <span class="sessionbtns">
+      <button class="btn" id="btnSave" type="button">Save a copy</button>
+      <button class="btn" id="btnLoad" type="button">Restore from file</button>
+      <input type="file" id="fileInput" accept="application/json,.json" hidden>
+    </span>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------------------------------------------------------------- data
+  // name, current Notion rating, genres, episodes watched, times watched
+  const SHOWS = [
+    ["Game Of Thrones", 9.7, "Fiction&Drama · Fantasy", 73, 1.8, "drama"],
+    ["Last of Us", 9.6, "Supernatural · Thriller", 16, 2, "drama"],
+    ["Shōgun", 9.6, "Period · Historical Fiction", 10, 1, "drama"],
+    ["Naruto (Shippuden Only)", 9.5, "Anime · Shounen", 300, 2, "anime"],
+    ["Chernobyl", 9.5, "Documentary · Mini-series", 6, 1, "doc"],
+    ["Genius (Einstein)", 9.3, "Documentary", 10, 1, "doc"],
+    ["Rome", 9.3, "Period · Historical Fiction", 12, 1, "drama"],
+    ["Scam 1992", 9.2, "Documentary · Indian", 10, 1.1, "doc"],
+    ["A Knight of Seven Kingdoms", 9.2, "Fantasy · Fiction&Drama", 6, 1, "drama"],
+    ["Sex Education", 9.0, "TeenDrama", 32, 1.1, "comedy"],
+    ["Adarsh Baal Vidyalaya", 8.9, "Indian · Drama", 7, 1, "comedy"],
+    ["Breaking Bad", 8.8, "Drama", 62, 1, "drama"],
+    ["F.R.I.E.N.D.S", 8.6, "Sitcom", 236, 3.2, "comedy"],
+    ["Twinkling Watermelon", 8.6, "Korean · TeenDrama", 16, 1, "drama"],
+    ["Suits", 8.5, "Law · Peculiar", 134, 1.3, "drama"],
+    ["How I Met Your Mother", 8.5, "Sitcom", 208, 2, "comedy"],
+    ["The OC (Orange County)", 8.4, "TeenDrama", 35, 1, "comedy"],
+    ["The Dropout", 8.4, "Documentary · Medicine", 8, 1.5, "doc"],
+    ["Farzi", 8.3, "Mini-series · Indian", 8, 1, "doc"],
+    ["House of Dragon", 8.3, "Fantasy", 8, 1, "drama"],
+    ["Money Heist", 8.3, "Heist", 21, 1, "drama"],
+    ["Peaky Blinders", 8.3, "Gangster Drama · British", 6, 1, "drama"],
+    ["Mirzapur", 8.3, "Gangster Drama · Indian", 9, 1, "drama"],
+    ["Sacred Games", 8.3, "Indian · Fiction&Drama", 16, 1, "drama"],
+    ["The Night Manager (Indian)", 8.2, "Mini-series · Thriller", 7, 1, "doc"],
+    ["Brooklyn Nine-Nine", 8.2, "Sitcom", 153, 1, "comedy"],
+    ["The Boys", 8.2, "Superhero · Drama", 48, 1, "drama"],
+    ["The Big Bang Theory", 8.2, "Sitcom", 279, 1.3, "comedy"],
+    ["Death Note", 8.2, "Anime · Thriller", 32, 1, "anime"],
+    ["Pritam and Pedro", 8.2, "Indian · Crime", 6, 1, "comedy"],
+    ["True Detective", 8.1, "Thriller · Crime", 8, 1, "drama"],
+    ["Boku no Hero Academia", 8.0, "Anime · Shounen", 13, 1, "anime"],
+    ["Full Metal Alchemist Brotherhood", 8.0, "Anime · Fantasy", 35, 1, "anime"],
+    ["Dopesick", 8.0, "Mini-series · Medicine", 8, 1, "doc"],
+    ["Off Campus", 8.0, "TeenDrama · Drama", 3, 1, "comedy"],
+    ["The Family Man", 7.9, "Thriller · Indian", 10, 1, "drama"],
+    ["Modern Family", 7.9, "Sitcom", 250, 1, "comedy"],
+    ["The Railway Men", 7.9, "Mini-series · Indian", 4, 1, "doc"],
+    ["New Girl", 7.9, "Sitcom", 21, 1, "comedy"],
+    ["Sherlock", 7.8, "Detective · Mystery", 13, 1, "drama"],
+    ["House M.D", 7.8, "Medicine · Drama", 13, 1, "drama"],
+    ["Two & A Half Men", 7.5, "Sitcom", 120, 1, "comedy"],
+    ["YellowJackets", 7.5, "Peculiar · Thriller", 19, 1, "drama"],
+    ["The Witcher", 7.4, "Fiction&Drama · Fantasy", 16, 1, "drama"],
+    ["Grey's Anatomy", 7.3, "Peculiar · Medicine", 40, 1, "drama"],
+    ["Riverdale", 7.2, "Fiction&Drama", 54, 1, "drama"],
+    ["The Office", 7.2, "Sitcom", 50, 1, "comedy"],
+    ["Falcon & The Winter Soldier", 7.0, "Superhero · Mini-series", 6, 1, "doc"],
+    ["Boruto", 7.0, "Anime · Shounen", 100, 1, "anime"],
+    ["Rakudai Kishi no Cavalry", 7.0, "Anime · Supernatural", 30, 1, "anime"],
+    ["The Flash", 7.0, "Superhero", 92, 1, "drama"],
+    ["Percy Jackson", 7.0, "Fantasy · Superhero", 8, 1, "drama"],
+    ["Dhindhora", 6.9, "Drama", 8, 1, "comedy"],
+    ["Dark", 6.8, "Supernatural · Thriller", 10, 1, "drama"],
+    ["Stranger Things", 6.8, "Fiction&Drama · Supernatural", 7, 1, "drama"],
+    ["Modern Love", 6.3, "Anthology", 6, 1, "doc"],
+    ["How I Met Your Father", 6.2, "Sitcom", 10, 1, "comedy"],
+    ["Alias Grace", 6.2, "Drama · Mini-series", 6, 1, "doc"],
+    ["Rings of Power", 6.0, "Supernatural · Fantasy", 8, 1, "drama"],
+    ["Asur", 6.0, "Indian · Thriller", 16, 1, "drama"],
+    ["Thirteen Reasons Why", 3.0, "TeenDrama", 10, 1, "drama"],
+  ].map(function (r, i) {
+    return { id: i, name: r[0], old: r[1], genre: r[2], eps: r[3], watches: r[4], league: r[5] };
+  });
+
+  const N = SHOWS.length;
+  const STORE = "showranker.v1";
+
+  const LEAGUES = [
+    { id: "all",    label: "Everything",     blurb: "All 61 shows in one ladder." },
+    { id: "drama",  label: "Drama",          blurb: "Prestige, teen, crime, fantasy — anything narrative and ongoing." },
+    { id: "comedy", label: "Comedy",         blurb: "Sitcoms plus the unserious ones — shows you watch to feel lighter." },
+    { id: "doc",    label: "Minis & Docs",   blurb: "Limited series, documentaries, anthologies — one story, then done." },
+    { id: "anime",  label: "Anime",          blurb: "Shounen and everything adjacent." }
+  ];
+
+  // ---------------------------------------------------------------- state
+  let votes = [];          // {a, b, w}  w = 1 a won, 0 b won, 0.5 tie
+  let skipped = {};        // "i-j" -> true, deprioritised pairs
+  let theta = new Float64Array(N);
+  let se = new Float64Array(N).fill(9);
+  let counts = new Int32Array(N);
+  let cur = null;          // current pair [a, b]
+  let opts = {
+    prior: true,
+    lambda: 0.35,
+    pairing: "info",
+    blind: false,
+    score: "quantile",
+    league: "all"
+  };
+
+  // league-scoped, recomputed on every switch
+  let members = [];
+  let inLeague = new Uint8Array(N);
+  let priorTheta = new Float64Array(N);
+  let oldRank = {};
+  let oldScoresDesc = [];
+  let leagueVotes = [];
+
+  // ---------------------------------------------------------------- helpers
+  const $ = function (id) { return document.getElementById(id); };
+  const sig = function (x) { return 1 / (1 + Math.exp(-x)); };
+  const key = function (i, j) { return i < j ? i + "-" + j : j + "-" + i; };
+  const leagueOf = function (id) {
+    for (let i = 0; i < LEAGUES.length; i++) if (LEAGUES[i].id === id) return LEAGUES[i];
+    return LEAGUES[0];
+  };
+
+  let toastTimer = null;
+  function toast(msg) {
+    const t = $("toast");
+    t.textContent = msg;
+    t.classList.add("on");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove("on"); }, 1800);
+  }
+
+  function save() {
+    try {
+      localStorage.setItem(STORE, JSON.stringify({ votes: votes, skipped: skipped, opts: opts }));
+    } catch (e) { /* private mode — session still works */ }
+  }
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORE);
+      if (!raw) return;
+      const d = JSON.parse(raw);
+      if (Array.isArray(d.votes)) votes = d.votes.filter(function (v) {
+        return v && v.a < N && v.b < N && v.a !== v.b;
+      });
+      if (d.skipped) skipped = d.skipped;
+      if (d.opts) Object.assign(opts, d.opts);
+    } catch (e) { /* corrupt store — start clean */ }
+  }
+
+  // ---------------------------------------------------------------- league scope
+  // Everything below is computed *within* the active league: the prior is
+  // standardised against league members only, and only duels where both shows
+  // belong to the league count toward the fit. A duel judged inside Anime is
+  // still a valid global duel, so it also sharpens the Everything ladder.
+  function scopeLeague() {
+    const id = opts.league;
+    inLeague = new Uint8Array(N);
+    members = [];
+    for (let i = 0; i < N; i++) {
+      if (id === "all" || SHOWS[i].league === id) { inLeague[i] = 1; members.push(i); }
+    }
+
+    let mean = 0;
+    for (let k = 0; k < members.length; k++) mean += SHOWS[members[k]].old;
+    mean /= members.length;
+    let varr = 0;
+    for (let k = 0; k < members.length; k++) {
+      const d = SHOWS[members[k]].old - mean;
+      varr += d * d;
+    }
+    const sd = Math.sqrt(varr / members.length) || 1;
+
+    priorTheta = new Float64Array(N);
+    for (let k = 0; k < members.length; k++) {
+      const i = members[k];
+      priorTheta[i] = (SHOWS[i].old - mean) / sd;
+    }
+
+    const byOld = members.slice().sort(function (a, b) { return SHOWS[b].old - SHOWS[a].old; });
+    oldRank = {};
+    byOld.forEach(function (i, r) { oldRank[i] = r + 1; });
+    oldScoresDesc = byOld.map(function (i) { return SHOWS[i].old; });
+
+    leagueVotes = votes.filter(function (v) { return inLeague[v.a] && inLeague[v.b]; });
+  }
+
+  // ---------------------------------------------------------------- the fit
+  // Bradley-Terry MLE with an L2 pull toward the prior. Refit after each vote;
+  // at most 61 players so this is microseconds.
+  function fit() {
+    scopeLeague();
+
+    const lam = Math.max(0.02, opts.prior ? opts.lambda : 0.02);
+    const useMu = opts.prior;
+
+    counts = new Int32Array(N);
+    for (let v = 0; v < leagueVotes.length; v++) { counts[leagueVotes[v].a]++; counts[leagueVotes[v].b]++; }
+
+    const t = new Float64Array(N);
+    if (useMu) for (let i = 0; i < N; i++) t[i] = priorTheta[i];
+
+    const grad = new Float64Array(N);
+    let lr = 0.6;
+    for (let it = 0; it < 400; it++) {
+      grad.fill(0);
+      for (let v = 0; v < leagueVotes.length; v++) {
+        const V = leagueVotes[v];
+        const p = sig(t[V.a] - t[V.b]);
+        const g = V.w - p;
+        grad[V.a] += g;
+        grad[V.b] -= g;
+      }
+      for (let k = 0; k < members.length; k++) {
+        const i = members[k];
+        grad[i] -= 2 * lam * (t[i] - (useMu ? priorTheta[i] : 0));
+      }
+      let maxg = 0;
+      for (let k = 0; k < members.length; k++) {
+        const i = members[k];
+        t[i] += lr * grad[i] / (1 + 0.25 * counts[i]);
+        if (Math.abs(grad[i]) > maxg) maxg = Math.abs(grad[i]);
+      }
+      lr *= 0.995;
+      if (maxg < 1e-7) break;
+    }
+
+    // Fisher information (diagonal) -> standard errors
+    const info = new Float64Array(N).fill(2 * lam);
+    for (let v = 0; v < leagueVotes.length; v++) {
+      const V = leagueVotes[v];
+      const p = sig(t[V.a] - t[V.b]);
+      const q = p * (1 - p);
+      info[V.a] += q;
+      info[V.b] += q;
+    }
+
+    theta = t;
+    se = new Float64Array(N).fill(9);
+    for (let k = 0; k < members.length; k++) {
+      const i = members[k];
+      se[i] = 1 / Math.sqrt(Math.max(info[i], 1e-6));
+    }
+  }
+
+  function winPct(i) {
+    if (members.length < 2) return 0.5;
+    let s = 0;
+    for (let k = 0; k < members.length; k++) {
+      const j = members[k];
+      if (j !== i) s += sig(theta[i] - theta[j]);
+    }
+    return s / (members.length - 1);
+  }
+
+  function ordered() {
+    return members.map(function (i) { return SHOWS[i]; })
+      .sort(function (a, b) { return theta[b.id] - theta[a.id]; });
+  }
+
+  function scoreFor(show, rankIndex) {
+    if (opts.score === "quantile") return oldScoresDesc[rankIndex].toFixed(1);
+    if (opts.score === "winpct") return (winPct(show.id) * 100).toFixed(0) + "%";
+    return (theta[show.id] >= 0 ? "+" : "") + theta[show.id].toFixed(2);
+  }
+
+  // ---------------------------------------------------------------- pairing
+  function pickPair() {
+    if (members.length < 2) return null;
+
+    const seen = {};
+    for (let v = 0; v < leagueVotes.length; v++) {
+      const k = key(leagueVotes[v].a, leagueVotes[v].b);
+      seen[k] = (seen[k] || 0) + 1;
+    }
+
+    const unseen = members.filter(function (i) { return counts[i] === 0; });
+    const mode = opts.pairing;
+    const wantRandom = mode === "random" || (mode === "mixed" && Math.random() < 0.4);
+    const pick = function () { return members[(Math.random() * members.length) | 0]; };
+
+    let best = null, bestScore = -1;
+    for (let t = 0; t < 900; t++) {
+      let i, j;
+      if (unseen.length && Math.random() < 0.75) {
+        i = unseen[(Math.random() * unseen.length) | 0];
+        j = pick();
+      } else {
+        i = pick();
+        j = pick();
+      }
+      if (i === j) continue;
+      const k = key(i, j);
+      if (cur && k === key(cur[0], cur[1])) continue;
+
+      let s;
+      if (wantRandom) {
+        s = Math.random();
+      } else {
+        const p = sig(theta[i] - theta[j]);
+        s = p * (1 - p);                                     // informativeness
+        s *= 1 / (1 + 0.5 * Math.min(counts[i], counts[j])); // favour under-sampled
+        s *= (se[i] + se[j]);                                // favour uncertain
+      }
+      if (seen[k]) s *= 0.12 / seen[k];
+      if (skipped[k]) s *= 0.05;
+
+      if (s > bestScore) { bestScore = s; best = [i, j]; }
+    }
+    if (!best) best = [members[0], members[1]];
+    return Math.random() < 0.5 ? best : [best[1], best[0]];
+  }
+
+  // ---------------------------------------------------------------- render
+  function renderLeagueStrip() {
+    const counted = {};
+    LEAGUES.forEach(function (L) { counted[L.id] = 0; });
+    votes.forEach(function (v) {
+      counted.all++;
+      const la = SHOWS[v.a].league;
+      if (la === SHOWS[v.b].league) counted[la]++;
+    });
+
+    $("leagueStrip").innerHTML = LEAGUES.map(function (L) {
+      const size = L.id === "all" ? N : SHOWS.filter(function (s) { return s.league === L.id; }).length;
+      return '<button type="button" class="lg" data-league="' + L.id + '" aria-pressed="' +
+        (opts.league === L.id ? "true" : "false") + '">' +
+        "<span class=\"lgname\">" + L.label + "</span>" +
+        '<span class="lgmeta">' + size + " shows · " + counted[L.id] + " duels</span>" +
+        "</button>";
+    }).join("");
+
+    Array.prototype.forEach.call(document.querySelectorAll(".lg"), function (b) {
+      b.addEventListener("click", function () {
+        opts.league = b.getAttribute("data-league");
+        cur = null;
+        save();
+        renderAll();
+      });
+    });
+
+    $("leagueBlurb").textContent = leagueOf(opts.league).blurb;
+  }
+
+  function renderCards() {
+    if (!cur) cur = pickPair();
+    if (!cur) {
+      $("titleA").textContent = "—";
+      $("titleB").textContent = "—";
+      return;
+    }
+    const a = SHOWS[cur[0]], b = SHOWS[cur[1]];
+    $("titleA").textContent = a.name;
+    $("titleB").textContent = b.name;
+    $("factsA").innerHTML = factChips(a);
+    $("factsB").innerHTML = factChips(b);
+  }
+
+  function factChips(s) {
+    const bits = ['<span class="chip">' + esc(s.genre) + "</span>"];
+    bits.push('<span class="chip">' + s.eps + " eps</span>");
+    if (s.watches > 1) bits.push('<span class="chip">rewatched ×' + s.watches + "</span>");
+    if (!opts.blind) bits.push('<span class="chip rank">was ' + s.old.toFixed(1) + "</span>");
+    return bits.join("");
+  }
+
+  function esc(t) {
+    return String(t).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  function renderReadout() {
+    const M = members.length;
+    $("mComparisons").textContent = leagueVotes.length;
+
+    let covered = 0;
+    for (let k = 0; k < M; k++) if (counts[members[k]] >= 2) covered++;
+    $("mCoverage").innerHTML = covered + "<small>/" + M + "</small>";
+    $("mCoverageBar").style.width = (100 * covered / M) + "%";
+
+    // confidence: share of the league whose error is smaller than its gap to a neighbour
+    const ord = ordered();
+    let confident = 0;
+    for (let r = 0; r < ord.length; r++) {
+      const id = ord[r].id;
+      const gaps = [];
+      if (r > 0) gaps.push(Math.abs(theta[ord[r - 1].id] - theta[id]));
+      if (r < ord.length - 1) gaps.push(Math.abs(theta[id] - theta[ord[r + 1].id]));
+      const gap = gaps.length ? Math.max.apply(null, gaps) : 0;
+      if (se[id] < gap && counts[id] >= 2) confident++;
+    }
+    const pct = Math.round(100 * confident / M);
+    $("mConfidence").innerHTML = pct + "<small>%</small>";
+    $("mConfidenceBar").style.width = pct + "%";
+
+    const sorted = members.map(function (i) { return se[i]; }).sort(function (x, y) { return x - y; });
+    $("mSE").textContent = leagueVotes.length ? ("±" + sorted[Math.floor(M / 2)].toFixed(2)) : "—";
+
+    $("mUpsets").textContent = upsets().length;
+  }
+
+  // votes the fitted model finds least likely
+  function surprising() {
+    return leagueVotes.map(function (v, i) {
+      const p = sig(theta[v.a] - theta[v.b]);
+      const lik = v.w === 1 ? p : v.w === 0 ? 1 - p : 1 - Math.abs(p - 0.5) * 2;
+      return { i: i, v: v, lik: lik };
+    }).filter(function (x) { return x.lik < 0.22; })
+      .sort(function (x, y) { return x.lik - y.lik; })
+      .slice(0, 8);
+  }
+
+  // shows that moved a long way from where their old rating put them
+  function upsets() {
+    const ord = ordered();
+    const threshold = Math.max(3, Math.round(members.length * 0.1));
+    const out = [];
+    ord.forEach(function (s, r) {
+      const move = oldRank[s.id] - (r + 1);
+      if (Math.abs(move) >= threshold && counts[s.id] >= 2) out.push({ s: s, move: move });
+    });
+    return out;
+  }
+
+  function renderRank() {
+    const ord = ordered();
+    const rows = ord.map(function (s, r) {
+      const move = oldRank[s.id] - (r + 1);
+      const cls = move > 0 ? "up" : move < 0 ? "down" : "same";
+      const arrow = move > 0 ? "▲ " + move : move < 0 ? "▼ " + Math.abs(move) : "—";
+      const seWidth = Math.max(3, Math.min(100, (se[s.id] / 1.6) * 100));
+      const tag = opts.league === "all"
+        ? '<span class="lgtag ' + s.league + '">' + leagueOf(s.league).label + "</span>"
+        : "";
+      return "<tr>" +
+        '<td class="num">' + (r + 1) + "</td>" +
+        "<td><div class=\"name\">" + esc(s.name) + " " + tag + "</div><div class=\"genre\">" + esc(s.genre) + "</div></td>" +
+        '<td class="num">' + scoreFor(s, r) + "</td>" +
+        '<td class="num thin">' + s.old.toFixed(1) + "</td>" +
+        '<td class="num"><span class="mv ' + cls + '">' + arrow + "</span></td>" +
+        '<td><span class="sebar"><i style="width:' + seWidth + '%"></i></span> <span class="thin">±' + se[s.id].toFixed(2) + "</span></td>" +
+        '<td class="num thin">' + counts[s.id] + "</td>" +
+        "</tr>";
+    }).join("");
+    $("rankBody").innerHTML = rows;
+
+    const L = leagueOf(opts.league);
+    $("rankTitle").textContent = L.id === "all" ? "Standings — everything" : "Standings — " + L.label;
+    $("rankSub").textContent = leagueVotes.length
+      ? "Fit from " + leagueVotes.length + " duels inside this league" +
+        (opts.prior ? ", anchored to your pre-duel ratings." : ", ignoring your pre-duel ratings.")
+      : "No duels inside this league yet — this is still just your pre-duel order.";
+
+    const sur = surprising();
+    $("surprises").innerHTML = sur.length
+      ? sur.map(function (x) {
+          const A = SHOWS[x.v.a], B = SHOWS[x.v.b];
+          const winner = x.v.w === 1 ? A : x.v.w === 0 ? B : null;
+          const loser = x.v.w === 1 ? B : x.v.w === 0 ? A : null;
+          const txt = winner
+            ? '<span class="name">' + esc(winner.name) + "</span> <span class=\"thin\">over</span> <span class=\"name\">" + esc(loser.name) + "</span>"
+            : '<span class="name">' + esc(A.name) + "</span> <span class=\"thin\">tied with</span> <span class=\"name\">" + esc(B.name) + "</span>";
+          return '<div class="surprise">' + txt +
+            '<span class="thin">model gave that ' + Math.round(x.lik * 100) + "% odds</span></div>";
+        }).join("")
+      : '<p class="thin">Nothing contradictory in this league yet — your answers all fit one ranking.</p>';
+  }
+
+  function renderAll() {
+    fit();
+    renderLeagueStrip();
+    renderReadout();
+    renderRank();
+    renderCards();
+    renderSessionNote();
+  }
+
+  // ---------------------------------------------------------------- actions
+  function vote(w) {
+    if (!cur) return;
+    votes.push({ a: cur[0], b: cur[1], w: w });
+    flash(w === 1 ? "cardA" : w === 0 ? "cardB" : null);
+    cur = null;
+    save();
+    renderAll();
+  }
+
+  function flash(id) {
+    if (!id) return;
+    const el = $(id);
+    el.classList.remove("flash");
+    void el.offsetWidth;
+    el.classList.add("flash");
+  }
+
+  function skip() {
+    if (!cur) return;
+    skipped[key(cur[0], cur[1])] = true;
+    cur = null;
+    save();
+    renderAll();
+  }
+
+  function undo() {
+    if (!votes.length) { toast("Nothing to undo"); return; }
+    const v = votes.pop();
+    save();
+    fit();
+    cur = inLeague[v.a] && inLeague[v.b] ? [v.a, v.b] : null;
+    renderLeagueStrip();
+    renderReadout();
+    renderRank();
+    renderCards();
+    renderSessionNote();
+    toast("Undone");
+  }
+
+  function tableText() {
+    const ord = ordered();
+    const head = ["Rank", "Show", "League", "Score", "PreDuelRating", "Move", "StdErr", "Duels", "WinPct"].join("\t");
+    const body = ord.map(function (s, r) {
+      return [
+        r + 1,
+        s.name,
+        leagueOf(s.league).label,
+        scoreFor(s, r),
+        s.old.toFixed(1),
+        oldRank[s.id] - (r + 1),
+        se[s.id].toFixed(2),
+        counts[s.id],
+        (winPct(s.id) * 100).toFixed(1)
+      ].join("\t");
+    }).join("\n");
+    return head + "\n" + body;
+  }
+
+  // ---------------------------------------------------------------- save file
+  // Duels are written out keyed by show *name*, not array position, so a saved
+  // file survives the show list being reordered or added to later.
+  function download(filename, text, mime) {
+    const url = URL.createObjectURL(new Blob([text], { type: mime }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function exportSession() {
+    const skipPairs = [];
+    Object.keys(skipped).forEach(function (k) {
+      const p = k.split("-");
+      const i = Number(p[0]), j = Number(p[1]);
+      if (SHOWS[i] && SHOWS[j]) skipPairs.push([SHOWS[i].name, SHOWS[j].name]);
+    });
+    const payload = {
+      app: "show-ranker",
+      version: 1,
+      savedAt: new Date().toISOString(),
+      duelCount: votes.length,
+      duels: votes.map(function (v) {
+        return { a: SHOWS[v.a].name, b: SHOWS[v.b].name, w: v.w };
+      }),
+      skipped: skipPairs,
+      opts: opts
+    };
+    const stamp = new Date().toISOString().slice(0, 10);
+    download("show-duels-" + stamp + "-" + votes.length + ".json",
+      JSON.stringify(payload, null, 1), "application/json");
+    toast("Saved " + votes.length + " duels");
+  }
+
+  function importSession(text) {
+    let d;
+    try { d = JSON.parse(text); } catch (e) { toast("That file isn't valid JSON"); return; }
+    if (!d || !Array.isArray(d.duels)) { toast("No duels found in that file"); return; }
+
+    const byName = {};
+    SHOWS.forEach(function (s) { byName[s.name] = s.id; });
+
+    const fresh = [];
+    let dropped = 0;
+    d.duels.forEach(function (x) {
+      const a = x ? byName[x.a] : undefined;
+      const b = x ? byName[x.b] : undefined;
+      const w = x && (x.w === 1 || x.w === 0 || x.w === 0.5) ? x.w : null;
+      if (a === undefined || b === undefined || a === b || w === null) { dropped++; return; }
+      fresh.push({ a: a, b: b, w: w });
+    });
+
+    if (!fresh.length) { toast("Couldn't read any duels from that file"); return; }
+    if (votes.length && !window.confirm(
+        "Replace the " + votes.length + " duels in this browser with the " +
+        fresh.length + " in this file?")) return;
+
+    votes = fresh;
+    skipped = {};
+    (Array.isArray(d.skipped) ? d.skipped : []).forEach(function (p) {
+      const a = p ? byName[p[0]] : undefined;
+      const b = p ? byName[p[1]] : undefined;
+      if (a !== undefined && b !== undefined && a !== b) skipped[key(a, b)] = true;
+    });
+
+    if (d.opts && typeof d.opts === "object") {
+      ["prior", "lambda", "pairing", "blind", "score", "league"].forEach(function (k) {
+        if (k in d.opts) opts[k] = d.opts[k];
+      });
+      if (!LEAGUES.some(function (L) { return L.id === opts.league; })) opts.league = "all";
+      syncControls();
+    }
+
+    cur = null;
+    save();
+    renderAll();
+    toast(dropped
+      ? "Restored " + fresh.length + " duels · " + dropped + " unreadable"
+      : "Restored " + fresh.length + " duels");
+  }
+
+  function syncControls() {
+    $("optPrior").checked = opts.prior;
+    $("optLambda").value = Math.round(opts.lambda * 100);
+    $("optPairing").value = opts.pairing;
+    $("optBlind").checked = opts.blind;
+    $("optScore").value = opts.score;
+  }
+
+  function renderSessionNote() {
+    $("sessionNote").innerHTML = votes.length
+      ? "<b>" + votes.length + "</b> duels held in this browser. Save a copy to move them to another browser or device."
+      : "Nothing judged yet. Once you start, progress is kept in this browser automatically.";
+  }
+
+  // ---------------------------------------------------------------- wiring
+  $("btnSave").addEventListener("click", function () {
+    if (!votes.length) { toast("Nothing to save yet"); return; }
+    exportSession();
+  });
+
+  $("btnLoad").addEventListener("click", function () { $("fileInput").click(); });
+
+  $("fileInput").addEventListener("change", function (e) {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = function () { importSession(String(reader.result)); };
+    reader.onerror = function () { toast("Couldn't read that file"); };
+    reader.readAsText(f);
+    e.target.value = "";   // let the same file be picked again
+  });
+
+  $("cardA").addEventListener("click", function () { vote(1); });
+  $("cardB").addEventListener("click", function () { vote(0); });
+  $("btnTie").addEventListener("click", function () { vote(0.5); });
+  $("btnSkip").addEventListener("click", skip);
+  $("btnUndo").addEventListener("click", undo);
+
+  document.addEventListener("keydown", function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "select" || tag === "textarea") return;
+    const k = e.key.toLowerCase();
+    if (e.key === "ArrowLeft") { e.preventDefault(); vote(1); }
+    else if (e.key === "ArrowRight") { e.preventDefault(); vote(0); }
+    else if (e.key === "ArrowDown" || e.key === " ") { e.preventDefault(); vote(0.5); }
+    else if (k === "s") { e.preventDefault(); skip(); }
+    else if (k === "u") { e.preventDefault(); undo(); }
+  });
+
+  // tabs
+  const tabs = [["tab-play", "panel-play"], ["tab-rank", "panel-rank"], ["tab-method", "panel-method"]];
+  tabs.forEach(function (pair) {
+    $(pair[0]).addEventListener("click", function () {
+      tabs.forEach(function (p) {
+        const on = p[0] === pair[0];
+        $(p[0]).setAttribute("aria-selected", on ? "true" : "false");
+        $(p[1]).hidden = !on;
+      });
+    });
+  });
+
+  // settings
+  $("optPrior").addEventListener("change", function (e) { opts.prior = e.target.checked; save(); renderAll(); });
+  $("optLambda").addEventListener("input", function (e) { opts.lambda = e.target.value / 100; save(); renderAll(); });
+  $("optPairing").addEventListener("change", function (e) { opts.pairing = e.target.value; save(); cur = null; renderAll(); });
+  $("optBlind").addEventListener("change", function (e) { opts.blind = e.target.checked; save(); renderCards(); });
+  $("optScore").addEventListener("change", function (e) { opts.score = e.target.value; save(); renderRank(); });
+
+  $("btnCopy").addEventListener("click", function () {
+    const txt = tableText();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(txt).then(function () { toast("Table copied"); },
+        function () { toast("Copy blocked — use Download CSV"); });
+    } else { toast("Copy unavailable — use Download CSV"); }
+  });
+
+  $("btnCSV").addEventListener("click", function () {
+    const csv = tableText().split("\n").map(function (line) {
+      return line.split("\t").map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(",");
+    }).join("\n");
+    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "show-ranking-" + opts.league + ".csv";
+    a.click();
+    URL.revokeObjectURL(url);
+    toast("Downloaded");
+  });
+
+  $("btnReset").addEventListener("click", function () {
+    if (!votes.length) { toast("No duels to clear"); return; }
+    if (!confirm("Delete all " + votes.length + " duels across every league and start over?")) return;
+    votes = [];
+    skipped = {};
+    cur = null;
+    save();
+    renderAll();
+    toast("Cleared");
+  });
+
+  $("themeToggle").addEventListener("click", function () {
+    const root = document.documentElement;
+    const now = root.getAttribute("data-theme");
+    const sysDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const next = now ? (now === "dark" ? "light" : "dark") : (sysDark ? "light" : "dark");
+    root.setAttribute("data-theme", next);
+  });
+
+  // ---------------------------------------------------------------- boot
+  load();
+  if (!LEAGUES.some(function (L) { return L.id === opts.league; })) opts.league = "all";
+  syncControls();
+  renderAll();
+})();
+</script>

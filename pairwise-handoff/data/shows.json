@@ -1,0 +1,775 @@
+[
+ {
+  "name": "Game Of Thrones",
+  "ratingPreDuel": 9.7,
+  "genres": [
+   "Fiction&Drama",
+   "Fantasy"
+  ],
+  "episodesWatched": 73,
+  "timesWatched": 1.8,
+  "league": "drama",
+  "currentRank": 1,
+  "currentScore": 9.7
+ },
+ {
+  "name": "Last of Us",
+  "ratingPreDuel": 9.6,
+  "genres": [
+   "Supernatural",
+   "Thriller"
+  ],
+  "episodesWatched": 16,
+  "timesWatched": 2,
+  "league": "drama",
+  "currentRank": 4,
+  "currentScore": 9.5
+ },
+ {
+  "name": "Shōgun",
+  "ratingPreDuel": 9.6,
+  "genres": [
+   "Period",
+   "Historical Fiction"
+  ],
+  "episodesWatched": 10,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 5,
+  "currentScore": 9.5
+ },
+ {
+  "name": "Naruto (Shippuden Only)",
+  "ratingPreDuel": 9.5,
+  "genres": [
+   "Anime",
+   "Shounen"
+  ],
+  "episodesWatched": 300,
+  "timesWatched": 2,
+  "league": "anime",
+  "currentRank": 13,
+  "currentScore": 8.6
+ },
+ {
+  "name": "Chernobyl",
+  "ratingPreDuel": 9.5,
+  "genres": [
+   "Documentary",
+   "Mini-series"
+  ],
+  "episodesWatched": 6,
+  "timesWatched": 1,
+  "league": "doc",
+  "currentRank": 3,
+  "currentScore": 9.6
+ },
+ {
+  "name": "Genius (Einstein)",
+  "ratingPreDuel": 9.3,
+  "genres": [
+   "Documentary"
+  ],
+  "episodesWatched": 10,
+  "timesWatched": 1,
+  "league": "doc",
+  "currentRank": 12,
+  "currentScore": 8.8
+ },
+ {
+  "name": "Rome",
+  "ratingPreDuel": 9.3,
+  "genres": [
+   "Period",
+   "Historical Fiction"
+  ],
+  "episodesWatched": 12,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 2,
+  "currentScore": 9.6
+ },
+ {
+  "name": "Scam 1992",
+  "ratingPreDuel": 9.2,
+  "genres": [
+   "Documentary",
+   "Indian"
+  ],
+  "episodesWatched": 10,
+  "timesWatched": 1.1,
+  "league": "doc",
+  "currentRank": 15,
+  "currentScore": 8.5
+ },
+ {
+  "name": "A Knight of Seven Kingdoms",
+  "ratingPreDuel": 9.2,
+  "genres": [
+   "Fantasy",
+   "Fiction&Drama"
+  ],
+  "episodesWatched": 6,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 21,
+  "currentScore": 8.3
+ },
+ {
+  "name": "Sex Education",
+  "ratingPreDuel": 9,
+  "genres": [
+   "TeenDrama"
+  ],
+  "episodesWatched": 32,
+  "timesWatched": 1.1,
+  "league": "comedy",
+  "currentRank": 10,
+  "currentScore": 9.0
+ },
+ {
+  "name": "Adarsh Baal Vidyalaya",
+  "ratingPreDuel": 8.9,
+  "genres": [
+   "Indian",
+   "Drama"
+  ],
+  "episodesWatched": 7,
+  "timesWatched": 1,
+  "league": "comedy",
+  "currentRank": 16,
+  "currentScore": 8.5
+ },
+ {
+  "name": "Breaking Bad",
+  "ratingPreDuel": 8.8,
+  "genres": [
+   "Drama"
+  ],
+  "episodesWatched": 62,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 9,
+  "currentScore": 9.2
+ },
+ {
+  "name": "F.R.I.E.N.D.S",
+  "ratingPreDuel": 8.6,
+  "genres": [
+   "Sitcom"
+  ],
+  "episodesWatched": 236,
+  "timesWatched": 3.2,
+  "league": "comedy",
+  "currentRank": 11,
+  "currentScore": 8.9
+ },
+ {
+  "name": "Twinkling Watermelon",
+  "ratingPreDuel": 8.6,
+  "genres": [
+   "Korean",
+   "TeenDrama"
+  ],
+  "episodesWatched": 16,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 17,
+  "currentScore": 8.4
+ },
+ {
+  "name": "Suits",
+  "ratingPreDuel": 8.5,
+  "genres": [
+   "Law",
+   "Peculiar"
+  ],
+  "episodesWatched": 134,
+  "timesWatched": 1.3,
+  "league": "drama",
+  "currentRank": 6,
+  "currentScore": 9.3
+ },
+ {
+  "name": "How I Met Your Mother",
+  "ratingPreDuel": 8.5,
+  "genres": [
+   "Sitcom"
+  ],
+  "episodesWatched": 208,
+  "timesWatched": 2,
+  "league": "comedy",
+  "currentRank": 7,
+  "currentScore": 9.3
+ },
+ {
+  "name": "The OC (Orange County)",
+  "ratingPreDuel": 8.4,
+  "genres": [
+   "TeenDrama"
+  ],
+  "episodesWatched": 35,
+  "timesWatched": 1,
+  "league": "comedy",
+  "currentRank": 31,
+  "currentScore": 8.1
+ },
+ {
+  "name": "The Dropout",
+  "ratingPreDuel": 8.4,
+  "genres": [
+   "Documentary",
+   "Medicine"
+  ],
+  "episodesWatched": 8,
+  "timesWatched": 1.5,
+  "league": "doc",
+  "currentRank": 8,
+  "currentScore": 9.2
+ },
+ {
+  "name": "Farzi",
+  "ratingPreDuel": 8.3,
+  "genres": [
+   "Mini-series",
+   "Indian"
+  ],
+  "episodesWatched": 8,
+  "timesWatched": 1,
+  "league": "doc",
+  "currentRank": 14,
+  "currentScore": 8.6
+ },
+ {
+  "name": "House of Dragon",
+  "ratingPreDuel": 8.3,
+  "genres": [
+   "Fantasy"
+  ],
+  "episodesWatched": 8,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 45,
+  "currentScore": 7.3
+ },
+ {
+  "name": "Money Heist",
+  "ratingPreDuel": 8.3,
+  "genres": [
+   "Heist"
+  ],
+  "episodesWatched": 21,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 26,
+  "currentScore": 8.2
+ },
+ {
+  "name": "Peaky Blinders",
+  "ratingPreDuel": 8.3,
+  "genres": [
+   "Gangster Drama",
+   "British"
+  ],
+  "episodesWatched": 6,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 36,
+  "currentScore": 7.9
+ },
+ {
+  "name": "Mirzapur",
+  "ratingPreDuel": 8.3,
+  "genres": [
+   "Gangster Drama",
+   "Indian"
+  ],
+  "episodesWatched": 9,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 25,
+  "currentScore": 8.2
+ },
+ {
+  "name": "Sacred Games",
+  "ratingPreDuel": 8.3,
+  "genres": [
+   "Indian",
+   "Fiction&Drama"
+  ],
+  "episodesWatched": 16,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 22,
+  "currentScore": 8.3
+ },
+ {
+  "name": "The Night Manager (Indian)",
+  "ratingPreDuel": 8.2,
+  "genres": [
+   "Mini-series",
+   "Thriller"
+  ],
+  "episodesWatched": 7,
+  "timesWatched": 1,
+  "league": "doc",
+  "currentRank": 32,
+  "currentScore": 8.0
+ },
+ {
+  "name": "Brooklyn Nine-Nine",
+  "ratingPreDuel": 8.2,
+  "genres": [
+   "Sitcom"
+  ],
+  "episodesWatched": 153,
+  "timesWatched": 1,
+  "league": "comedy",
+  "currentRank": 23,
+  "currentScore": 8.3
+ },
+ {
+  "name": "The Boys",
+  "ratingPreDuel": 8.2,
+  "genres": [
+   "Superhero",
+   "Drama"
+  ],
+  "episodesWatched": 48,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 18,
+  "currentScore": 8.4
+ },
+ {
+  "name": "The Big Bang Theory",
+  "ratingPreDuel": 8.2,
+  "genres": [
+   "Sitcom"
+  ],
+  "episodesWatched": 279,
+  "timesWatched": 1.3,
+  "league": "comedy",
+  "currentRank": 34,
+  "currentScore": 8.0
+ },
+ {
+  "name": "Death Note",
+  "ratingPreDuel": 8.2,
+  "genres": [
+   "Anime",
+   "Thriller"
+  ],
+  "episodesWatched": 32,
+  "timesWatched": 1,
+  "league": "anime",
+  "currentRank": 29,
+  "currentScore": 8.2
+ },
+ {
+  "name": "Pritam and Pedro",
+  "ratingPreDuel": 8.2,
+  "genres": [
+   "Indian",
+   "Crime"
+  ],
+  "episodesWatched": 6,
+  "timesWatched": 1,
+  "league": "comedy",
+  "currentRank": 35,
+  "currentScore": 8.0
+ },
+ {
+  "name": "True Detective",
+  "ratingPreDuel": 8.1,
+  "genres": [
+   "Thriller",
+   "Crime"
+  ],
+  "episodesWatched": 8,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 28,
+  "currentScore": 8.2
+ },
+ {
+  "name": "Boku no Hero Academia",
+  "ratingPreDuel": 8,
+  "genres": [
+   "Anime",
+   "Shounen"
+  ],
+  "episodesWatched": 13,
+  "timesWatched": 1,
+  "league": "anime",
+  "currentRank": 53,
+  "currentScore": 6.9
+ },
+ {
+  "name": "Full Metal Alchemist Brotherhood",
+  "ratingPreDuel": 8,
+  "genres": [
+   "Anime",
+   "Fantasy"
+  ],
+  "episodesWatched": 35,
+  "timesWatched": 1,
+  "league": "anime",
+  "currentRank": 30,
+  "currentScore": 8.2
+ },
+ {
+  "name": "Dopesick",
+  "ratingPreDuel": 8,
+  "genres": [
+   "Mini-series",
+   "Medicine"
+  ],
+  "episodesWatched": 8,
+  "timesWatched": 1,
+  "league": "doc",
+  "currentRank": 24,
+  "currentScore": 8.3
+ },
+ {
+  "name": "Off Campus",
+  "ratingPreDuel": 8,
+  "genres": [
+   "TeenDrama",
+   "Drama"
+  ],
+  "episodesWatched": 3,
+  "timesWatched": 1,
+  "league": "comedy",
+  "currentRank": 39,
+  "currentScore": 7.9
+ },
+ {
+  "name": "The Family Man",
+  "ratingPreDuel": 7.9,
+  "genres": [
+   "Thriller",
+   "Indian"
+  ],
+  "episodesWatched": 10,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 20,
+  "currentScore": 8.3
+ },
+ {
+  "name": "Modern Family",
+  "ratingPreDuel": 7.9,
+  "genres": [
+   "Sitcom"
+  ],
+  "episodesWatched": 250,
+  "timesWatched": 1,
+  "league": "comedy",
+  "currentRank": 27,
+  "currentScore": 8.2
+ },
+ {
+  "name": "The Railway Men",
+  "ratingPreDuel": 7.9,
+  "genres": [
+   "Mini-series",
+   "Indian"
+  ],
+  "episodesWatched": 4,
+  "timesWatched": 1,
+  "league": "doc",
+  "currentRank": 49,
+  "currentScore": 7.0
+ },
+ {
+  "name": "New Girl",
+  "ratingPreDuel": 7.9,
+  "genres": [
+   "Sitcom"
+  ],
+  "episodesWatched": 21,
+  "timesWatched": 1,
+  "league": "comedy",
+  "currentRank": 42,
+  "currentScore": 7.5
+ },
+ {
+  "name": "Sherlock",
+  "ratingPreDuel": 7.8,
+  "genres": [
+   "Detective",
+   "Mystery"
+  ],
+  "episodesWatched": 13,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 33,
+  "currentScore": 8.0
+ },
+ {
+  "name": "House M.D",
+  "ratingPreDuel": 7.8,
+  "genres": [
+   "Medicine",
+   "Drama"
+  ],
+  "episodesWatched": 13,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 37,
+  "currentScore": 7.9
+ },
+ {
+  "name": "Two & A Half Men",
+  "ratingPreDuel": 7.5,
+  "genres": [
+   "Sitcom"
+  ],
+  "episodesWatched": 120,
+  "timesWatched": 1,
+  "league": "comedy",
+  "currentRank": 41,
+  "currentScore": 7.8
+ },
+ {
+  "name": "YellowJackets",
+  "ratingPreDuel": 7.5,
+  "genres": [
+   "Peculiar",
+   "Thriller"
+  ],
+  "episodesWatched": 19,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 48,
+  "currentScore": 7.0
+ },
+ {
+  "name": "The Witcher",
+  "ratingPreDuel": 7.4,
+  "genres": [
+   "Fiction&Drama",
+   "Fantasy"
+  ],
+  "episodesWatched": 16,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 40,
+  "currentScore": 7.8
+ },
+ {
+  "name": "Grey's Anatomy",
+  "ratingPreDuel": 7.3,
+  "genres": [
+   "Peculiar",
+   "Medicine"
+  ],
+  "episodesWatched": 40,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 44,
+  "currentScore": 7.4
+ },
+ {
+  "name": "Riverdale",
+  "ratingPreDuel": 7.2,
+  "genres": [
+   "Fiction&Drama"
+  ],
+  "episodesWatched": 54,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 19,
+  "currentScore": 8.3
+ },
+ {
+  "name": "The Office",
+  "ratingPreDuel": 7.2,
+  "genres": [
+   "Sitcom"
+  ],
+  "episodesWatched": 50,
+  "timesWatched": 1,
+  "league": "comedy",
+  "currentRank": 50,
+  "currentScore": 7.0
+ },
+ {
+  "name": "Falcon & The Winter Soldier",
+  "ratingPreDuel": 7,
+  "genres": [
+   "Superhero",
+   "Mini-series"
+  ],
+  "episodesWatched": 6,
+  "timesWatched": 1,
+  "league": "doc",
+  "currentRank": 54,
+  "currentScore": 6.8
+ },
+ {
+  "name": "Boruto",
+  "ratingPreDuel": 7,
+  "genres": [
+   "Anime",
+   "Shounen"
+  ],
+  "episodesWatched": 100,
+  "timesWatched": 1,
+  "league": "anime",
+  "currentRank": 59,
+  "currentScore": 6.0
+ },
+ {
+  "name": "Rakudai Kishi no Cavalry",
+  "ratingPreDuel": 7,
+  "genres": [
+   "Anime",
+   "Supernatural"
+  ],
+  "episodesWatched": 30,
+  "timesWatched": 1,
+  "league": "anime",
+  "currentRank": 51,
+  "currentScore": 7.0
+ },
+ {
+  "name": "The Flash",
+  "ratingPreDuel": 7,
+  "genres": [
+   "Superhero"
+  ],
+  "episodesWatched": 92,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 43,
+  "currentScore": 7.5
+ },
+ {
+  "name": "Percy Jackson",
+  "ratingPreDuel": 7,
+  "genres": [
+   "Fantasy",
+   "Superhero"
+  ],
+  "episodesWatched": 8,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 38,
+  "currentScore": 7.9
+ },
+ {
+  "name": "Dhindhora",
+  "ratingPreDuel": 6.9,
+  "genres": [
+   "Drama"
+  ],
+  "episodesWatched": 8,
+  "timesWatched": 1,
+  "league": "comedy",
+  "currentRank": 57,
+  "currentScore": 6.2
+ },
+ {
+  "name": "Dark",
+  "ratingPreDuel": 6.8,
+  "genres": [
+   "Supernatural",
+   "Thriller"
+  ],
+  "episodesWatched": 10,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 56,
+  "currentScore": 6.3
+ },
+ {
+  "name": "Stranger Things",
+  "ratingPreDuel": 6.8,
+  "genres": [
+   "Fiction&Drama",
+   "Supernatural"
+  ],
+  "episodesWatched": 7,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 58,
+  "currentScore": 6.2
+ },
+ {
+  "name": "Modern Love",
+  "ratingPreDuel": 6.3,
+  "genres": [
+   "Anthology"
+  ],
+  "episodesWatched": 6,
+  "timesWatched": 1,
+  "league": "doc",
+  "currentRank": 47,
+  "currentScore": 7.2
+ },
+ {
+  "name": "How I Met Your Father",
+  "ratingPreDuel": 6.2,
+  "genres": [
+   "Sitcom"
+  ],
+  "episodesWatched": 10,
+  "timesWatched": 1,
+  "league": "comedy",
+  "currentRank": 60,
+  "currentScore": 6.0
+ },
+ {
+  "name": "Alias Grace",
+  "ratingPreDuel": 6.2,
+  "genres": [
+   "Drama",
+   "Mini-series"
+  ],
+  "episodesWatched": 6,
+  "timesWatched": 1,
+  "league": "doc",
+  "currentRank": 52,
+  "currentScore": 7.0
+ },
+ {
+  "name": "Rings of Power",
+  "ratingPreDuel": 6,
+  "genres": [
+   "Supernatural",
+   "Fantasy"
+  ],
+  "episodesWatched": 8,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 55,
+  "currentScore": 6.8
+ },
+ {
+  "name": "Asur",
+  "ratingPreDuel": 6,
+  "genres": [
+   "Indian",
+   "Thriller"
+  ],
+  "episodesWatched": 16,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 46,
+  "currentScore": 7.2
+ },
+ {
+  "name": "Thirteen Reasons Why",
+  "ratingPreDuel": 3,
+  "genres": [
+   "TeenDrama"
+  ],
+  "episodesWatched": 10,
+  "timesWatched": 1,
+  "league": "drama",
+  "currentRank": 61,
+  "currentScore": 3.0
+ }
+]
