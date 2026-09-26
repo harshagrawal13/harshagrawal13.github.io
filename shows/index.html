@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Every TV show Harsh Agrawal has watched, ranked." />
+    <meta name="author" content="Harsh Agrawal" />
+    <title>Shows, ranked &middot; Harsh Agrawal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/style.css" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("theme");
+        if (t === "dark" || (!t && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
+  </head>
+
+  <body>
+    <header class="header">
+      <nav class="nav">
+        <div class="logo">
+          <a href="/" title="harshagrawal.com">harsh agrawal</a>
+          <div class="logo-switches">
+            <button id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+              <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </button>
+          </div>
+        </div>
+        <ul id="menu">
+          <li><a href="/"><span>home</span></a></li>
+          <li><a href="/#publications"><span>publications</span></a></li>
+          <li><a href="/#experience"><span>experience</span></a></li>
+          <li><a href="/#projects"><span>projects</span></a></li>
+          <li><a href="/#talks"><span>talks</span></a></li>
+          <li><a href="https://github.com/harshagrawal13/harshagrawal13/blob/main/resume.pdf" target="_blank" rel="noopener"><span>cv</span></a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="main">
+      <header class="page-header">
+        <h1>shows, ranked</h1>
+        <p class="post-description">Every show I've watched, ranked by my rating out of 10.</p>
+        <p class="shows-stats" id="shows-stats"></p>
+      </header>
+
+      <blockquote class="epigraph">
+        <p>Power resides where men believe it resides. It's a trick, a shadow on the wall, and a very small man can cast a very large shadow.</p>
+        <footer>&mdash; Varys, <cite>Game of Thrones</cite></footer>
+      </blockquote>
+
+      <section aria-label="Ranking">
+        <div class="shows-filters" id="shows-filters" role="group" aria-label="Filter shows"></div>
+        <p class="shows-count" id="shows-count" aria-live="polite"></p>
+        <ol class="shows-grid" id="shows-grid"></ol>
+        <noscript><p class="shows-count">This list needs JavaScript.</p></noscript>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; 2026 Harsh Agrawal &middot; posters and genres from <a href="https://www.tvmaze.com/" target="_blank" rel="noopener">TVmaze</a></p>
+    </footer>
+
+    <script src="/theme.js"></script>
+    <script type="module" src="/shows/shows.js"></script>
+  </body>
+</html>
