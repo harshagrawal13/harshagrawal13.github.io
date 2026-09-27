@@ -6,10 +6,11 @@ Each show starts with your fields -- "title", "rating" (out of 10), "status"
 season you're on or left at) and optionally "tags" (e.g. "Sitcom") --
 followed by fields filled from TVmaze: "seasons" and "episodes" (how many
 have aired, not counting specials), "episode_minutes", "genres" (plus
-"Indian" for Indian-language shows), "tvmaze", "imdb" and "poster". The
-poster is an image URL on TVmaze's CDN: TVmaze asks sites to link to its
-images rather than copy them. While a show airs, delete "seasons" and
-"episodes" to refresh them.
+"Indian" for Indian-language shows), "tvmaze", "imdb", "poster" and
+"poster_large" (full size, used for the page's big top tiles). Posters are
+image URLs on TVmaze's CDN: TVmaze asks sites to link to its images rather
+than copy them. While a show airs, delete "seasons" and "episodes" to
+refresh them.
 
 A show missing any TVmaze field is matched by TVmaze id, then IMDb id, then
 title, and only the missing fields are filled, so your edits always stick. To
@@ -33,7 +34,7 @@ API = "https://api.tvmaze.com"
 
 STATUSES = ("completed", "watching", "abandoned")
 YOUR_FIELDS = ("title", "rating", "status", "season", "tags")
-TVMAZE_FIELDS = ("seasons", "episodes", "episode_minutes", "genres", "tvmaze", "imdb", "poster")
+TVMAZE_FIELDS = ("seasons", "episodes", "episode_minutes", "genres", "tvmaze", "imdb", "poster", "poster_large")
 INDIAN_LANGUAGES = {"Hindi", "Tamil", "Telugu", "Malayalam", "Kannada", "Bengali", "Marathi", "Punjabi"}
 REQUEST_GAP = 0.5  # seconds before each call (TVmaze allows about 20 calls per 10 s), doubled on each retry
 RETRIES = 5
@@ -93,6 +94,7 @@ def fill(show: dict, record: dict) -> None:
         "tvmaze": record["id"],
         "imdb": (record.get("externals") or {}).get("imdb"),
         "poster": (record.get("image") or {}).get("medium"),
+        "poster_large": (record.get("image") or {}).get("original"),
     }
     for key, value in fields.items():
         show.setdefault(key, value)

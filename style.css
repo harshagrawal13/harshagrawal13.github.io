@@ -422,19 +422,6 @@ p { margin-bottom: 1rem; }
   font-size: 0.85rem;
   color: var(--secondary);
 }
-.epigraph {
-  margin: 0 0 2rem;
-  color: var(--content);
-}
-.epigraph p {
-  font-style: italic;
-  margin-bottom: 0.3rem;
-}
-.epigraph footer {
-  text-align: right;
-  font-size: 0.95rem;
-  color: var(--secondary);
-}
 .shows-filters {
   display: flex;
   flex-wrap: wrap;
@@ -494,13 +481,31 @@ p { margin-bottom: 1rem; }
   font-size: 0.9rem;
   color: var(--secondary);
 }
+/* 30 columns (2 × 3 × 5): the top two shows in view share a row, the next three share the
+   next, then rows of five. ":nth-child(… of :not([hidden]))" counts only the shows the
+   filters leave visible, so the top of any filtered view gets the big tiles too. */
 .shows-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(30, minmax(0, 1fr));
   gap: 1.5rem 1rem;
   list-style: none;
   margin: 0;
   padding: 0;
+}
+.show {
+  grid-column: span 6;
+}
+.show:nth-child(-n + 5 of :not([hidden])) {
+  grid-column: span 10;
+}
+.show:nth-child(-n + 2 of :not([hidden])) {
+  grid-column: span 15;
+}
+.show:nth-child(-n + 5 of :not([hidden])) .show-title {
+  font-size: 1.05rem;
+}
+.show:nth-child(-n + 2 of :not([hidden])) .show-title {
+  font-size: 1.2rem;
 }
 .shows-grid:empty {
   min-height: 100vh; /* keeps the footer below the fold until the list loads */
@@ -544,22 +549,35 @@ p { margin-bottom: 1rem; }
   backdrop-filter: grayscale(1);
   box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.7);
 }
+/* Rank (top-left) and my rating (bottom-right) as small translucent badges. */
 .show-rank,
-.show-star {
+.show-rating {
   position: absolute;
   z-index: 1; /* above the grey overlay */
+  padding: 0 6px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  font-size: 0.8rem;
+  line-height: 1.7;
 }
 .show-rank {
   top: 6px;
   left: 6px;
   min-width: 1.7em;
-  padding: 0 5px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.75);
-  color: #fff;
-  font-size: 0.8rem;
-  line-height: 1.7;
   text-align: center;
+}
+.show-rating {
+  right: 6px;
+  bottom: 6px;
+}
+.show-rating::after {
+  content: "★";
+  margin-left: 3px;
+  font-size: 0.85em;
+  color: rgba(255, 255, 255, 0.6);
 }
 .show-title {
   margin-top: 0.5rem;
@@ -570,29 +588,6 @@ p { margin-bottom: 1rem; }
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-}
-/* My rating on a gold star in the bottom-right corner. */
-.show-star {
-  right: 4px;
-  bottom: 4px;
-  isolation: isolate;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding-top: 4px; /* a star's visual centre sits a little below its box centre */
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #3d2c00;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
-}
-.show-star::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(160deg, #ffe27a, #f4b400 55%, #d99a00);
-  clip-path: polygon(50% 4.8%, 64.7% 34.6%, 97.6% 39.3%, 73.8% 62.5%, 79.4% 95.3%, 50% 79.8%, 20.6% 95.3%, 26.2% 62.5%, 2.4% 39.3%, 35.3% 34.6%);
 }
 .show-meta {
   font-size: 0.82rem;
@@ -659,17 +654,25 @@ p { margin-bottom: 1rem; }
     gap: 2px;
   }
 
+  /* Phones: the top two share a row, then rows of three. */
   .shows-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 1.25rem 0.75rem;
+  }
+  .show,
+  .show:nth-child(-n + 5 of :not([hidden])) {
+    grid-column: span 2;
+  }
+  .show:nth-child(-n + 2 of :not([hidden])) {
+    grid-column: span 3;
+  }
+  .show:nth-child(-n + 5 of :not([hidden])) .show-title {
+    font-size: 0.92rem;
+  }
+  .show:nth-child(-n + 2 of :not([hidden])) .show-title {
+    font-size: 1rem;
   }
   .shows-status {
     margin-left: 0;
-  }
-  .show-star {
-    width: 34px;
-    height: 34px;
-    padding-top: 3px;
-    font-size: 0.66rem;
   }
 }

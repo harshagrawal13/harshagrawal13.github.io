@@ -4,7 +4,7 @@ This repository contains the source for my personal website (`harsh-agrawal.com`
 
 ## Shows page
 
-[`/shows/`](https://harsh-agrawal.com/shows/) draws `shows/shows.json` as a ranked poster grid. The JSON is the source of truth and has one show per line: your fields (`title`, `rating`, `status`, `season`, `tags`) first, then fields filled from [TVmaze](https://www.tvmaze.com/api) (`seasons`, `episodes`, `episode_minutes`, `genres`, `tvmaze`, `imdb`, `poster`).
+[`/shows/`](https://harsh-agrawal.com/shows/) draws `shows/shows.json` as a ranked poster grid. The JSON is the source of truth and has one show per line: your fields (`title`, `rating`, `status`, `season`, `tags`) first, then fields filled from [TVmaze](https://www.tvmaze.com/api) (`seasons`, `episodes`, `episode_minutes`, `genres`, `tvmaze`, `imdb`, `poster`, and `poster_large` for the page's big top tiles).
 
 - **Change a rating, status or season:** edit the line and push. The page sorts shows by rating, and tied ratings share a rank. Status is `completed`, `watching` or `abandoned`. For the last two, `season` is the season you're on or left at: the card says "Watching Season 2 of 4" or "Left at Season 3 of 7", and the poster stays in colour for that share of the show (counting the current season as half watched), then turns grey.
 - **Add a show:** add `{"title": "…", "rating": 8.1, "status": "completed"}` anywhere in the list, plus `"season"` if you haven't finished it. You can add `"tags": ["Sitcom"]` or `["Documentary"]`. Then run `python3 scripts/shows.py`: it matches the show on TVmaze and fills in the TVmaze fields. Check the match it prints. If it's wrong, delete the TVmaze fields, set the right `"tvmaze"` id, and run it again. For a show TVmaze doesn't have, set `"tvmaze": null`.

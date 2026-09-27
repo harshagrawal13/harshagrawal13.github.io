@@ -10,7 +10,9 @@ const FILTERS = [
   { key: "documentaries", label: "Documentaries", tag: "Documentary" },
 ];
 const STATUSES = { completed: "Completed", watching: "Watching", abandoned: "Abandoned" };
-const EAGER_POSTERS = 10; // the first two rows on desktop; the rest load as they scroll into view
+const EAGER_POSTERS = 10; // the top rows; the rest load as they scroll into view
+const LARGE_TILES = 5; // the first 2 + 3 shows in view get big tiles (see .show:nth-child in style.css)
+const SMALL_POSTER_WIDTH = 210; // TVmaze's "medium" poster, the size of `poster`
 
 const grid = document.getElementById("shows-grid");
 const filterBar = document.getElementById("shows-filters");
@@ -46,7 +48,7 @@ function init(rows) {
   });
   cards = shows.map((show, i) => ({ show, node: renderCard(show, i < EAGER_POSTERS) }));
   grid.append(...cards.map((card) => card.node));
-  document.getElementById("shows-stats").textContent = `${shows.length} shows`;
+  document.getElementById("shows-stats").textContent = summary(shows);
 
   for (const filter of FILTERS) {
     addButton(filter.label, () => filter === activeFilter, () => (activeFilter = filter));
@@ -73,11 +75,11 @@ function renderCard(show, eager) {
   img.decoding = "async";
   const poster = el("div", "show-poster");
   const watched = watchedShare(show);
-  if (watched !== null) {
+  if (watched !== null && watched < 1) {
     poster.classList.add("is-unfinished");
     poster.style.setProperty("--watched", watched);
   }
-  poster.append(img, el("span", "show-rank", String(show.rank)), el("span", "show-star", show.rating.toFixed(1)));
+  poster.append(img, el("span", "show-rank", String(show.rank)), el("span", "show-rating", show.rating.toFixed(1)));
 
   link.append(poster, el("div", "show-title", show.title), el("div", "show-meta", progressText(show)));
   const item = el("li", "show");
@@ -85,18 +87,31 @@ function renderCard(show, eager) {
   return item;
 }
 
-// How much of an unfinished show I've seen, counting the season I'm on as half watched;
-// null for finished shows or when the season isn't known.
+// How much of a show I've seen: all of it when completed; for unfinished shows, the seasons
+// before the one I'm on plus half of that one. null when the season isn't known.
 function watchedShare(show) {
-  if (show.status === "completed" || !show.season || !show.seasons) return null;
+  if (show.status === "completed") return 1;
+  if (!show.season || !show.seasons) return null;
   return Math.min((show.season - 0.5) / show.seasons, 1);
+}
+
+function summary(shows) {
+  let episodes = 0;
+  let minutes = 0;
+  for (const show of shows) {
+    const seen = (show.episodes ?? 0) * (watchedShare(show) ?? 0);
+    episodes += seen;
+    minutes += seen * (show.episode_minutes ?? 0);
+  }
+  const format = (n) => Math.round(n).toLocaleString("en");
+  return `${shows.length} Shows · ${format(episodes)} episodes · ${format(minutes)} minutes watched`;
 }
 
 function progressText(show) {
   const of = show.seasons > 1 ? ` of ${show.seasons}` : "";
   if (show.status === "watching") return show.season ? `Watching Season ${show.season}${of}` : "Watching";
   if (show.status === "abandoned") return show.season ? `Left at Season ${show.season}${of}` : "Abandoned";
-  return show.seasons ? `${show.seasons} season${show.seasons === 1 ? "" : "s"}` : "";
+  return show.seasons ? `Completed · ${show.seasons} Season${show.seasons === 1 ? "" : "s"}` : "Completed";
 }
 
 function showUrl(show) {
@@ -143,10 +158,25 @@ function update() {
   for (const { button, isPressed } of buttons) button.setAttribute("aria-pressed", String(isPressed()));
   statusMenu.select.value = activeStatus;
   statusMenu.wrapper.classList.toggle("is-active", activeStatus !== "");
-  const visible = cards.filter(({ node }) => !node.hidden).length;
-  count.textContent =
-    visible === cards.length ? "" : visible ? `${visible} of ${cards.length} shows` : "No shows match.";
+  const visible = cards.filter(({ node }) => !node.hidden);
+  visible.slice(0, LARGE_TILES).forEach(sharpen);
+  const n = visible.length;
+  count.textContent = n === cards.length ? "" : n ? `${n} of ${cards.length} shows` : "No shows match.";
   writeHash();
+}
+
+// A tile drawn wider than the small poster would blur it, so swap in the full-size poster once
+// it has downloaded and decoded (decoding first avoids a blank flash). Phone tiles stay small.
+function sharpen({ show, node }) {
+  const img = node.querySelector("img");
+  if (!show.poster_large || img.dataset.large || img.clientWidth <= SMALL_POSTER_WIDTH) return;
+  img.dataset.large = "loading";
+  const full = new Image();
+  full.src = show.poster_large;
+  full.decode().then(
+    () => (img.src = full.src),
+    () => {} // keep the small poster if the big one fails
+  );
 }
 
 function readHash() {
