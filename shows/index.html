@@ -7,6 +7,8 @@
     <meta name="description" content="Every TV show Harsh Agrawal has watched, ranked." />
     <meta name="author" content="Harsh Agrawal" />
     <title>Shows, ranked &middot; Harsh Agrawal</title>
+    <link rel="preload" href="/shows/shows.json" as="fetch" crossorigin />
+    <link rel="preconnect" href="https://static.tvmaze.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
@@ -59,8 +61,8 @@
       <section aria-label="Ranking">
         <div class="shows-filters" id="shows-filters" role="group" aria-label="Filter shows"></div>
         <p class="shows-count" id="shows-count" aria-live="polite"></p>
-        <ol class="shows-grid" id="shows-grid"></ol>
         <noscript><p class="shows-count">This list needs JavaScript.</p></noscript>
+        <ol class="shows-grid" id="shows-grid"></ol>
       </section>
     </main>
 

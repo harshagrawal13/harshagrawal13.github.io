@@ -1,6 +1,7 @@
 // Renders shows.json as a ranked poster grid. Rank comes from the rating alone, so tied
-// shows share a number (1, 2, 2, 4, ...). One tag filter is active at a time and "Completed"
-// combines with it; the active filters live in the URL hash, e.g. /shows/#sitcoms+completed.
+// shows share a number (1, 2, 2, 4, ...) and are listed A–Z. One tag filter is active at a
+// time and "Completed" combines with it; the active filters live in the URL hash, e.g.
+// /shows/#sitcoms+completed.
 
 const FILTERS = [
   { key: "all", label: "All" },
@@ -10,6 +11,7 @@ const FILTERS = [
   { key: "documentaries", label: "Documentaries", tag: "Documentary" },
 ];
 const COMPLETED = "completed";
+const EAGER_POSTERS = 10; // the first two rows on desktop; the rest load as they scroll into view
 
 const grid = document.getElementById("shows-grid");
 const filterBar = document.getElementById("shows-filters");
@@ -29,16 +31,22 @@ try {
   console.error(err);
 }
 
-function init(shows) {
-  for (const show of shows) show.watches ??= 1;
-  shows.sort((a, b) => b.rating - a.rating || b.watches - a.watches || a.title.localeCompare(b.title));
+function init(rows) {
+  // shows.json is hand-edited and pushed without checks, so one bad row mustn't blank the page.
+  const shows = rows.filter((show) => {
+    const valid = typeof show.title === "string" && Number.isFinite(show.rating);
+    if (!valid) console.warn("shows.json: skipping a show without a title and numeric rating", show);
+    return valid;
+  });
+  for (const show of shows) show.labels = [...(show.genres ?? []), ...(show.tags ?? [])];
+  shows.sort((a, b) => b.rating - a.rating || a.title.localeCompare(b.title));
   shows.forEach((show, i) => {
     const prev = shows[i - 1];
     show.rank = prev?.rating === show.rating ? prev.rank : i + 1;
   });
-  cards = shows.map((show) => ({ show, node: renderCard(show) }));
+  cards = shows.map((show, i) => ({ show, node: renderCard(show, i < EAGER_POSTERS) }));
   grid.append(...cards.map((card) => card.node));
-  document.getElementById("shows-stats").textContent = summary(shows);
+  document.getElementById("shows-stats").textContent = `${shows.length} shows`;
 
   for (const filter of FILTERS) {
     addButton(filter.label, () => filter === activeFilter, () => (activeFilter = filter));
@@ -48,7 +56,7 @@ function init(shows) {
   window.addEventListener("hashchange", readHash);
 }
 
-function renderCard(show) {
+function renderCard(show, eager) {
   const link = el("a");
   const url = showUrl(show);
   if (url) {
@@ -59,16 +67,15 @@ function renderCard(show) {
   link.title = show.title;
 
   const img = el("img");
-  if (show.tvmaze) img.src = `/assets/shows/${show.tvmaze}.jpg`; // otherwise the grey placeholder shows
+  if (show.poster) img.src = show.poster; // otherwise the grey placeholder shows
   img.alt = "";
-  img.loading = "lazy";
+  img.loading = eager ? "eager" : "lazy";
   img.decoding = "async";
   const poster = el("div", "show-poster");
   poster.append(img, el("span", "show-rank", String(show.rank)));
 
   const meta = el("div", "show-meta");
   meta.append(el("span", "show-rating", show.rating.toFixed(1)));
-  if (show.watches > 1) meta.append(` ×${Math.round(show.watches * 10) / 10}`);
   if (show.status !== COMPLETED) meta.append(" ", el("span", "show-status", show.status));
 
   link.append(poster, el("div", "show-title", show.title), meta);
@@ -81,11 +88,6 @@ function showUrl(show) {
   if (show.imdb) return `https://www.imdb.com/title/${show.imdb}/`;
   if (show.tvmaze) return `https://www.tvmaze.com/shows/${show.tvmaze}`;
   return null;
-}
-
-function summary(shows) {
-  const minutes = shows.reduce((sum, s) => sum + (s.episodes ?? 0) * (s.episode_minutes ?? 0) * s.watches, 0);
-  return `${shows.length} shows · ~${(Math.round(minutes / 600) * 10).toLocaleString("en")} hours watched`;
 }
 
 function addButton(label, isPressed, apply) {
@@ -102,7 +104,7 @@ function addButton(label, isPressed, apply) {
 
 function matches(show) {
   return (
-    (!activeFilter.tag || (show.tags ?? []).includes(activeFilter.tag)) &&
+    (!activeFilter.tag || show.labels.includes(activeFilter.tag)) &&
     (!completedOnly || show.status === COMPLETED)
   );
 }
@@ -117,7 +119,13 @@ function update() {
 }
 
 function readHash() {
-  const parts = decodeURIComponent(location.hash.slice(1)).split("+");
+  let hash = location.hash.slice(1);
+  try {
+    hash = decodeURIComponent(hash);
+  } catch {
+    // a malformed escape such as "#drama%": match against the raw text instead
+  }
+  const parts = hash.split("+");
   activeFilter = FILTERS.find((filter) => filter.tag && parts.includes(filter.key)) ?? FILTERS[0];
   completedOnly = parts.includes(COMPLETED);
   update();

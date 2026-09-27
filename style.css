@@ -417,6 +417,7 @@ p { margin-bottom: 1rem; }
 
 /* ── Shows ── */
 .shows-stats {
+  min-height: 1.6em; /* filled in by shows.js; reserve the line so nothing shifts */
   font-family: monospace;
   font-size: 0.85rem;
   color: var(--secondary);
@@ -475,6 +476,9 @@ p { margin-bottom: 1rem; }
   list-style: none;
   margin: 0;
   padding: 0;
+}
+.shows-grid:empty {
+  min-height: 100vh; /* keeps the footer below the fold until the list loads */
 }
 .show a {
   display: block;
