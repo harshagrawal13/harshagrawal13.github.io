@@ -1,7 +1,9 @@
-// Renders shows.json as a ranked poster grid. Rank comes from the rating alone, so tied
-// shows share a number (1, 2, 2, 4, ...) and are listed A–Z. One tag filter and one status
-// can be active at a time; both live in the URL hash, e.g. /shows/#sitcoms+watching.
+// Renders my shows as a ranked poster grid. The list lives in Postgres on kamaji and is served
+// read-only by PostgREST (see README). Rank comes from the rating alone, so tied shows share a
+// number (1, 2, 2, 4, ...) and are listed A–Z. One tag filter and one status can be active at a
+// time; both live in the URL hash, e.g. /shows/#sitcoms+watching.
 
+const SHOWS_API = "https://api.harsh-agrawal.com/shows";
 const FILTERS = [
   { key: "all", label: "All" },
   { key: "drama", label: "Drama", tag: "Drama" },
@@ -24,8 +26,8 @@ const buttons = [];
 const statusMenu = makeStatusMenu();
 
 try {
-  const res = await fetch("/shows/shows.json");
-  if (!res.ok) throw new Error(`shows.json: HTTP ${res.status}`);
+  const res = await fetch(SHOWS_API);
+  if (!res.ok) throw new Error(`${SHOWS_API}: HTTP ${res.status}`);
   init(await res.json());
 } catch (err) {
   count.textContent = "Couldn't load the list.";
@@ -33,10 +35,10 @@ try {
 }
 
 function init(rows) {
-  // shows.json is hand-edited and pushed without checks, so one bad row mustn't blank the page.
+  // Postgres enforces the data's rules, but one odd row still mustn't blank the whole page.
   const shows = rows.filter((show) => {
     const valid = typeof show.title === "string" && Number.isFinite(show.rating);
-    if (!valid) console.warn("shows.json: skipping a show without a title and numeric rating", show);
+    if (!valid) console.warn("shows: skipping a show without a title and numeric rating", show);
     return valid;
   });
   for (const show of shows) show.labels = [...(show.genres ?? []), ...(show.tags ?? [])];

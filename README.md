@@ -4,13 +4,19 @@ This repository contains the source for my personal website (`harsh-agrawal.com`
 
 ## Shows page
 
-[`/shows/`](https://harsh-agrawal.com/shows/) draws `shows/shows.json` as a ranked poster grid. The JSON is the source of truth and has one show per line: your fields (`title`, `rating`, `status`, `season`, `tags`) first, then fields filled from [TVmaze](https://www.tvmaze.com/api) (`seasons`, `episodes`, `episode_minutes`, `genres`, `tvmaze`, `imdb`, `poster`, and `poster_large` for the page's big top tiles).
+[`/shows/`](https://harsh-agrawal.com/shows/) draws my shows as a ranked poster grid. The list lives in **Postgres on kamaji** (my always-on Mac) and the page reads it from **https://api.harsh-agrawal.com/shows**:
 
-- **Change a rating, status or season:** edit the line and push. The page sorts shows by rating, and tied ratings share a rank. Status is `completed`, `watching` or `abandoned`. For the last two, `season` is the season you're on or left at: the card says "Watching Season 2 of 4" or "Left at Season 3 of 7", and the poster stays in colour for that share of the show (counting the current season as half watched), then turns grey.
-- **Add a show:** add `{"title": "…", "rating": 8.1, "status": "completed"}` anywhere in the list, plus `"season"` if you haven't finished it. You can add `"tags": ["Sitcom"]` or `["Documentary"]`. Then run `python3 scripts/shows.py`: it matches the show on TVmaze and fills in the TVmaze fields. Check the match it prints. If it's wrong, delete the TVmaze fields, set the right `"tvmaze"` id, and run it again. For a show TVmaze doesn't have, set `"tvmaze": null`.
-- **Filters** match `genres` and `tags`, and the Status dropdown matches `status`. Drama comes from TVmaze's genres, "Indian" is added to genres for Indian-language shows, and Sitcom and Documentary are your tags. The script only fills missing fields, so your edits stick. `seasons` and `episodes` count what has aired; to refresh them while a show airs, delete both and rerun.
-- **Before pushing a hand edit,** run the script anyway. It checks the file, and if no show needs TVmaze data it finishes instantly without touching the network.
-- **Preview locally:** from the repo root run `python3 -m http.server 4000`, then open `http://localhost:4000/shows/`. Pages use root-relative paths, so opening the HTML file directly won't work.
+```
+page (GitHub Pages) ─▶ api.harsh-agrawal.com ─▶ Cloudflare Tunnel "kamaji" ─▶ PostgREST 127.0.0.1:3000 ─▶ Postgres 18 "web"
+```
+
+PostgREST serves the view `api.shows` read-only as role `web_anon`; nothing public can write. Postgres listens on localhost only. If kamaji is down, the page says "Couldn't load the list."
+
+- **Edit with SQL on kamaji** (or ask Claude to): `ssh kamaji psql -d web`, then e.g. `update shows set rating = 9.7 where title = 'Rome';`. My columns are `title`, `rating` (0–10), `status` (`completed`, `watching` or `abandoned`), `season` (for unfinished shows: the one I'm on or left at) and `tags` (e.g. `{Sitcom}`, `{Documentary}`). The database rejects invalid values, including a `season` past `seasons`. The page sorts by rating, and tied ratings share a rank. Unfinished posters stay in colour for (season − ½) ÷ seasons of the show.
+- **Add a show:** `insert into shows (title, rating, status, season) values ('Andor', 8.9, 'watching', 1);`, then from this repo run `ssh kamaji python3 - < scripts/shows.py`. It matches every row that hasn't been looked up yet on [TVmaze](https://www.tvmaze.com/api) and fills the TVmaze columns (`seasons`, `episodes`, `episode_minutes`, `genres`, `tvmaze`, `imdb`, `poster`, `poster_large`), only where they're empty. Check the match it prints. If it's wrong, set `tvmaze` to the right id, null the other TVmaze columns and `tvmaze_checked_at`, and rerun. For a show TVmaze doesn't have, set `tvmaze_checked_at = now()` and leave `tvmaze` null.
+- **Filters** match `genres` and `tags`, and the Status dropdown matches `status`. Drama comes from TVmaze's genres, and "Indian" is added to genres for Indian-language shows. `seasons` and `episodes` count what has aired; to refresh them while a show airs, null them and `tvmaze_checked_at`, then rerun the script.
+- **Backups:** a launchd job on kamaji (`com.harsh.pg-backup`, 03:30) dumps every database to Google Drive `Backups/kamaji-postgres/` and keeps 30 days. Restore with `pg_restore -d web --clean --if-exists web-YYYY-MM-DD.dump`.
+- **Preview locally:** from the repo root run `python3 -m http.server 4000`, then open `http://localhost:4000/shows/`. The page still reads the live API. Pages use root-relative paths, so opening the HTML file directly won't work.
 
 Genres, episode data and IDs come from TVmaze (CC BY-SA). Posters are © their networks and studios. They're loaded from TVmaze's image server rather than copied into this repo, as TVmaze asks.
 

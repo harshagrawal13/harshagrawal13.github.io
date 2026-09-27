@@ -1,44 +1,62 @@
 #!/usr/bin/env python3
-"""Check shows/shows.json and fill in TVmaze data for new shows.
+"""Fill in TVmaze data for the shows in the website's Postgres database on kamaji.
 
-Each show starts with your fields -- "title", "rating" (out of 10), "status"
-("completed", "watching" or "abandoned"), "season" (for unfinished shows: the
-season you're on or left at) and optionally "tags" (e.g. "Sitcom") --
-followed by fields filled from TVmaze: "seasons" and "episodes" (how many
-have aired, not counting specials), "episode_minutes", "genres" (plus
-"Indian" for Indian-language shows), "tvmaze", "imdb", "poster" and
-"poster_large" (full size, used for the page's big top tiles). Posters are
-image URLs on TVmaze's CDN: TVmaze asks sites to link to its images rather
-than copy them. While a show airs, delete "seasons" and "episodes" to
-refresh them.
+The list lives in the "web" database on kamaji (table public.shows) and is served
+read-only to the site by PostgREST at https://api.harsh-agrawal.com/shows. Edits are
+plain SQL on kamaji, for example:
 
-A show missing any TVmaze field is matched by TVmaze id, then IMDb id, then
-title, and only the missing fields are filled, so your edits always stick. To
-fix a wrong match, delete its TVmaze fields, set the right "tvmaze" id and run
-again. For a show TVmaze doesn't have, set "tvmaze" to null.
+    ssh kamaji psql -d web -c "update shows set rating = 9.7 where title = 'Rome'"
+    ssh kamaji psql -d web -c "insert into shows (title, rating, status, season) values ('Andor', 8.9, 'watching', 1)"
 
-Usage: python3 scripts/shows.py   (stdlib only; data from https://www.tvmaze.com/api)
+The database enforces the rules: rating 0-10, status completed / watching / abandoned,
+season from 1 and not past seasons. For every row whose tvmaze_checked_at is null, this
+script matches the show on TVmaze (by its tvmaze id, then imdb id, then title), fills
+in whichever of seasons and episodes (aired, not counting specials), episode_minutes,
+genres (plus "Indian" for Indian-language shows), tvmaze, imdb, poster and
+poster_large are still null, and stamps tvmaze_checked_at. Values already set are never
+overwritten. To refresh a row, null those fields and tvmaze_checked_at; for a show
+TVmaze doesn't have, set tvmaze_checked_at and leave tvmaze null.
+
+Usage, from the repo:  ssh kamaji python3 - < scripts/shows.py
+(stdlib only; data from https://www.tvmaze.com/api)
 """
 
 import json
+import subprocess
 import sys
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import date
-from pathlib import Path
 
-SHOWS_JSON = Path(__file__).resolve().parent.parent / "shows" / "shows.json"
+PSQL = ["/opt/homebrew/opt/postgresql@18/bin/psql", "-X", "-q", "-v", "ON_ERROR_STOP=1", "-d", "web"]
 API = "https://api.tvmaze.com"
-
-STATUSES = ("completed", "watching", "abandoned")
-YOUR_FIELDS = ("title", "rating", "status", "season", "tags")
-TVMAZE_FIELDS = ("seasons", "episodes", "episode_minutes", "genres", "tvmaze", "imdb", "poster", "poster_large")
 INDIAN_LANGUAGES = {"Hindi", "Tamil", "Telugu", "Malayalam", "Kannada", "Bengali", "Marathi", "Punjabi"}
 REQUEST_GAP = 0.5  # seconds before each call (TVmaze allows about 20 calls per 10 s), doubled on each retry
 RETRIES = 5
 NETWORK_ERRORS = (urllib.error.URLError, TimeoutError, ConnectionError)
+
+PENDING_SQL = """
+select coalesce(json_agg(s order by s.id), '[]')
+from (select id, title, tvmaze, imdb from public.shows where tvmaze_checked_at is null) s
+"""
+
+# Fill only the columns that are still null, and stamp the row as looked up.
+FILL_SQL = """
+update public.shows s set
+  seasons         = coalesce(s.seasons, d.seasons),
+  episodes        = coalesce(s.episodes, d.episodes),
+  episode_minutes = coalesce(s.episode_minutes, d.episode_minutes),
+  genres          = coalesce(s.genres, d.genres),
+  tvmaze          = coalesce(s.tvmaze, d.tvmaze),
+  imdb            = coalesce(s.imdb, d.imdb),
+  poster          = coalesce(s.poster, d.poster),
+  poster_large    = coalesce(s.poster_large, d.poster_large),
+  tvmaze_checked_at = now()
+from json_populate_record(null::public.shows, :'row') d
+where s.id = d.id;
+"""
 
 
 def fetch(url: str) -> bytes:
@@ -55,17 +73,11 @@ def fetch(url: str) -> bytes:
     raise AssertionError("unreachable")
 
 
-def needs_lookup(show: dict) -> bool:
-    if "tvmaze" in show and show["tvmaze"] is None:  # not on TVmaze
-        return False
-    return any(key not in show for key in TVMAZE_FIELDS)
-
-
 def tvmaze_id(show: dict) -> int:
     """The show's TVmaze id: as set, else matched by IMDb id, else by title."""
-    if "tvmaze" in show:
+    if show["tvmaze"] is not None:
         return show["tvmaze"]
-    if show.get("imdb"):
+    if show["imdb"]:
         return json.loads(fetch(f"{API}/lookup/shows?imdb={show['imdb']}"))["id"]
     record = json.loads(fetch(f"{API}/singlesearch/shows?q={urllib.parse.quote(show['title'])}"))
     year = (record.get("premiered") or "?")[:4]
@@ -73,90 +85,46 @@ def tvmaze_id(show: dict) -> int:
     return record["id"]
 
 
-def lookup(show: dict) -> dict:
-    """The show's TVmaze record, with its episodes embedded so they can be counted."""
-    return json.loads(fetch(f"{API}/shows/{tvmaze_id(show)}?embed=episodes"))
-
-
-def fill(show: dict, record: dict) -> None:
-    """Copy TVmaze fields into a show, keeping every field that is already set.
-
-    Missing values are stored as null, so the show isn't looked up again on the next run.
-    """
+def tvmaze_fields(show: dict) -> dict:
+    """The TVmaze columns for a show, from its TVmaze record with episodes embedded."""
+    record = json.loads(fetch(f"{API}/shows/{tvmaze_id(show)}?embed=episodes"))
     indian = ["Indian"] if record.get("language") in INDIAN_LANGUAGES else []
     today = date.today().isoformat()
     aired = [e for e in record.get("_embedded", {}).get("episodes", []) if e.get("airdate") and e["airdate"] <= today]
-    fields = {
+    image = record.get("image") or {}
+    return {
         "seasons": len({e["season"] for e in aired}) or None,
         "episodes": len(aired) or None,
         "episode_minutes": record.get("runtime") or record.get("averageRuntime"),
         "genres": (record.get("genres") or []) + indian,
         "tvmaze": record["id"],
         "imdb": (record.get("externals") or {}).get("imdb"),
-        "poster": (record.get("image") or {}).get("medium"),
-        "poster_large": (record.get("image") or {}).get("original"),
+        "poster": image.get("medium"),
+        "poster_large": image.get("original"),
     }
-    for key, value in fields.items():
-        show.setdefault(key, value)
-    if show["poster"] is None:
-        print(f"  TVmaze has no poster for {show['title']!r}; set \"poster\" to an image URL if you have one")
-
-
-def is_number(value: object) -> bool:
-    return isinstance(value, (int, float)) and not isinstance(value, bool)
-
-
-def validate(shows: list) -> list[str]:
-    problems = []
-    for i, show in enumerate(shows, 1):
-        title = show.get("title")
-        where = repr(title) if title else f"show {i}"
-        if not isinstance(title, str) or not title.strip():
-            problems.append(f"{where}: needs a title")
-        if not is_number(show.get("rating")) or not 0 <= show["rating"] <= 10:
-            problems.append(f"{where}: rating must be a number from 0 to 10")
-        if show.get("status") not in STATUSES:
-            problems.append(f"{where}: status must be one of {', '.join(STATUSES)}")
-        for key in ("seasons", "episodes", "episode_minutes"):
-            if show.get(key) is not None and not (is_number(show[key]) and show[key] >= 0):
-                problems.append(f"{where}: {key} must be a non-negative number")
-        season = show.get("season")
-        if season is not None:
-            if not (isinstance(season, int) and not isinstance(season, bool) and season >= 1):
-                problems.append(f"{where}: season must be a whole number from 1")
-            elif is_number(show.get("seasons")) and season > show["seasons"]:
-                problems.append(f"{where}: season {season} is past TVmaze's {show['seasons']}; delete \"seasons\" to refresh it")
-        for key in ("tags", "genres"):
-            if key in show and not (isinstance(show[key], list) and all(isinstance(t, str) for t in show[key])):
-                problems.append(f"{where}: {key} must be a list of strings")
-    return problems
-
-
-def write(shows: list) -> None:
-    """One show per line, so every edit is a one-line diff: your fields, then TVmaze's, then any others."""
-    order = YOUR_FIELDS + TVMAZE_FIELDS
-    lines = ["  " + json.dumps({k: show[k] for k in order if k in show} | show, ensure_ascii=False) for show in shows]
-    SHOWS_JSON.write_text("[\n" + ",\n".join(lines) + "\n]\n", encoding="utf-8")
 
 
 def main() -> int:
-    shows = json.loads(SHOWS_JSON.read_text(encoding="utf-8"))
-    problems = validate(shows)
-    if problems:
-        print(f"{SHOWS_JSON.name} has problems:", *problems, sep="\n  ")
-        return 1
-
-    for show in filter(needs_lookup, shows):
+    pending = json.loads(subprocess.run(PSQL + ["-At", "-c", PENDING_SQL], capture_output=True, text=True, check=True).stdout)
+    filled = 0
+    for show in pending:
         try:
-            fill(show, lookup(show))
+            fields = tvmaze_fields(show)
+            row = json.dumps({"id": show["id"], **fields})
+            subprocess.run(PSQL + ["-v", f"row={row}"], input=FILL_SQL, capture_output=True, text=True, check=True)
         except NETWORK_ERRORS as err:
             if isinstance(err, urllib.error.HTTPError) and err.code == 404:
-                print(f"  no TVmaze match for {show['title']!r}; fix the title, or set \"tvmaze\" to its id or null")
+                print(f"  no TVmaze match for {show['title']!r}; fix the title, set its tvmaze id, or set tvmaze_checked_at to skip it")
             else:
                 print(f"  couldn't reach TVmaze for {show['title']!r} ({err}); run again later")
-
-    write(shows)
-    print(f"{len(shows)} shows OK in {SHOWS_JSON.name}")
+            continue
+        except subprocess.CalledProcessError as err:  # e.g. a constraint the new values would break
+            print(f"  couldn't save {show['title']!r}: {err.stderr.strip()}")
+            continue
+        filled += 1
+        if fields["poster"] is None:
+            print(f"  TVmaze has no poster for {show['title']!r}; set its poster column to an image URL if you have one")
+    print(f"filled {filled} of {len(pending)} shows waiting for TVmaze data")
     return 0
 
 
