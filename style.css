@@ -426,6 +426,7 @@ p { margin-bottom: 1rem; }
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-bottom: 1.5rem;
 }
 .shows-filters button,
 .shows-status select {
@@ -474,12 +475,6 @@ p { margin-bottom: 1rem; }
 }
 .shows-status.is-active::after {
   color: var(--theme);
-}
-.shows-count {
-  min-height: 1.6em;
-  margin: 0.6rem 0;
-  font-size: 0.9rem;
-  color: var(--secondary);
 }
 /* The top two shows in view share the first row, the next three the second, then rows of five
    on a 30-column grid (2 × 3 × 5). ":nth-child(… of :not([hidden]))" counts only the shows the

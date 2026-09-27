@@ -1,9 +1,9 @@
 // Renders my shows as a ranked poster grid. The list lives in Postgres on kamaji and is served
-// read-only by PostgREST (see README). Rank comes from the rating alone, so tied shows share a
-// number (1, 2, 2, 4, ...) and are listed A–Z. One tag filter and one status can be active at a
-// time; both live in the URL hash, e.g. /shows/#sitcoms+watching.
+// read-only by PostgREST (see README); the database also ranks it (db/web.sql), so tied shows
+// share a number (1, 2, 2, 4, ...) and arrive listed A–Z. One tag filter and one status can be
+// active at a time; both live in the URL hash, e.g. /shows/#sitcoms+watching.
 
-const SHOWS_API = "https://api.harsh-agrawal.com/shows";
+const SHOWS_API = "https://api.harsh-agrawal.com/shows?order=rank,title"; // same URL as the preload in index.html
 const FILTERS = [
   { key: "all", label: "All" },
   { key: "drama", label: "Drama", tag: "Drama" },
@@ -17,7 +17,7 @@ const SMALL_POSTER_WIDTH = 210; // TVmaze's "medium" poster, the size of `poster
 
 const grid = document.getElementById("shows-grid");
 const filterBar = document.getElementById("shows-filters");
-const count = document.getElementById("shows-count");
+const stats = document.getElementById("shows-stats");
 
 let activeFilter = FILTERS[0];
 let activeStatus = ""; // "" = any status
@@ -30,26 +30,15 @@ try {
   if (!res.ok) throw new Error(`${SHOWS_API}: HTTP ${res.status}`);
   init(await res.json());
 } catch (err) {
-  count.textContent = "Couldn't load the list.";
+  stats.textContent = "Couldn't load the list.";
   console.error(err);
 }
 
-function init(rows) {
-  // Postgres enforces the data's rules, but one odd row still mustn't blank the whole page.
-  const shows = rows.filter((show) => {
-    const valid = typeof show.title === "string" && Number.isFinite(show.rating);
-    if (!valid) console.warn("shows: skipping a show without a title and numeric rating", show);
-    return valid;
-  });
+// Rows arrive ranked and ordered, and the database guarantees each has a title and rating.
+function init(shows) {
   for (const show of shows) show.labels = [...(show.genres ?? []), ...(show.tags ?? [])];
-  shows.sort((a, b) => b.rating - a.rating || a.title.localeCompare(b.title));
-  shows.forEach((show, i) => {
-    const prev = shows[i - 1];
-    show.rank = prev?.rating === show.rating ? prev.rank : i + 1;
-  });
   cards = shows.map((show, i) => ({ show, node: renderCard(show, i < EAGER_POSTERS) }));
   grid.append(...cards.map((card) => card.node));
-  document.getElementById("shows-stats").textContent = summary(shows);
 
   for (const filter of FILTERS) {
     addButton(filter.label, () => filter === activeFilter, () => (activeFilter = filter));
@@ -161,8 +150,7 @@ function update() {
   statusMenu.wrapper.classList.toggle("is-active", activeStatus !== "");
   const visible = cards.filter(({ node }) => !node.hidden);
   visible.forEach(sharpen);
-  const n = visible.length;
-  count.textContent = n === cards.length ? "" : n ? `${n} of ${cards.length} shows` : "No shows match.";
+  stats.textContent = visible.length ? summary(visible.map(({ show }) => show)) : "No shows match.";
   writeHash();
 }
 
