@@ -422,25 +422,13 @@ p { margin-bottom: 1rem; }
   font-size: 0.85rem;
   color: var(--secondary);
 }
-.epigraph {
-  margin: 0 0 2rem;
-  color: var(--content);
-}
-.epigraph p {
-  font-style: italic;
-  margin-bottom: 0.3rem;
-}
-.epigraph footer {
-  text-align: right;
-  font-size: 0.95rem;
-  color: var(--secondary);
-}
 .shows-filters {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
-.shows-filters button {
+.shows-filters button,
+.shows-status select {
   font: inherit;
   font-size: 0.9rem;
   line-height: 1.2;
@@ -452,16 +440,40 @@ p { margin-bottom: 1rem; }
   cursor: pointer;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
-.shows-filters button:hover {
+.shows-filters button:hover,
+.shows-status select:hover {
   background-color: var(--link-hover);
 }
-.shows-filters button[aria-pressed="true"] {
+.shows-filters button[aria-pressed="true"],
+.shows-status.is-active select {
   background: var(--primary);
   border-color: var(--primary);
   color: var(--theme);
 }
-.shows-filters .shows-toggle {
+/* Status is a native <select> dressed as a chip, with a caret drawn over its right padding. */
+.shows-status {
+  position: relative;
   margin-left: auto;
+}
+.shows-status select {
+  appearance: none;
+  padding-right: 26px;
+}
+.shows-status option {
+  color: var(--primary);
+  background: var(--theme);
+}
+.shows-status::after {
+  content: "▾";
+  position: absolute;
+  right: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  pointer-events: none;
+}
+.shows-status.is-active::after {
+  color: var(--theme);
 }
 .shows-count {
   min-height: 1.6em;
@@ -469,13 +481,38 @@ p { margin-bottom: 1rem; }
   font-size: 0.9rem;
   color: var(--secondary);
 }
+/* The top two shows in view share the first row, the next three the second, then rows of five
+   on a 30-column grid (2 × 3 × 5). ":nth-child(… of :not([hidden]))" counts only the shows the
+   filters leave visible, so the top of any filtered view gets the big tiles too. The spans and
+   title sizes are variables so phones can resize the tiers without repeating the rules. */
 .shows-grid {
+  --columns: 30;
+  --span: 6;
+  --span-top5: 10;
+  --span-top2: 15;
+  --title-top5: 1.05rem;
+  --title-top2: 1.2rem;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
   gap: 1.5rem 1rem;
   list-style: none;
   margin: 0;
   padding: 0;
+}
+.show {
+  grid-column: span var(--span);
+}
+.show:nth-child(-n + 5 of :not([hidden])) {
+  grid-column: span var(--span-top5);
+}
+.show:nth-child(-n + 2 of :not([hidden])) {
+  grid-column: span var(--span-top2);
+}
+.show:nth-child(-n + 5 of :not([hidden])) .show-title {
+  font-size: var(--title-top5);
+}
+.show:nth-child(-n + 2 of :not([hidden])) .show-title {
+  font-size: var(--title-top2);
 }
 .shows-grid:empty {
   min-height: 100vh; /* keeps the footer below the fold until the list loads */
@@ -487,6 +524,10 @@ p { margin-bottom: 1rem; }
 }
 .show-poster {
   position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease-in-out;
 }
 .show-poster img {
   display: block;
@@ -494,33 +535,56 @@ p { margin-bottom: 1rem; }
   height: auto;
   aspect-ratio: 210 / 295;
   object-fit: cover;
-  border-radius: 4px;
   background: var(--tertiary);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s ease-in-out;
 }
-.show a:hover .show-poster img {
+.show a:hover .show-poster {
   transform: translateY(-3px);
 }
 .show a:focus-visible {
   outline: none;
 }
-.show a:focus-visible .show-poster img {
+.show a:focus-visible .show-poster {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
-.show-rank {
+/* Unfinished shows: the poster turns grey after the share I've watched (--watched, set by shows.js). */
+.show-poster.is-unfinished::after {
+  content: "";
   position: absolute;
-  top: 6px;
-  left: 6px;
-  min-width: 1.7em;
-  padding: 0 5px;
+  inset: 0 0 0 calc(var(--watched) * 100%);
+  -webkit-backdrop-filter: grayscale(1);
+  backdrop-filter: grayscale(1);
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.7);
+}
+/* Rank (top-left) and my rating (bottom-right) as small translucent badges. */
+.show-rank,
+.show-rating {
+  position: absolute;
+  z-index: 1; /* above the grey overlay */
+  padding: 0 6px;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   color: #fff;
   font-size: 0.8rem;
   line-height: 1.7;
+}
+.show-rank {
+  top: 6px;
+  left: 6px;
+  min-width: 1.7em;
   text-align: center;
+}
+.show-rating {
+  right: 6px;
+  bottom: 6px;
+}
+.show-rating::after {
+  content: "★";
+  margin-left: 3px;
+  font-size: 0.85em;
+  color: rgba(255, 255, 255, 0.6);
 }
 .show-title {
   margin-top: 0.5rem;
@@ -534,14 +598,8 @@ p { margin-bottom: 1rem; }
 }
 .show-meta {
   font-size: 0.82rem;
-  line-height: 1.5;
+  line-height: 1.4;
   color: var(--secondary);
-}
-.show-rating {
-  color: var(--primary);
-}
-.show-status {
-  font-style: italic;
 }
 
 /* ── Footer / Social ── */
@@ -603,11 +661,17 @@ p { margin-bottom: 1rem; }
     gap: 2px;
   }
 
+  /* Phones: the top two share a row, then rows of three. */
   .shows-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    --columns: 6;
+    --span: 2;
+    --span-top5: 2;
+    --span-top2: 3;
+    --title-top5: 0.92rem;
+    --title-top2: 1rem;
     gap: 1.25rem 0.75rem;
   }
-  .shows-filters .shows-toggle {
+  .shows-status {
     margin-left: 0;
   }
 }
