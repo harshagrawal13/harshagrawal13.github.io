@@ -481,31 +481,38 @@ p { margin-bottom: 1rem; }
   font-size: 0.9rem;
   color: var(--secondary);
 }
-/* 30 columns (2 × 3 × 5): the top two shows in view share a row, the next three share the
-   next, then rows of five. ":nth-child(… of :not([hidden]))" counts only the shows the
-   filters leave visible, so the top of any filtered view gets the big tiles too. */
+/* The top two shows in view share the first row, the next three the second, then rows of five
+   on a 30-column grid (2 × 3 × 5). ":nth-child(… of :not([hidden]))" counts only the shows the
+   filters leave visible, so the top of any filtered view gets the big tiles too. The spans and
+   title sizes are variables so phones can resize the tiers without repeating the rules. */
 .shows-grid {
+  --columns: 30;
+  --span: 6;
+  --span-top5: 10;
+  --span-top2: 15;
+  --title-top5: 1.05rem;
+  --title-top2: 1.2rem;
   display: grid;
-  grid-template-columns: repeat(30, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
   gap: 1.5rem 1rem;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 .show {
-  grid-column: span 6;
+  grid-column: span var(--span);
 }
 .show:nth-child(-n + 5 of :not([hidden])) {
-  grid-column: span 10;
+  grid-column: span var(--span-top5);
 }
 .show:nth-child(-n + 2 of :not([hidden])) {
-  grid-column: span 15;
+  grid-column: span var(--span-top2);
 }
 .show:nth-child(-n + 5 of :not([hidden])) .show-title {
-  font-size: 1.05rem;
+  font-size: var(--title-top5);
 }
 .show:nth-child(-n + 2 of :not([hidden])) .show-title {
-  font-size: 1.2rem;
+  font-size: var(--title-top2);
 }
 .shows-grid:empty {
   min-height: 100vh; /* keeps the footer below the fold until the list loads */
@@ -656,21 +663,13 @@ p { margin-bottom: 1rem; }
 
   /* Phones: the top two share a row, then rows of three. */
   .shows-grid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    --columns: 6;
+    --span: 2;
+    --span-top5: 2;
+    --span-top2: 3;
+    --title-top5: 0.92rem;
+    --title-top2: 1rem;
     gap: 1.25rem 0.75rem;
-  }
-  .show,
-  .show:nth-child(-n + 5 of :not([hidden])) {
-    grid-column: span 2;
-  }
-  .show:nth-child(-n + 2 of :not([hidden])) {
-    grid-column: span 3;
-  }
-  .show:nth-child(-n + 5 of :not([hidden])) .show-title {
-    font-size: 0.92rem;
-  }
-  .show:nth-child(-n + 2 of :not([hidden])) .show-title {
-    font-size: 1rem;
   }
   .shows-status {
     margin-left: 0;

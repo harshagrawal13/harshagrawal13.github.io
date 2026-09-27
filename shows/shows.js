@@ -11,7 +11,6 @@ const FILTERS = [
 ];
 const STATUSES = { completed: "Completed", watching: "Watching", abandoned: "Abandoned" };
 const EAGER_POSTERS = 10; // the top rows; the rest load as they scroll into view
-const LARGE_TILES = 5; // the first 2 + 3 shows in view get big tiles (see .show:nth-child in style.css)
 const SMALL_POSTER_WIDTH = 210; // TVmaze's "medium" poster, the size of `poster`
 
 const grid = document.getElementById("shows-grid");
@@ -159,18 +158,19 @@ function update() {
   statusMenu.select.value = activeStatus;
   statusMenu.wrapper.classList.toggle("is-active", activeStatus !== "");
   const visible = cards.filter(({ node }) => !node.hidden);
-  visible.slice(0, LARGE_TILES).forEach(sharpen);
+  visible.forEach(sharpen);
   const n = visible.length;
   count.textContent = n === cards.length ? "" : n ? `${n} of ${cards.length} shows` : "No shows match.";
   writeHash();
 }
 
-// A tile drawn wider than the small poster would blur it, so swap in the full-size poster once
-// it has downloaded and decoded (decoding first avoids a blank flash). Phone tiles stay small.
+// A tile drawn wider than the small poster (the big tiles at the top, on desktop) would blur
+// it, so swap in the full-size poster once it has downloaded and decoded (decoding first
+// avoids a blank flash).
 function sharpen({ show, node }) {
   const img = node.querySelector("img");
   if (!show.poster_large || img.dataset.large || img.clientWidth <= SMALL_POSTER_WIDTH) return;
-  img.dataset.large = "loading";
+  img.dataset.large = "requested";
   const full = new Image();
   full.src = show.poster_large;
   full.decode().then(
