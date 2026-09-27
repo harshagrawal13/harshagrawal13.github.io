@@ -440,7 +440,8 @@ p { margin-bottom: 1rem; }
   flex-wrap: wrap;
   gap: 8px;
 }
-.shows-filters button {
+.shows-filters button,
+.shows-status select {
   font: inherit;
   font-size: 0.9rem;
   line-height: 1.2;
@@ -452,16 +453,40 @@ p { margin-bottom: 1rem; }
   cursor: pointer;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
-.shows-filters button:hover {
+.shows-filters button:hover,
+.shows-status select:hover {
   background-color: var(--link-hover);
 }
-.shows-filters button[aria-pressed="true"] {
+.shows-filters button[aria-pressed="true"],
+.shows-status.is-active select {
   background: var(--primary);
   border-color: var(--primary);
   color: var(--theme);
 }
-.shows-filters .shows-toggle {
+/* Status is a native <select> dressed as a chip, with a caret drawn over its right padding. */
+.shows-status {
+  position: relative;
   margin-left: auto;
+}
+.shows-status select {
+  appearance: none;
+  padding-right: 26px;
+}
+.shows-status option {
+  color: var(--primary);
+  background: var(--theme);
+}
+.shows-status::after {
+  content: "▾";
+  position: absolute;
+  right: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  pointer-events: none;
+}
+.shows-status.is-active::after {
+  color: var(--theme);
 }
 .shows-count {
   min-height: 1.6em;
@@ -487,6 +512,10 @@ p { margin-bottom: 1rem; }
 }
 .show-poster {
   position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease-in-out;
 }
 .show-poster img {
   display: block;
@@ -494,23 +523,33 @@ p { margin-bottom: 1rem; }
   height: auto;
   aspect-ratio: 210 / 295;
   object-fit: cover;
-  border-radius: 4px;
   background: var(--tertiary);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s ease-in-out;
 }
-.show a:hover .show-poster img {
+.show a:hover .show-poster {
   transform: translateY(-3px);
 }
 .show a:focus-visible {
   outline: none;
 }
-.show a:focus-visible .show-poster img {
+.show a:focus-visible .show-poster {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
-.show-rank {
+/* Unfinished shows: the poster turns grey after the share I've watched (--watched, set by shows.js). */
+.show-poster.is-unfinished::after {
+  content: "";
   position: absolute;
+  inset: 0 0 0 calc(var(--watched) * 100%);
+  -webkit-backdrop-filter: grayscale(1);
+  backdrop-filter: grayscale(1);
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.7);
+}
+.show-rank,
+.show-star {
+  position: absolute;
+  z-index: 1; /* above the grey overlay */
+}
+.show-rank {
   top: 6px;
   left: 6px;
   min-width: 1.7em;
@@ -532,16 +571,33 @@ p { margin-bottom: 1rem; }
   -webkit-line-clamp: 2;
   overflow: hidden;
 }
+/* My rating on a gold star in the bottom-right corner. */
+.show-star {
+  right: 4px;
+  bottom: 4px;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding-top: 4px; /* a star's visual centre sits a little below its box centre */
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #3d2c00;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+.show-star::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(160deg, #ffe27a, #f4b400 55%, #d99a00);
+  clip-path: polygon(50% 4.8%, 64.7% 34.6%, 97.6% 39.3%, 73.8% 62.5%, 79.4% 95.3%, 50% 79.8%, 20.6% 95.3%, 26.2% 62.5%, 2.4% 39.3%, 35.3% 34.6%);
+}
 .show-meta {
   font-size: 0.82rem;
-  line-height: 1.5;
+  line-height: 1.4;
   color: var(--secondary);
-}
-.show-rating {
-  color: var(--primary);
-}
-.show-status {
-  font-style: italic;
 }
 
 /* ── Footer / Social ── */
@@ -607,7 +663,13 @@ p { margin-bottom: 1rem; }
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.25rem 0.75rem;
   }
-  .shows-filters .shows-toggle {
+  .shows-status {
     margin-left: 0;
+  }
+  .show-star {
+    width: 34px;
+    height: 34px;
+    padding-top: 3px;
+    font-size: 0.66rem;
   }
 }

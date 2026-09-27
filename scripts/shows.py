@@ -2,12 +2,14 @@
 """Check shows/shows.json and fill in TVmaze data for new shows.
 
 Each show starts with your fields -- "title", "rating" (out of 10), "status"
-("completed", "watching" or "partial") and optionally "tags" (e.g. "Sitcom")
--- followed by fields filled from TVmaze: "episodes" (the show's total, not
-counting specials), "episode_minutes", "genres" (plus "Indian" for
-Indian-language shows), "tvmaze", "imdb" and "poster". The poster is an image
-URL on TVmaze's CDN: TVmaze asks sites to link to its images rather than copy
-them. Episode counts grow while a show airs; delete "episodes" to refresh it.
+("completed", "watching" or "abandoned"), "season" (for unfinished shows: the
+season you're on or left at) and optionally "tags" (e.g. "Sitcom") --
+followed by fields filled from TVmaze: "seasons" and "episodes" (how many
+have aired, not counting specials), "episode_minutes", "genres" (plus
+"Indian" for Indian-language shows), "tvmaze", "imdb" and "poster". The
+poster is an image URL on TVmaze's CDN: TVmaze asks sites to link to its
+images rather than copy them. While a show airs, delete "seasons" and
+"episodes" to refresh them.
 
 A show missing any TVmaze field is matched by TVmaze id, then IMDb id, then
 title, and only the missing fields are filled, so your edits always stick. To
@@ -23,14 +25,15 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from datetime import date
 from pathlib import Path
 
 SHOWS_JSON = Path(__file__).resolve().parent.parent / "shows" / "shows.json"
 API = "https://api.tvmaze.com"
 
-STATUSES = ("completed", "watching", "partial")
-YOUR_FIELDS = ("title", "rating", "status", "tags")
-TVMAZE_FIELDS = ("episodes", "episode_minutes", "genres", "tvmaze", "imdb", "poster")
+STATUSES = ("completed", "watching", "abandoned")
+YOUR_FIELDS = ("title", "rating", "status", "season", "tags")
+TVMAZE_FIELDS = ("seasons", "episodes", "episode_minutes", "genres", "tvmaze", "imdb", "poster")
 INDIAN_LANGUAGES = {"Hindi", "Tamil", "Telugu", "Malayalam", "Kannada", "Bengali", "Marathi", "Punjabi"}
 REQUEST_GAP = 0.5  # seconds before each call (TVmaze allows about 20 calls per 10 s), doubled on each retry
 RETRIES = 5
@@ -80,8 +83,11 @@ def fill(show: dict, record: dict) -> None:
     Missing values are stored as null, so the show isn't looked up again on the next run.
     """
     indian = ["Indian"] if record.get("language") in INDIAN_LANGUAGES else []
+    today = date.today().isoformat()
+    aired = [e for e in record.get("_embedded", {}).get("episodes", []) if e.get("airdate") and e["airdate"] <= today]
     fields = {
-        "episodes": len(record.get("_embedded", {}).get("episodes", [])) or None,
+        "seasons": len({e["season"] for e in aired}) or None,
+        "episodes": len(aired) or None,
         "episode_minutes": record.get("runtime") or record.get("averageRuntime"),
         "genres": (record.get("genres") or []) + indian,
         "tvmaze": record["id"],
@@ -109,9 +115,15 @@ def validate(shows: list) -> list[str]:
             problems.append(f"{where}: rating must be a number from 0 to 10")
         if show.get("status") not in STATUSES:
             problems.append(f"{where}: status must be one of {', '.join(STATUSES)}")
-        for key in ("episodes", "episode_minutes"):
+        for key in ("seasons", "episodes", "episode_minutes"):
             if show.get(key) is not None and not (is_number(show[key]) and show[key] >= 0):
                 problems.append(f"{where}: {key} must be a non-negative number")
+        season = show.get("season")
+        if season is not None:
+            if not (isinstance(season, int) and not isinstance(season, bool) and season >= 1):
+                problems.append(f"{where}: season must be a whole number from 1")
+            elif is_number(show.get("seasons")) and season > show["seasons"]:
+                problems.append(f"{where}: season {season} is past TVmaze's {show['seasons']}; delete \"seasons\" to refresh it")
         for key in ("tags", "genres"):
             if key in show and not (isinstance(show[key], list) and all(isinstance(t, str) for t in show[key])):
                 problems.append(f"{where}: {key} must be a list of strings")

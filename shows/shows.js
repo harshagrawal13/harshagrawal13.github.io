@@ -1,7 +1,6 @@
 // Renders shows.json as a ranked poster grid. Rank comes from the rating alone, so tied
-// shows share a number (1, 2, 2, 4, ...) and are listed A–Z. One tag filter is active at a
-// time and "Completed" combines with it; the active filters live in the URL hash, e.g.
-// /shows/#sitcoms+completed.
+// shows share a number (1, 2, 2, 4, ...) and are listed A–Z. One tag filter and one status
+// can be active at a time; both live in the URL hash, e.g. /shows/#sitcoms+watching.
 
 const FILTERS = [
   { key: "all", label: "All" },
@@ -10,7 +9,7 @@ const FILTERS = [
   { key: "indian", label: "Indian Shows", tag: "Indian" },
   { key: "documentaries", label: "Documentaries", tag: "Documentary" },
 ];
-const COMPLETED = "completed";
+const STATUSES = { completed: "Completed", watching: "Watching", abandoned: "Abandoned" };
 const EAGER_POSTERS = 10; // the first two rows on desktop; the rest load as they scroll into view
 
 const grid = document.getElementById("shows-grid");
@@ -18,9 +17,10 @@ const filterBar = document.getElementById("shows-filters");
 const count = document.getElementById("shows-count");
 
 let activeFilter = FILTERS[0];
-let completedOnly = false;
+let activeStatus = ""; // "" = any status
 let cards = [];
 const buttons = [];
+const statusMenu = makeStatusMenu();
 
 try {
   const res = await fetch("/shows/shows.json");
@@ -51,7 +51,7 @@ function init(rows) {
   for (const filter of FILTERS) {
     addButton(filter.label, () => filter === activeFilter, () => (activeFilter = filter));
   }
-  addButton("Completed", () => completedOnly, () => (completedOnly = !completedOnly)).classList.add("shows-toggle");
+  filterBar.append(statusMenu.wrapper);
   readHash();
   window.addEventListener("hashchange", readHash);
 }
@@ -72,16 +72,31 @@ function renderCard(show, eager) {
   img.loading = eager ? "eager" : "lazy";
   img.decoding = "async";
   const poster = el("div", "show-poster");
-  poster.append(img, el("span", "show-rank", String(show.rank)));
+  const watched = watchedShare(show);
+  if (watched !== null) {
+    poster.classList.add("is-unfinished");
+    poster.style.setProperty("--watched", watched);
+  }
+  poster.append(img, el("span", "show-rank", String(show.rank)), el("span", "show-star", show.rating.toFixed(1)));
 
-  const meta = el("div", "show-meta");
-  meta.append(el("span", "show-rating", show.rating.toFixed(1)));
-  if (show.status !== COMPLETED) meta.append(" ", el("span", "show-status", show.status));
-
-  link.append(poster, el("div", "show-title", show.title), meta);
+  link.append(poster, el("div", "show-title", show.title), el("div", "show-meta", progressText(show)));
   const item = el("li", "show");
   item.append(link);
   return item;
+}
+
+// How much of an unfinished show I've seen, counting the season I'm on as half watched;
+// null for finished shows or when the season isn't known.
+function watchedShare(show) {
+  if (show.status === "completed" || !show.season || !show.seasons) return null;
+  return Math.min((show.season - 0.5) / show.seasons, 1);
+}
+
+function progressText(show) {
+  const of = show.seasons > 1 ? ` of ${show.seasons}` : "";
+  if (show.status === "watching") return show.season ? `Watching Season ${show.season}${of}` : "Watching";
+  if (show.status === "abandoned") return show.season ? `Left at Season ${show.season}${of}` : "Abandoned";
+  return show.seasons ? `${show.seasons} season${show.seasons === 1 ? "" : "s"}` : "";
 }
 
 function showUrl(show) {
@@ -102,16 +117,32 @@ function addButton(label, isPressed, apply) {
   return button;
 }
 
+// A native <select> styled as a chip: "Status: Any", "Status: Watching", ...
+function makeStatusMenu() {
+  const select = el("select");
+  select.setAttribute("aria-label", "Status");
+  select.append(new Option("Status: Any", ""));
+  for (const [value, label] of Object.entries(STATUSES)) select.append(new Option(`Status: ${label}`, value));
+  select.addEventListener("change", () => {
+    activeStatus = select.value;
+    update();
+  });
+  const wrapper = el("span", "shows-status");
+  wrapper.append(select);
+  return { wrapper, select };
+}
+
 function matches(show) {
   return (
-    (!activeFilter.tag || show.labels.includes(activeFilter.tag)) &&
-    (!completedOnly || show.status === COMPLETED)
+    (!activeFilter.tag || show.labels.includes(activeFilter.tag)) && (!activeStatus || show.status === activeStatus)
   );
 }
 
 function update() {
   for (const { show, node } of cards) node.hidden = !matches(show);
   for (const { button, isPressed } of buttons) button.setAttribute("aria-pressed", String(isPressed()));
+  statusMenu.select.value = activeStatus;
+  statusMenu.wrapper.classList.toggle("is-active", activeStatus !== "");
   const visible = cards.filter(({ node }) => !node.hidden).length;
   count.textContent =
     visible === cards.length ? "" : visible ? `${visible} of ${cards.length} shows` : "No shows match.";
@@ -127,13 +158,13 @@ function readHash() {
   }
   const parts = hash.split("+");
   activeFilter = FILTERS.find((filter) => filter.tag && parts.includes(filter.key)) ?? FILTERS[0];
-  completedOnly = parts.includes(COMPLETED);
+  activeStatus = Object.keys(STATUSES).find((status) => parts.includes(status)) ?? "";
   update();
 }
 
 function writeHash() {
   const parts = activeFilter.tag ? [activeFilter.key] : [];
-  if (completedOnly) parts.push(COMPLETED);
+  if (activeStatus) parts.push(activeStatus);
   const hash = parts.length ? `#${parts.join("+")}` : "";
   if (hash !== location.hash) history.replaceState(null, "", hash || location.pathname + location.search);
 }
