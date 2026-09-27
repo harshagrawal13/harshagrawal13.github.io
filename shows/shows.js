@@ -1,9 +1,9 @@
 // Renders my shows as a ranked poster grid. The list lives in Postgres on kamaji and is served
-// read-only by PostgREST (see README); the database also ranks it (db/web.sql), so tied shows
-// share a number (1, 2, 2, 4, ...) and arrive listed A–Z. One tag filter and one status can be
+// read-only by PostgREST (see README), sorted by rating then title. Ranks count within the current
+// filters, and tied ratings share a number (1, 2, 2, 4, ...). One tag filter and one status can be
 // active at a time; both live in the URL hash, e.g. /shows/#sitcoms+watching.
 
-const SHOWS_API = "https://api.harsh-agrawal.com/shows?order=rank,title"; // same URL as the preload in index.html
+const SHOWS_API = "https://api.harsh-agrawal.com/shows?order=rating.desc,title"; // same URL as the preload in index.html
 const FILTERS = [
   { key: "all", label: "All" },
   { key: "drama", label: "Drama", tag: "Drama" },
@@ -34,10 +34,13 @@ try {
   console.error(err);
 }
 
-// Rows arrive ranked and ordered, and the database guarantees each has a title and rating.
+// Rows arrive sorted, and the database guarantees each has a title and rating.
 function init(shows) {
   for (const show of shows) show.labels = [...(show.genres ?? []), ...(show.tags ?? [])];
-  cards = shows.map((show, i) => ({ show, node: renderCard(show, i < EAGER_POSTERS) }));
+  cards = shows.map((show, i) => {
+    const node = renderCard(show, i < EAGER_POSTERS);
+    return { show, node, rankBadge: node.querySelector(".show-rank") };
+  });
   grid.append(...cards.map((card) => card.node));
 
   for (const filter of FILTERS) {
@@ -69,7 +72,7 @@ function renderCard(show, eager) {
     poster.classList.add("is-unfinished");
     poster.style.setProperty("--watched", watched);
   }
-  poster.append(img, el("span", "show-rank", String(show.rank)), el("span", "show-rating", show.rating.toFixed(1)));
+  poster.append(img, el("span", "show-rank"), el("span", "show-rating", show.rating.toFixed(1))); // rank set by update()
 
   link.append(poster, el("div", "show-title", show.title), el("div", "show-meta", progressText(show)));
   const item = el("li", "show");
@@ -149,9 +152,19 @@ function update() {
   statusMenu.select.value = activeStatus;
   statusMenu.wrapper.classList.toggle("is-active", activeStatus !== "");
   const visible = cards.filter(({ node }) => !node.hidden);
+  rankWithin(visible);
   visible.forEach(sharpen);
   stats.textContent = visible.length ? summary(visible.map(({ show }) => show)) : "No shows match.";
   writeHash();
+}
+
+// Number the visible cards (already sorted by rating) 1, 2, 2, 4, ...: tied ratings share a rank.
+function rankWithin(visible) {
+  let rank = 0;
+  visible.forEach(({ show, rankBadge }, i) => {
+    if (show.rating !== visible[i - 1]?.show.rating) rank = i + 1;
+    rankBadge.textContent = rank;
+  });
 }
 
 // A tile drawn wider than the small poster (the big tiles at the top, on desktop) would blur

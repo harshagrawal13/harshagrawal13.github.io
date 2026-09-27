@@ -34,13 +34,13 @@ comment on column public.shows.season is 'For watching/abandoned shows: the seas
 comment on column public.shows.tvmaze_checked_at is
   'When scripts/shows.py last filled this row; null = look it up. Set it with tvmaze null for a show TVmaze does not have.';
 
--- The public API: one row per show with its rank. Tied ratings share a rank (1, 2, 2, 4, ...).
+-- The public API: one row per show. The page ranks whichever shows its filters leave visible.
 create schema if not exists api;
 comment on schema api is 'Served read-only by PostgREST at https://api.harsh-agrawal.com as role web_anon.';
 drop view if exists api.shows;
 create view api.shows as
-  select title, rating, rank() over (order by rating desc) as rank, status, season, tags,
-         seasons, episodes, episode_minutes, genres, tvmaze, imdb, poster, poster_large
+  select title, rating, status, season, tags, seasons, episodes, episode_minutes,
+         genres, tvmaze, imdb, poster, poster_large
   from public.shows;
 
 -- Roles: PostgREST logs in as authenticator (no privileges of its own) and switches to
