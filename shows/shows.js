@@ -103,7 +103,7 @@ function summary(shows) {
     minutes += seen * (show.episode_minutes ?? 0);
   }
   const format = (n) => Math.round(n).toLocaleString("en");
-  return `${shows.length} Shows · ${format(episodes)} episodes · ${format(minutes)} minutes watched`;
+  return `${shows.length} Shows · ${format(episodes)} episodes · ${format(minutes / 60)} hours watched`;
 }
 
 function progressText(show) {
