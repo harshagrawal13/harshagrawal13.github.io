@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Fill in TVmaze data for the shows in the website's Postgres database on kamaji.
 
-The list lives in the "web" database on kamaji (table public.shows) and is served
+The list lives in the "personal_website" database on kamaji (table public.shows) and is served
 read-only to the site by PostgREST at https://api.harsh-agrawal.com/shows. Edits are
 plain SQL on kamaji, for example:
 
-    ssh kamaji psql -d web -c "update shows set rating = 9.7 where title = 'Rome'"
-    ssh kamaji psql -d web -c "insert into shows (title, rating, status, season) values ('Andor', 8.9, 'watching', 1)"
+    ssh kamaji psql -d personal_website -c "update shows set rating = 9.7 where title = 'Rome'"
+    ssh kamaji psql -d personal_website -c "insert into shows (title, rating, status, season) values ('Andor', 8.9, 'watching', 1)"
 
 The database enforces the rules: rating 0-10, status completed / watching / abandoned,
 season from 1 and not past seasons. For every row whose tvmaze_checked_at is null, this
@@ -30,7 +30,7 @@ import urllib.parse
 import urllib.request
 from datetime import date
 
-PSQL = ["/opt/homebrew/opt/postgresql@18/bin/psql", "-X", "-q", "-v", "ON_ERROR_STOP=1", "-d", "web"]
+PSQL = ["/opt/homebrew/opt/postgresql@18/bin/psql", "-X", "-q", "-v", "ON_ERROR_STOP=1", "-d", "personal_website"]
 API = "https://api.tvmaze.com"
 INDIAN_LANGUAGES = {"Hindi", "Tamil", "Telugu", "Malayalam", "Kannada", "Bengali", "Marathi", "Punjabi"}
 REQUEST_GAP = 0.5  # seconds before each call (TVmaze allows about 20 calls per 10 s), doubled on each retry
