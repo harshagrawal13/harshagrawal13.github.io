@@ -4,10 +4,7 @@
 // number (1, 2, 2, 4, ...). One tag filter and one status can be active at a time; both live in
 // the URL hash, e.g. /shows/#sitcoms+watching.
 
-// The same URLs as the preloads in index.html.
-const SHOWS_API = "https://api.harsh-agrawal.com/shows?order=rating.desc,title";
-const DUELS_API = "https://picktwo.harsh-agrawal.com/public/scores?set=shows";
-const DUELS_WAIT_MS = 3000; // past this, show my own ratings rather than keep waiting on picktwo
+const SHOWS_API = "https://api.harsh-agrawal.com/shows?order=rating.desc,title"; // same URL as the preload in index.html
 const FILTERS = [
   { key: "all", label: "All" },
   { key: "drama", label: "Drama", tag: "Drama" },
@@ -30,41 +27,22 @@ const buttons = [];
 const statusMenu = makeStatusMenu();
 
 try {
-  // Nothing picktwo answers, or fails to, may stop the list from showing.
-  const duels = getJSON(DUELS_API, DUELS_WAIT_MS)
-    .then((rows) => {
-      if (!Array.isArray(rows)) throw new Error(`${DUELS_API}: not a list`);
-      return rows;
-    })
-    .catch((err) => {
-      console.warn("Showing my own ratings: couldn't read picktwo's.", err);
-      return [];
-    });
-  const [shows, standings] = await Promise.all([getJSON(SHOWS_API), duels]);
-  init(withDuelRatings(shows, standings));
+  const res = await fetch(SHOWS_API);
+  if (!res.ok) throw new Error(`${SHOWS_API}: HTTP ${res.status}`);
+  init(withDuelRatings(await res.json()));
 } catch (err) {
   stats.textContent = "Couldn't load the list.";
   console.error(err);
 }
 
-async function getJSON(url, timeoutMs) {
-  const res = await fetch(url, timeoutMs ? { signal: AbortSignal.timeout(timeoutMs) } : undefined);
-  if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
-  return res.json();
-}
-
-// picktwo's committed standings, keyed "website:<id>": a show's score there replaces its hand-set
-// rating on the page, and its duel rank orders shows that end up level. A show picktwo hasn't
-// ranked keeps its own rating, and its place in the API's order. The database's `rating` is never
-// written: picktwo starts from it, so writing duel results into it would count the duels twice.
-function withDuelRatings(shows, standings) {
-  const byKey = new Map(standings.map((s) => [s.item, s]));
-  const duel = (show) => byKey.get(`website:${show.id}`);
-  for (const show of shows) {
-    const score = duel(show)?.score;
-    if (typeof score === "number") show.rating = score;
-  }
-  const rank = (show) => duel(show)?.rank ?? Infinity;
+// picktwo's committed standings, copied into this database (duel_rating and duel_rank, see
+// README): a show's duel rating replaces its hand-set rating on the page, and its duel rank orders
+// shows that end up level. A show picktwo hasn't ranked keeps its own rating, and its place in the
+// API's order. The database's `rating` is never written: picktwo starts from it, so writing duel
+// results into it would count the same duels twice.
+function withDuelRatings(shows) {
+  for (const show of shows) if (typeof show.duel_rating === "number") show.rating = show.duel_rating;
+  const rank = (show) => show.duel_rank ?? Infinity;
   return shows.sort((a, b) => b.rating - a.rating || rank(a) - rank(b) || 0); // Infinity − Infinity is NaN: keep API order
 }
 
