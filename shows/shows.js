@@ -1,7 +1,8 @@
 // Renders my shows as a ranked poster grid. The list lives in Postgres on kamaji and is served
-// read-only by PostgREST (see README), sorted by rating then title. Ranks count within the current
-// filters, and tied ratings share a number (1, 2, 2, 4, ...). One tag filter and one status can be
-// active at a time; both live in the URL hash, e.g. /shows/#sitcoms+watching.
+// read-only by PostgREST (see README). A show's rating is the one picktwo's duels last committed,
+// or else the one I set by hand. Ranks count within the current filters, and tied ratings share a
+// number (1, 2, 2, 4, ...). One tag filter and one status can be active at a time; both live in
+// the URL hash, e.g. /shows/#sitcoms+watching.
 
 const SHOWS_API = "https://api.harsh-agrawal.com/shows?order=rating.desc,title"; // same URL as the preload in index.html
 const FILTERS = [
@@ -28,10 +29,21 @@ const statusMenu = makeStatusMenu();
 try {
   const res = await fetch(SHOWS_API);
   if (!res.ok) throw new Error(`${SHOWS_API}: HTTP ${res.status}`);
-  init(await res.json());
+  init(withDuelRatings(await res.json()));
 } catch (err) {
   stats.textContent = "Couldn't load the list.";
   console.error(err);
+}
+
+// picktwo's committed standings, copied into this database (duel_rating and duel_rank, see
+// README): a show's duel rating replaces its hand-set rating on the page, and its duel rank orders
+// shows that end up level. A show picktwo hasn't ranked keeps its own rating, and its place in the
+// API's order. The database's `rating` is never written: picktwo starts from it, so writing duel
+// results into it would count the same duels twice.
+function withDuelRatings(shows) {
+  for (const show of shows) if (typeof show.duel_rating === "number") show.rating = show.duel_rating;
+  const rank = (show) => show.duel_rank ?? Infinity;
+  return shows.sort((a, b) => b.rating - a.rating || rank(a) - rank(b) || 0); // Infinity − Infinity is NaN: keep API order
 }
 
 // Rows arrive sorted, and the database guarantees each has a title and rating.
