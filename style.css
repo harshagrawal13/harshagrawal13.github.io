@@ -227,9 +227,7 @@ p { margin-bottom: 1rem; }
 .news-page-items a,
 .talk-item a,
 .publication-list a,
-.misc-content a,
-.post-description a,
-.section-more a {
+.misc-content a {
   color: var(--primary);
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
@@ -243,9 +241,7 @@ p { margin-bottom: 1rem; }
 .news-page-items a:hover,
 .talk-item a:hover,
 .publication-list a:hover,
-.misc-content a:hover,
-.post-description a:hover,
-.section-more a:hover {
+.misc-content a:hover {
   background-color: var(--link-hover);
   text-decoration-thickness: 1.5px;
 }
@@ -259,19 +255,12 @@ p { margin-bottom: 1rem; }
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
 }
-.post-description {
-  color: var(--secondary);
-  font-size: 1rem;
-  margin-bottom: 1rem;
-}
-
 /* ── Section ── */
 .section {
   margin-bottom: 3rem;
 }
 
 /* ── News ── */
-.news-list { margin: 1rem 0; }
 .news-page-items {
   list-style: none;
   padding: 0;
