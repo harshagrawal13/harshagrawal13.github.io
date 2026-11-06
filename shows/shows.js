@@ -1,10 +1,10 @@
-// Renders my shows as a ranked poster grid. The list lives in Postgres on kamaji and is served
-// read-only by PostgREST (see README). A show's rating is the one picktwo's duels last committed,
-// or else the one I set by hand. Ranks count within the current filters, and tied ratings share a
+// Renders my shows as a ranked poster grid. The list is served read-only by jiro on kamaji
+// (GET /shows, sorted by rating then title). A show's rating is its published pairwise rating, or
+// else the one I set by hand. Ranks count within the current filters, and tied ratings share a
 // number (1, 2, 2, 4, ...). One tag filter and one status can be active at a time; both live in
 // the URL hash, e.g. /shows/#sitcoms+watching.
 
-const SHOWS_API = "https://api.harsh-agrawal.com/shows?order=rating.desc,title"; // same URL as the preload in index.html
+const SHOWS_API = "https://api.harsh-agrawal.com/shows"; // same URL as the preload in index.html
 const FILTERS = [
   { key: "all", label: "All" },
   { key: "drama", label: "Drama", tag: "Drama" },
@@ -35,11 +35,9 @@ try {
   console.error(err);
 }
 
-// picktwo's committed standings, copied into this database (duel_rating and duel_rank, see
-// README): a show's duel rating replaces its hand-set rating on the page, and its duel rank orders
-// shows that end up level. A show picktwo hasn't ranked keeps its own rating, and its place in the
-// API's order. The database's `rating` is never written: picktwo starts from it, so writing duel
-// results into it would count the same duels twice.
+// The published pairwise standings (duel_rating, duel_rank): a show's duel rating replaces its
+// hand-set rating on the page, and its duel rank orders shows that end up level. An unranked show
+// keeps its own rating and its place in the API's order.
 function withDuelRatings(shows) {
   for (const show of shows) if (typeof show.duel_rating === "number") show.rating = show.duel_rating;
   const rank = (show) => show.duel_rank ?? Infinity;
